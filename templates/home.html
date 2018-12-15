@@ -1,126 +1,161 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block link %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+{% endblock %}
 {% block title %}
-Tonoy
+    Home
 {% endblock %}
 {% block content %}
-<header class="header" id="header">
-    <!-- Responsive Mainmenu -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#theMainNav"
-                aria-controls="theMainNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <a class="navbar-brand bold" href="#">SWE</a>
+    <header class="header" id="header">
+        <!-- Responsive Mainmenu -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#theMainNav"
+                    aria-controls="theMainNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand bold" href="#">SWE</a>
 
-        <div class="collapse navbar-collapse" id="theMainNav">
-            <ul class="navbar-nav justify-content-end alignEnd">
-                <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Soiety Activities</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">OpenSource Projects</a></li>
-                <li class="nav-item"><a class="nav-link" id="loginButton" onclick="showLogin()">Login</a></li>
-            </ul>
-        </div>
-    </nav>
-    <!-- Heading Text -->
-    <div class="headingText bold">
-        <h3 class="subHeading">Department of</h3>
-        <h1 class="heading">Software Engineering</h1>
-    </div>
-</header>
-<!-- About Section -->
-<div class="about" id="about">
-    <div class="container-fluid">
-        <div class="aboutPara row">
-            <div class="col-md-8">
-                <h2 class="aboutHeading bold">About SWE</h2>
-                <p class="aboutText">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud <span
-                            class="green"> exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span>
-                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                    pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-                    anim id est laborum.
-                    <br><br>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
-                    ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco <span
-                            class="red"> laboris nisi ut aliquip ex ea commodo consequat.</span> Duis aute irure dolor
-                    in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                    occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            </div>
-            <div class="col-md-4">
-                <img src="{% static 'images/iictSquare.jpeg' %}" alt="IICT" class="aboutPic notImportant">
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Login Section -->
-<div class="login" id="login">
-
-    <form class="loginForm animate">
-        <div class="closeLogin" id="closeLogin" onclick="closeLogin()">&times;</div>
-        <div class="container-fluid typeBtns">
-            <div class="userType row">
-                <span class="studentBtn col activeType" id="studentBtn" onclick="studentBtnClick()">Student</span>
-                <span class="teacherBtn col" id="teacherBtn" onclick="teacherBtnClick()">Teacher</span>
-            </div>
-        </div>
-        <div class="studentForm fullForm" id="studentForm">
-            <div class="form-group">
-                <label for="regNoStudent">Registration No</label>
-                <input type="text" class="form-control" id="regNoStudent" placeholder="Registration No.">
-            </div>
-            <div class="form-group">
-                <label for="passStudent">Password</label>
-                <input type="password" class="form-control" id="passStudent" placeholder="Password">
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-        <div class="teacherForm fullForm hide" id="teacherForm">
-            <div class="form-group">
-                <label for="emailTeacer">Email</label>
-                <input type="text" class="form-control" id="emailTeacer" placeholder="Email">
-            </div>
-            <div class="form-group">
-                <label for="passTeacher">Password</label>
-                <input type="password" class="form-control" id="passTeacher" placeholder="Password">
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-    </form>
-</div>
-
-<!-- Footer Section -->
-<footer>
-    <div class="container footerAll">
-        <div class="row">
-            <div class="col-sm-4">
-                <h4 class="footerNavHeader">Important Sites</h4>
-                <ul class="footerNav">
-                    <li class="footerNavItem"><a href="#">SUST</a></li>
-                    <li class="footerNavItem"><a href="#">Google</a></li>
-                    <li class="footerNavItem"><a href="#">Youtube</a></li>
-                    <li class="footerNavItem"><a href="#">BlaBlaBla</a></li>
+            <div class="collapse navbar-collapse" id="theMainNav">
+                <ul class="navbar-nav justify-content-end alignEnd">
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'registration' %}">Registration</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">OpenSource Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" id="loginButton" onclick="showLogin()">Login</a></li>
                 </ul>
             </div>
-            <div class="col-sm-4">
-                <h4 class="footerNavHeader">Important Sites</h4>
-                <ul class="footerNav">
-                    <li class="footerNavItem"><a href="#">SUST</a></li>
-                    <li class="footerNavItem"><a href="#">Google</a></li>
-                    <li class="footerNavItem"><a href="#">Youtube</a></li>
-                    <li class="footerNavItem"><a href="#">BlaBlaBla</a></li>
-                </ul>
-            </div>
-            <div class="col-sm-4">
-                <h4 class="footerNavHeader">Social Sites</h4>
-                <div class="socialIcons">
-                    <a href="https://www.facebook.com/" target="_blank" class="socialIcon fb"><i class="fab fa-facebook-square"></i></a>
-                    <a href="https://plus.google.com" target="_blank" class="socialIcon gp"><i class="fab fa-google-plus-square"></i></a>
-                    <a href="https://twitter.com/" target="_blank" class="socialIcon tw"><i class="fab fa-twitter-square"></i></a>
-                    <a href="https://github.com/" target="_blank" class="socialIcon git"><i class="fab fa-github-square"></i></a>
+        </nav>
+        <!-- Heading Text -->
+        <div class="headingText bold">
+            <h3 class="subHeading">Department of</h3>
+            <h1 class="heading">Software Engineering</h1>
+        </div>
+    </header>
+    <!-- About Section -->
+    <div class="about" id="about">
+        <div class="container-fluid">
+            <div class="aboutPara row">
+                <div class="col-md-8">
+                    <h2 class="aboutHeading bold">About SWE</h2>
+                    <p class="aboutText">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud <span
+                                class="green"> exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span>
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                        mollit
+                        anim id est laborum.
+                        <br><br>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                        incididunt
+                        ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        <span
+                                class="red"> laboris nisi ut aliquip ex ea commodo consequat.</span> Duis aute irure
+                        dolor
+                        in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                        occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <img src="{% static 'images/iictSquare.jpeg' %}" alt="IICT" class="aboutPic notImportant">
                 </div>
             </div>
         </div>
     </div>
-</footer>
+    <!-- Login Section -->
+    <div class="login" id="login">
+
+        <form class="loginForm animate" method="post">
+            {% csrf_token %}
+            <div class="closeLogin" id="closeLogin" onclick="closeLogin()">&times;</div>
+            <div class="container-fluid typeBtns">
+                <div class="userType row">
+                    <span class="studentBtn col activeType" id="studentBtn" onclick="studentBtnClick()">Student</span>
+                    <span class="teacherBtn col" id="teacherBtn" onclick="teacherBtnClick()">Teacher</span>
+                </div>
+            </div>
+            <div class="studentForm fullForm" id="studentForm">
+                <div class="form-group">
+
+                    <label for="regNoStudent">Registration No</label>
+                    <input type="text" class="form-control" id="regNoStudent" placeholder="Registration No."
+                           name="reg_no">
+                </div>
+                <div class="form-group">
+
+                    <label for="passStudent">Password</label>
+                    <input type="password" class="form-control" id="passStudent" placeholder="Password">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <span style="padding-left: 330px;">* Not a member yet. <a href="{% url 'registration' %}">Sign Up</a> here.</span>
+            </div>
+            <div class="teacherForm fullForm hide" id="teacherForm">
+                <div class="form-group">
+
+                    <label for="emailTeacer">Email</label>
+                    <input type="text" class="form-control" id="emailTeacer" placeholder="Email" name="email">
+                </div>
+                <div class="form-group">
+                    <label for="passTeacher">Password</label>
+                    <input type="password" class="form-control" id="passTeacher" placeholder="Password">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <span>Not a member yet. <a href="{% url 'registration' %}">Sign Up</a> here.</span>
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="container footerAll">
+            <div class="row">
+                <div class="col-sm-4">
+                    <h4 class="footerNavHeader">Important Sites</h4>
+                    <ul class="footerNav">
+                        <li class="footerNavItem"><a href="#">SUST</a></li>
+                        <li class="footerNavItem"><a href="#">Google</a></li>
+                        <li class="footerNavItem"><a href="#">Youtube</a></li>
+                        <li class="footerNavItem"><a href="#">BlaBlaBla</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-4">
+                    <h4 class="footerNavHeader">Important Sites</h4>
+                    <ul class="footerNav">
+                        <li class="footerNavItem"><a href="#">SUST</a></li>
+                        <li class="footerNavItem"><a href="#">Google</a></li>
+                        <li class="footerNavItem"><a href="#">Youtube</a></li>
+                        <li class="footerNavItem"><a href="#">BlaBlaBla</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-4">
+                    <h4 class="footerNavHeader">Social Sites</h4>
+                    <div class="socialIcons">
+                        <a href="https://www.facebook.com/" target="_blank" class="socialIcon fb"><i
+                                class="fab fa-facebook-square"></i></a>
+                        <a href="https://plus.google.com" target="_blank" class="socialIcon gp"><i
+                                class="fab fa-google-plus-square"></i></a>
+                        <a href="https://twitter.com/" target="_blank" class="socialIcon tw"><i
+                                class="fab fa-twitter-square"></i></a>
+                        <a href="https://github.com/" target="_blank" class="socialIcon git"><i
+                                class="fab fa-github-square"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+{% endblock %}
+{% block script %}
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
 {% endblock %}

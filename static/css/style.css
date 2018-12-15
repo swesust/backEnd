@@ -189,7 +189,7 @@ footer a:hover {
 
 .footerNavHeader {
 	font-size: 17px;
-	margin-left: -70px;
+	margin-left: -150px;
 }
 
 .footerAll {
@@ -201,6 +201,7 @@ footer a:hover {
 }
 
 .socialIcon {
+	margin-left: -105px;
 	transition: .3s;
 
 }
