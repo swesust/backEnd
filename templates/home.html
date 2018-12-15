@@ -1,70 +1,126 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}
 Tonoy
 {% endblock %}
 {% block content %}
-<section class="section">
-    <div class="container">
-        <nav class="navbar" role="navigation" aria-label="main navigation">
-            <div class="navbar-brand">
-                <a class="navbar-item" href="https://bulma.io">
-                    <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
-                </a>
+<header class="header" id="header">
+    <!-- Responsive Mainmenu -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#theMainNav"
+                aria-controls="theMainNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand bold" href="#">SWE</a>
 
-                <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                </a>
-            </div>
-
-            <div id="navbarBasicExample" class="navbar-menu">
-                <div class="navbar-start">
-                    <a class="navbar-item">
-                        Home
-                    </a>
-
-                    <a class="navbar-item">
-                        Documentation
-                    </a>
-
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link">
-                            More
-                        </a>
-
-                        <div class="navbar-dropdown">
-                            <a class="navbar-item">
-                                About
-                            </a>
-                            <a class="navbar-item">
-                                Jobs
-                            </a>
-                            <a class="navbar-item">
-                                Contact
-                            </a>
-                            <hr class="navbar-divider">
-                            <a class="navbar-item">
-                                Report an issue
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="navbar-end">
-                    <div class="navbar-item">
-                        <div class="buttons">
-                            <a class="button is-primary">
-                                <strong>Sign up</strong>
-                            </a>
-                            <a class="button is-light">
-                                Log in
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </nav>
+        <div class="collapse navbar-collapse" id="theMainNav">
+            <ul class="navbar-nav justify-content-end alignEnd">
+                <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Soiety Activities</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">OpenSource Projects</a></li>
+                <li class="nav-item"><a class="nav-link" id="loginButton" onclick="showLogin()">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Heading Text -->
+    <div class="headingText bold">
+        <h3 class="subHeading">Department of</h3>
+        <h1 class="heading">Software Engineering</h1>
     </div>
-</section>
+</header>
+<!-- About Section -->
+<div class="about" id="about">
+    <div class="container-fluid">
+        <div class="aboutPara row">
+            <div class="col-md-8">
+                <h2 class="aboutHeading bold">About SWE</h2>
+                <p class="aboutText">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud <span
+                            class="green"> exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span>
+                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                    pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+                    anim id est laborum.
+                    <br><br>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                    ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco <span
+                            class="red"> laboris nisi ut aliquip ex ea commodo consequat.</span> Duis aute irure dolor
+                    in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                    occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+            <div class="col-md-4">
+                <img src="{% static 'images/iictSquare.jpeg' %}" alt="IICT" class="aboutPic notImportant">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Login Section -->
+<div class="login" id="login">
+
+    <form class="loginForm animate">
+        <div class="closeLogin" id="closeLogin" onclick="closeLogin()">&times;</div>
+        <div class="container-fluid typeBtns">
+            <div class="userType row">
+                <span class="studentBtn col activeType" id="studentBtn" onclick="studentBtnClick()">Student</span>
+                <span class="teacherBtn col" id="teacherBtn" onclick="teacherBtnClick()">Teacher</span>
+            </div>
+        </div>
+        <div class="studentForm fullForm" id="studentForm">
+            <div class="form-group">
+                <label for="regNoStudent">Registration No</label>
+                <input type="text" class="form-control" id="regNoStudent" placeholder="Registration No.">
+            </div>
+            <div class="form-group">
+                <label for="passStudent">Password</label>
+                <input type="password" class="form-control" id="passStudent" placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        <div class="teacherForm fullForm hide" id="teacherForm">
+            <div class="form-group">
+                <label for="emailTeacer">Email</label>
+                <input type="text" class="form-control" id="emailTeacer" placeholder="Email">
+            </div>
+            <div class="form-group">
+                <label for="passTeacher">Password</label>
+                <input type="password" class="form-control" id="passTeacher" placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+
+<!-- Footer Section -->
+<footer>
+    <div class="container footerAll">
+        <div class="row">
+            <div class="col-sm-4">
+                <h4 class="footerNavHeader">Important Sites</h4>
+                <ul class="footerNav">
+                    <li class="footerNavItem"><a href="#">SUST</a></li>
+                    <li class="footerNavItem"><a href="#">Google</a></li>
+                    <li class="footerNavItem"><a href="#">Youtube</a></li>
+                    <li class="footerNavItem"><a href="#">BlaBlaBla</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-4">
+                <h4 class="footerNavHeader">Important Sites</h4>
+                <ul class="footerNav">
+                    <li class="footerNavItem"><a href="#">SUST</a></li>
+                    <li class="footerNavItem"><a href="#">Google</a></li>
+                    <li class="footerNavItem"><a href="#">Youtube</a></li>
+                    <li class="footerNavItem"><a href="#">BlaBlaBla</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-4">
+                <h4 class="footerNavHeader">Social Sites</h4>
+                <div class="socialIcons">
+                    <a href="https://www.facebook.com/" target="_blank" class="socialIcon fb"><i class="fab fa-facebook-square"></i></a>
+                    <a href="https://plus.google.com" target="_blank" class="socialIcon gp"><i class="fab fa-google-plus-square"></i></a>
+                    <a href="https://twitter.com/" target="_blank" class="socialIcon tw"><i class="fab fa-twitter-square"></i></a>
+                    <a href="https://github.com/" target="_blank" class="socialIcon git"><i class="fab fa-github-square"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
 {% endblock %}
