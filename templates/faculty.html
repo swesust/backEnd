@@ -1,0 +1,158 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- Meta tag for character set -->
+	<meta charset="utf-8">
+	<!-- Meta tag for viewport, Used to make the page responsive -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Pgae Title -->
+	<title>Faculty</title>
+	<!-- Linking CSS -->
+	<link rel="stylesheet" type="text/css" href="{% static 'faculty/style.css' %} ">
+	<!-- Linking Bootstrap CSS-->
+	<link rel="stylesheet" href="{% static 'common/bootstrap/css/bootstrap.min.css' %} ">
+	<!-- Linking Font Awesome Icons-->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+
+
+</head>
+
+<body>
+	
+	<!-- Faculty page section -->
+	<header class="header" id="header">
+		<!-- Responsive Mainmenu -->
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#theMainNav" aria-controls="theMainNav"
+			 aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<a class="navbar-brand bold" href="/">SWE</a>
+
+			<div class="collapse navbar-collapse" id="theMainNav">
+				<ul class="navbar-nav justify-content-end alignEnd">
+					<li class="nav-item"> <a class="nav-link" href="/">Home</a> </li>
+					<li class="nav-item"> <a class="nav-link" href="/#about">About Us</a> </li>
+					<li class="nav-item"> <a class="nav-link" href="">Faculty</a> </li>
+					<li class="nav-item"> <a class="nav-link" href="/batch">Batch</a> </li>
+					<li class="nav-item"> <a class="nav-link" id="loginButton" href="/login">Login</a> </li>
+				</ul>
+			</div>
+		</nav>
+	</header>
+
+
+	<!-- Page Datas -->
+	<div class="page-content">
+
+		<div class="page-heading">
+			<h1>Faculty</h1>
+		</div>
+
+		<div class="faculty-cards container-fluid">
+			<div class="row">
+
+				<!-- This is a sample faculty profile card. Use loop from here to *endloop*. Then remove all other cards. -->
+
+				<div class="col-lg-3 col-md-4 col-sm-6 col-12">   <!-- These classes are for responsive view -->
+					<div class="card bg-dark">
+						<img class="card-img-top" src="{% static 'faculty/res/1.jpg' %}"> <!-- Image of the card -->
+						<div class="card-body">
+							<h5 class="class-title">Asif Muhammed Samir</h5>  <!-- Title of the card -->
+							<p class="card-text"> Assistant Professor <br> IICT, SUST </p> <!-- Description of the card -->
+							<a href="#">View Profile</a> <!-- A sample link -->
+						</div>
+					</div>
+				</div>
+
+				<!-- endloop -->
+
+				<!-- After adding faculty profile loop, Delete from here -->
+
+				<div class="col-lg-3 col-md-4 col-sm-6 col-12">
+					<div class="card bg-dark">
+						<img class="card-img-top" src="{% static 'faculty/res/1.jpg' %}">
+						<div class="card-body">
+							<h5 class="class-title">Asif Muhammed Samir</h5>
+							<p class="card-text"> Assistant Professor <br> IICT, SUST </p>
+							<a href="#">View Profile</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-3 col-md-4 col-sm-6 col-12">
+					<div class="card bg-dark">
+						<img class="card-img-top" src="{% static 'faculty/res/1.jpg' %}">
+						<div class="card-body">
+							<h5 class="class-title">Asif Muhammed Samir</h5>
+							<p class="card-text"> Assistant Professor <br> IICT, SUST </p>
+							<a href="#">View Profile</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-3 col-md-4 col-sm-6 col-12">
+					<div class="card bg-dark">
+						<img class="card-img-top" src="{% static 'faculty/res/1.jpg' %}">
+						<div class="card-body">
+							<h5 class="class-title">Asif Muhammed Samir</h5>
+							<p class="card-text"> Assistant Professor <br> IICT, SUST </p>
+							<a href="#">View Profile</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-3 col-md-4 col-sm-6 col-12">
+					<div class="card bg-dark">
+						<img class="card-img-top" src="{% static 'faculty/res/1.jpg' %}">
+						<div class="card-body">
+							<h5 class="class-title">Asif Muhammed Samir</h5>
+							<p class="card-text"> Assistant Professor <br> IICT, SUST </p>
+							<a href="#">View Profile</a>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="col-lg-3 col-md-4 col-sm-6 col-12">
+					<div class="card bg-dark">
+						<img class="card-img-top" src="{% static 'faculty/res/1.jpg' %}">
+						<div class="card-body">
+							<h5 class="class-title">Asif Muhammed Samir</h5>
+							<p class="card-text"> Assistant Professor <br> IICT, SUST </p>
+							<a href="#">View Profile</a>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="col-lg-3 col-md-4 col-sm-6 col-12">
+					<div class="card bg-dark">
+						<img class="card-img-top" src="{% static 'faculty/res/1.jpg' %}">
+						<div class="card-body">
+							<h5 class="class-title">Asif Muhammed Samir</h5>
+							<p class="card-text"> Assistant Professor <br> IICT, SUST </p>
+							<a href="#">View Profile</a>
+						</div>
+					</div>
+				</div>
+
+				<!-- Delete till this -->
+
+			</div>
+		</div>
+	</div>
+
+
+
+	<!-- Linking JSs-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+	<script src="../common/bootstrap/js/bootstrap.min.js"></script>
+	<script src="{% static 'faculty/script.js' %} "></script>
+</body>
+
+</html>

@@ -13,14 +13,15 @@ def home(request):
         return render(request, 'bulma.html',{})
     return render(request, 'home.html', {})
 
-
 def bulma(request):
     return render(request, 'bulma.html', {})
 
 
-def registration(request):
-    return render(request, 'registration.html', {})
+def index(request):
+    return render(request, 'index.html', {})
 
+def faculty(request):
+    return render(request, 'faculty.html', {})
 
 def login(request):
     if request.method == 'POST':

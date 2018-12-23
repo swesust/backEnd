@@ -1,0 +1,116 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- Meta tag for character set -->
+	<meta charset="utf-8">
+	<!-- Meta tag for viewport, Used to make the page responsive -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Pgae Title -->
+	<title>SWE Society : SUST</title>
+	<!-- Linking CSS -->
+	<link rel="stylesheet" type="text/css" href="{% static 'index/style.css' %}">
+	<!-- Linking Bootstrap CSS-->
+	<link rel="stylesheet" href="{% static 'common/bootstrap/css/bootstrap.min.css' %}">
+	<!-- Linking Font Awesome Icons-->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+
+
+</head>
+
+<body>
+	<!-- Landing page section -->
+	<header class="header" id="header">
+		<!-- Responsive Mainmenu -->
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#theMainNav" aria-controls="theMainNav"
+			 aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<a class="navbar-brand bold" href="">SWE</a>
+
+			<div class="collapse navbar-collapse" id="theMainNav">
+				<ul class="navbar-nav justify-content-end alignEnd">
+					<li class="nav-item"> <a class="nav-link" href="/">Home</a> </li>
+					<li class="nav-item"> <a class="nav-link" href="#about">About Us</a> </li>
+					<li class="nav-item"> <a class="nav-link" href="/faculty">Faculty</a> </li>
+					<li class="nav-item"> <a class="nav-link" href="/batch">Batch</a> </li>
+					<li class="nav-item"> <a class="nav-link" id="loginButton" href="/login">Login</a> </li>
+				</ul>
+			</div>
+		</nav>
+
+
+		<!-- Heading Text -->
+		<div class="headingText bold">
+			<h3 class="subHeading">Department of</h3>
+			<h1 class="heading">Software Engineering</h1>
+		</div>
+	</header>
+	<!-- About Section -->
+	<div class="about" id="about">
+		<div class="container-fluid">
+			<div class="aboutPara row">
+				<div class="col-md-8">
+					<h2 class="aboutHeading bold">About SWE</h2>
+					<p class="aboutText">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+						labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud <span class="green"> exercitation ullamco
+							laboris nisi ut aliquip ex ea commodo consequat.</span> Duis aute irure dolor in reprehenderit in voluptate
+						velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
+						qui officia deserunt mollit anim id est laborum.
+						<br><br>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+						dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco <span class="red"> laboris nisi
+							ut aliquip ex ea commodo consequat.</span> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+						dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+						deserunt mollit anim id est laborum.</p>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- Footer Section -->
+	<footer>
+		<div class="container footerAll">
+			<div class="row">
+				<div class="col-sm-4">
+					<h4 class="footerNavHeader">Important Sites</h4>
+					<ul class="footerNav">
+						<li class="footerNavItem"><a href="#">SUST</a></li>
+						<li class="footerNavItem"><a href="#">Google</a></li>
+						<li class="footerNavItem"><a href="#">Youtube</a></li>
+						<li class="footerNavItem"><a href="#">BlaBlaBla</a></li>
+					</ul>
+				</div>
+				<div class="col-sm-4">
+					<h4 class="footerNavHeader">Important Sites</h4>
+					<ul class="footerNav">
+						<li class="footerNavItem"><a href="#">SUST</a></li>
+						<li class="footerNavItem"><a href="#">Google</a></li>
+						<li class="footerNavItem"><a href="#">Youtube</a></li>
+						<li class="footerNavItem"><a href="#">BlaBlaBla</a></li>
+					</ul>
+				</div>
+				<div class="col-sm-4">
+					<h4 class="footerNavHeader">Social Sites</h4>
+					<div class="socialIcons">
+						<a href="https://www.facebook.com/" target="_blank" class="socialIcon fb"><i class="fab fa-facebook-square"></i></a>
+						<a href="https://plus.google.com" target="_blank" class="socialIcon gp"><i class="fab fa-google-plus-square"></i></a>
+						<a href="https://twitter.com/" target="_blank" class="socialIcon tw"><i class="fab fa-twitter-square"></i></a>
+						<a href="https://github.com/" target="_blank" class="socialIcon git"><i class="fab fa-github-square"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+	<!-- Linking JSs-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+	<script src="{% static 'common/bootstrap/js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'index/script.js' %}"></script>
+</body>
+
+</html>

@@ -1,0 +1,58 @@
+html{
+    scroll-behavior: smooth !important;
+}
+body{
+    padding: none;
+    margin: none;
+    background-color: #333  !important;
+    color: #ddd !important;
+}
+a {
+    cursor: pointer;
+    transition: .3s !important;
+    text-decoration: none;
+    color: #999 !important;
+}
+a:hover{
+    color: orange !important;
+    text-decoration: none;
+}
+.page-content{
+    margin: 5% auto;
+    width: 90%;
+}
+.page-heading{
+    text-align: center;
+}
+.card{
+    padding: 10px;
+    margin: 10px 0px;
+}
+.card-img-top{
+    width: 100%;
+    margin-top: 15px;
+}
+
+
+
+
+
+/*FOR RESPONSIVE NAVBAR*/
+@media only screen and (min-width: 992px) {
+    .alignEnd {
+        position: absolute !important;
+        right: 10px;
+    }
+    .nav-item{
+    	margin-left: 8px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .notImportant {
+		display: none;
+	}
+	.loginForm {
+		width: 70%;
+	}
+}
