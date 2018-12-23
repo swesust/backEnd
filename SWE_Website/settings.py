@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'swe_website_one.apps.SweWebsiteOneConfig',
+
+    'home.apps.SweWebsiteOneConfig',
 ]
 
 MIDDLEWARE = [
@@ -124,3 +125,4 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+STATICROOT = os.path.join(BASE_DIR, 'static_collection')

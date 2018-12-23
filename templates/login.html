@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+{% block link %} 
+	<link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+<div class="content">
+	<form class="log_form" method="POST" action="/login">
+		{% csrf_token %}
+		<input type="text" name="id" placeholder="ID" class="edittext">
+		<input type="password" name="password" placeholder="Password" class="edittext">
+		<div class="checkbox">
+			<input type="checkbox" name="" style="width: 20px; height: 20px"> Faculty
+		</div>
+		<button>Log in</button>
+	</form>
+</div>
+
+{% endblock%}

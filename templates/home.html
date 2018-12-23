@@ -5,7 +5,7 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 {% endblock %}
 {% block title %}
-    Home
+    <title>Dept. of Software Engineering</title>
 {% endblock %}
 {% block content %}
     <header class="header" id="header">
@@ -23,7 +23,7 @@
                     <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'registration' %}">Registration</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">OpenSource Projects</a></li>
-                    <li class="nav-item"><a class="nav-link" id="loginButton" onclick="showLogin()">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" id="loginButton" href="/login">Login</a></li>
                 </ul>
             </div>
         </nav>
