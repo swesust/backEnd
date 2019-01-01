@@ -1,0 +1,17 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>404 Error</title>
+</head>
+<body>
+	<center><h1>Error 404: Not Found</h1></center>
+	<form method="POST" enctype="multipart/form-data">
+		{% csrf_token %}
+		<input type="file" name="profile" accept=".jpg, .png, .jpeg">
+		<button>Done</button>
+	</form>
+
+	<img src="/data/octocat.png" height="300px" width="300px">
+</body>
+</html>

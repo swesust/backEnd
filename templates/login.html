@@ -1,24 +1,38 @@
-{% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Login{% endblock %}
-{% block link %} 
-	<link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
-{% endblock %}
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login</title>
+        <link rel="stylesheet" href="{% static 'login/style.css' %}">
+    </head>
+    <body>
 
+        <!-- LOADING PARTICLES FROM particles.js -->
 
-{% block content %}
+        <div id="particles-js" class="particle-background"></div>
+        <script src="{% static 'login/particles.js' %}"></script>
+        <script src="{% static 'login/app.js' %}"></script>
 
-<div class="content">
-	<form class="log_form" method="POST" action="/login">
-		{% csrf_token %}
-		<input type="text" name="id" placeholder="ID" class="edittext">
-		<input type="password" name="password" placeholder="Password" class="edittext">
-		<div class="checkbox">
-			<input type="checkbox" name="" style="width: 20px; height: 20px"> Faculty
-		</div>
-		<button>Log in</button>
-	</form>
-</div>
+        <!-- LOGIN FORM BOX -->
 
-{% endblock%}
+        <div class="box">
+            <form class="login-form" method="POST">
+                {% csrf_token %}
+                <input type="text" name="uid" class="regno-input full-width" placeholder="Registration No">
+                <input type="password" name="password" class="pass-input full-width" placeholder="Password">
+                <label class="checkbox" for="faculty-check">Faculty
+                    <input type="checkbox" name="faculty" value="y" class="faculty-check" id="faculty-check" onclick="facultyClicked(this);">
+                    <span class="checkmark"></span>
+                </label>
+                <button type="submit" name="submit" class="login-button full-width">Log In</button>
+                <a href="#" class="forgot-pass">Forgot Password?</a>
+            </form>
+
+        </div>
+
+        <script src="{% static 'login/main.js' %}"></script>
+    </body>
+</html>

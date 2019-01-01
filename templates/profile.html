@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>{{ user.name }} : SWE</title>
+</head>
+<body>
+	<img src="/{{ user.imgsrc }}" height="300px", width="300px">
+	<form method="POST" enctype="multipart/form-data">
+		{% csrf_token %}
+		<input type="file" name="profile" accept=".png, .jpg, .jpeg">
+		<button>Upload</button>
+	</form>
+	<h3>{{ user.name }}</h3>
+
+</body>
+</html>

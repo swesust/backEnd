@@ -1,5 +1,6 @@
 from . import views
 from django.urls import path, include
+from django.conf.urls import url
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -10,6 +11,10 @@ urlpatterns = [
 
     # a particular batch list: example.com/batch/2017
     path('batch/<batch_id>/', views.batch, name='batch'),
+    path('test/', views.error404, name='test'),
+    path('<user_id>/', views.profile, name='profile'),
 
     path('accounts/', include('django.contrib.auth.urls')),
 ]
+
+#eaxa.com/login/

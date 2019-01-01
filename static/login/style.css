@@ -1,35 +1,128 @@
-.content {
-	margin: 0; width: 100%;
+body {
+    padding: 0;
+    margin: 0;
+    background: #222;
+    font-family: sans-serif;
 }
-.log_form {
-	margin: auto;
-}	
-
-.edittext {
-	display: block;
-	margin: auto;
-	width: 300px; height: 40px;
-	border-radius: 50px;
-	padding: 5px; font-size: 20px;
-	line-height: 35px;
-	margin-top: 40px;
-	margin-bottom: 30px;
+.particle-background {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
 }
-
-.log_form button {
-	display: block;
-	margin: auto; width: 300px;
-	border-radius: 50px; height: 45px;
-	margin-top: 40px; font-size: 25px;
-	padding: 5px; line-height: 35px;
-	color: black; background-color: white;
+.box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* border: 2px solid #bbb; */
+    padding: 20px 20px;
+    width: 450px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
 }
-.log_form button:hover {
-	cursor: pointer;
-	background-color: darkgray; color: white;
+.login-form {
+    width: 95%;
+    margin-left: 3px;
 }
-
+.full-width {
+    display: block;
+    width: 100%;
+}
+.box input {
+    background: rgba(0, 0, 0, 0);
+    border: none;
+    border-bottom: 1.3px solid #888;
+    color: #ddd;
+    font-size: 17px;
+    padding: 8px;
+    transition: .25s ease-in-out;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.box input::placeholder {
+    color: #bbb;
+    font-weight: normal;
+}
+.box input:focus,.box input:hover {
+    outline: none;
+    border-bottom: 1.3px solid #ddd;
+    background: rgba(255, 255, 255, 0.1);
+}
+.login-button {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ccc;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    margin-left: 8px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    padding: 5px;
+    /* border: 1px solid #888; */
+    transition: .25s ease-in-out;
+}
+.login-button:hover {
+    background: rgba(255, 255, 255, 0.4);
+    color: #eee;
+    /* border: 1px solid #aaa; */
+}
 .checkbox {
-	margin: auto; width: 300px;
-	font-size: 20px;
+    display: block;
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 18px;
+    user-select: none;
+    color: #ddd;
+    width: 50px;
+}
+.checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    background-color: rgba(255, 255, 255, 0.3);
+    transition: .3s;
+}
+.checkbox:hover input ~ .checkmark {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+.checkbox input:checked ~ .checkmark {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+.checkbox input:checked ~ .checkmark:after {
+    display: block;
+}
+.checkbox .checkmark:after {
+    left: 5.5px;
+    top: 2.5px;
+    width: 4px;
+    height: 8px;
+    border: solid rgba(0, 0, 0, 0.5);
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+.forgot-pass {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: none;
+    transition: .3s;
+}
+.forgot-pass:hover {
+    color: rgba(255, 255, 255, 0.6);
 }

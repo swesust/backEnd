@@ -1,16 +1,50 @@
-{% extends 'base.html' %}
 {% load static %}
 
-{% block title %}
-	<title>Batch List</title>
-{% endblock %}
-{% block link %}
-	<link rel="stylesheet" type="text/css" href="">
-{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Batchlist</title>
+	<link rel="stylesheet" href="{% static 'common/bootstrap/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'batchlist/style.css' %} ">
+</head>
+<body>
+	<header class="header" id="header">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#theMainNav" aria-controls="theMainNav"
+			 aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<a class="navbar-brand bold" href="/">SWE</a>
 
-{% block content %}
+			<div class="collapse navbar-collapse" id="theMainNav">
+				<ul class="navbar-nav justify-content-end alignEnd">
+					<li class="nav-item"> <a class="nav-link" href="/">Home</a> </li>
+					<li class="nav-item"> <a class="nav-link" href="#about">About Us</a> </li>
+					<li class="nav-item"> <a class="nav-link" href="/faculty">Faculty</a> </li>
+					<li class="nav-item"> <a class="nav-link" href="/batch">Batch</a> </li>
+					<li class="nav-item"> <a class="nav-link" id="loginButton" href="/login">Login</a> </li>
+				</ul>
+			</div>
+		</nav>
 
-	<div class="content_block">
-		<h1>Batch List</h1>
+	</header>
+
+	<div class="contents">
+		<ul class="list-contents">
+			{% for i in queryset %}
+			<li class="list-contents">
+				<div class="container">
+					<div class="batch-year li-view">
+						<a href="/batch/{{ i.year }}">{{ i.year }}</a>
+					</div>
+					<div class="batch-name li-view">
+						<a href="/batch/{{ i.year }}">{{ i.name }}</a>
+					</div>
+				</div>
+			</li>
+			{% endfor %}
+		</ul>
 	</div>
-{% endblock %}
+</body>
+</html>

@@ -55,92 +55,22 @@
 		<div class="faculty-cards container-fluid">
 			<div class="row">
 
-				<!-- This is a sample faculty profile card. Use loop from here to *endloop*. Then remove all other cards. -->
+				{% for i in teachers %}
+					<!-- This is a sample faculty profile card. Use loop from here to *endloop*. Then remove all other cards. -->
 
-				<div class="col-lg-3 col-md-4 col-sm-6 col-12">   <!-- These classes are for responsive view -->
-					<div class="card bg-dark">
-						<img class="card-img-top" src="{% static 'faculty/res/1.jpg' %}"> <!-- Image of the card -->
-						<div class="card-body">
-							<h5 class="class-title">Asif Muhammed Samir</h5>  <!-- Title of the card -->
-							<p class="card-text"> Assistant Professor <br> IICT, SUST </p> <!-- Description of the card -->
-							<a href="#">View Profile</a> <!-- A sample link -->
+					<div class="col-lg-3 col-md-4 col-sm-6 col-12">   <!-- These classes are for responsive view -->
+						<div class="card bg-dark">
+							<img class="card-img-top" src="/{{ i.imgsrc }}" onerror=""> <!-- Image of the card -->
+							<div class="card-body">
+								<h5 class="class-title">{{ i.name }}</h5>  <!-- Title of the card -->
+								<p class="card-text">{{ i.position }}</p> <!-- Description of the card -->
+								<a href="/{{ i.hid }}">View Profile</a> <!-- A sample link -->
+							</div>
 						</div>
 					</div>
-				</div>
 
 				<!-- endloop -->
-
-				<!-- After adding faculty profile loop, Delete from here -->
-
-				<div class="col-lg-3 col-md-4 col-sm-6 col-12">
-					<div class="card bg-dark">
-						<img class="card-img-top" src="{% static 'faculty/res/1.jpg' %}">
-						<div class="card-body">
-							<h5 class="class-title">Asif Muhammed Samir</h5>
-							<p class="card-text"> Assistant Professor <br> IICT, SUST </p>
-							<a href="#">View Profile</a>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-lg-3 col-md-4 col-sm-6 col-12">
-					<div class="card bg-dark">
-						<img class="card-img-top" src="{% static 'faculty/res/1.jpg' %}">
-						<div class="card-body">
-							<h5 class="class-title">Asif Muhammed Samir</h5>
-							<p class="card-text"> Assistant Professor <br> IICT, SUST </p>
-							<a href="#">View Profile</a>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-lg-3 col-md-4 col-sm-6 col-12">
-					<div class="card bg-dark">
-						<img class="card-img-top" src="{% static 'faculty/res/1.jpg' %}">
-						<div class="card-body">
-							<h5 class="class-title">Asif Muhammed Samir</h5>
-							<p class="card-text"> Assistant Professor <br> IICT, SUST </p>
-							<a href="#">View Profile</a>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-lg-3 col-md-4 col-sm-6 col-12">
-					<div class="card bg-dark">
-						<img class="card-img-top" src="{% static 'faculty/res/1.jpg' %}">
-						<div class="card-body">
-							<h5 class="class-title">Asif Muhammed Samir</h5>
-							<p class="card-text"> Assistant Professor <br> IICT, SUST </p>
-							<a href="#">View Profile</a>
-						</div>
-					</div>
-				</div>
-
-
-				<div class="col-lg-3 col-md-4 col-sm-6 col-12">
-					<div class="card bg-dark">
-						<img class="card-img-top" src="{% static 'faculty/res/1.jpg' %}">
-						<div class="card-body">
-							<h5 class="class-title">Asif Muhammed Samir</h5>
-							<p class="card-text"> Assistant Professor <br> IICT, SUST </p>
-							<a href="#">View Profile</a>
-						</div>
-					</div>
-				</div>
-
-
-				<div class="col-lg-3 col-md-4 col-sm-6 col-12">
-					<div class="card bg-dark">
-						<img class="card-img-top" src="{% static 'faculty/res/1.jpg' %}">
-						<div class="card-body">
-							<h5 class="class-title">Asif Muhammed Samir</h5>
-							<p class="card-text"> Assistant Professor <br> IICT, SUST </p>
-							<a href="#">View Profile</a>
-						</div>
-					</div>
-				</div>
-
-				<!-- Delete till this -->
+				{% endfor %}
 
 			</div>
 		</div>

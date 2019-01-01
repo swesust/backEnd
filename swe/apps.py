@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class SweWebsiteOneConfig(AppConfig):
-    name = 'home'
+    name = 'swe'
