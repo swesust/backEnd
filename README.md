@@ -75,3 +75,18 @@
 {% endblock %}
 
 ```
+
+***
+## :page_facing_up: User Information for CV contents
+```json
+{
+	"bio" : "hellllllo",
+	"interest" : ["X", "Y", "Z"],
+	"programming language" : ["C", "Python", "Java"],
+	"skill" : ["android", "django"],
+	"projects" : ["https://github.com/rafiulgits/IP_Messenger", "https://github.com/sakkhat/p250"],
+	"codeforces" : "user name",
+	"uhunt id" : "user id",
+	"vjudge" : "user name"
+}
+```
