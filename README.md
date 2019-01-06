@@ -77,8 +77,7 @@
 ```
 
 ***
-:page_facing_up:
-### User Information for CV contents
+## :page_facing_up: User Information for CV contents
 ```json
 {
 	"bio" : "hellllllo",
