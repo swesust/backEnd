@@ -1,14 +1,5 @@
 from hashlib import sha256, sha1
 from uuid import uuid4
-from swe.models import *
-from django.core.exceptions import ObjectDoesNotExist
-from django.core.files.storage import FileSystemStorage as FSS
-from io import BytesIO
-from PIL import Image as ImageProcess
-from time import time
-from os import remove, makedirs
-from os.path import isdir
-
 
 class HashPass():
 	"""
@@ -33,6 +24,11 @@ class HashPass():
 			return False
 
 
+
+
+from swe import models
+from django.core.exceptions import ObjectDoesNotExist
+
 class Auth():
 	"""
 		This class contains two function for authentication
@@ -42,30 +38,38 @@ class Auth():
 	def isStudent(uregid, upass):
 		# User Registration ID and User Password
 		try:
-			student = StudentLog.objects.get(regid=uregid)
+			student = models.StudentLog.objects.get(regid=uregid)
 			return HashPass.isValid(upass, student.password, student.hashrand)
 		except ObjectDoesNotExist as e:
 			return False
 
 	def isTeacher(uemail, upass):
 		try:
-			teacher = TeacherLog.objects.get(email=uemail)
+			teacher = models.TeacherLog.objects.get(email=uemail)
 			return HashPass.isValid(upass, teacher.password, teacher.hashrand)
 		except ObjectDoesNotExist as e:
 			return False
 
 
 
+
+from django.core.files.storage import FileSystemStorage as FSS
+from io import BytesIO
+from PIL import Image as ImageProcess
+from time import time
+from os import remove, makedirs
+from os.path import isdir
+
 class Image():
 	"""
 		storing display images of profiles. 
 		root location : data/
 	"""
-	def save(user, bytesdata, usertype):
+	def save(user, bytesdata):
 		"""
 			to save user display image
-			>>helper.Image.save(Student object, image bytes file, 1)
-			>>helper.Image.save(Teacher object, image bytes file, 0)
+			>>helper.Image.save(Student object, image bytes file)
+			>>helper.Image.save(Teacher object, image bytes file)
 			User Type:
 				0 = Student
 				1 = Teacher
@@ -79,7 +83,7 @@ class Image():
 			image will rename with current millisecond.type
 
 		"""
-		if usertype == 0:
+		if type(user) == models.Student:
 			img,ext = Image.process(bytesdata)
 			# save the image
 			loc = 'data/students/'+user.batch+'/'+user.regid
@@ -109,7 +113,7 @@ class Image():
 			# migrate the information in database
 			user.save()
 
-		elif usertype == 1:
+		elif type(user) == models.Teacher:
 			img,ext = Image.process(bytesdata)
 
 			# unique folder for every teacher
@@ -167,4 +171,83 @@ class Image():
 			elif extension == '.jpeg':
 				return True
 		
+		return False
+
+
+
+
+from json import load as jsonload, dump as jsonwrite
+
+class Content():
+
+	# static keys to store data and retrieve them
+	keys = ["bio", "interest", "programming language", "skill", 
+			"projects", "codeforeces", "uhunt", "vjudge"]
+
+	#templete = 'data/demo.json'
+	def create(regid):
+		"""
+		by invoke this method a json file will created for this user 
+		and return the location
+
+		"""
+		batch = regid[:4]
+		fol = FSS(location = 'data')
+		loc = 'data/students/'+batch+'/'+regid
+		with open(fol.location+'/content_demo.json', 'r') as read_file:
+			data = jsonload(read_file)
+			userfol = FSS(location = loc)
+
+			with open(userfol.location+'/content.json', 'w') as write_file:
+				jsonwrite(data, write_file)
+				return True
+
+		return False
+
+
+	def add(regid, key, value):
+		batch = regid[:4]
+		fol = FSS(location='data/students/'+batch+'/'+regid)
+		with open(fol.location+'/content.json', 'r') as read_file:
+			data = jsonload(read_file)
+			try:
+				data[key].append(value)
+				with open(fol.location+'/content.json', 'w') as write_file:
+					jsonwrite(data, write_file)
+					return True
+			except KeyError as e:
+				return False
+
+		return False
+
+
+	def replace(regid, key, value):
+		batch = regid[:4]
+		fol = FSS(location='data/students/'+batch+'/'+regid)
+		with open(fol.location+'/content.json', 'r') as read_file:
+			data = jsonload(read_file)
+			try:
+				data[key] = value
+				with open(fol.location+'/content.json', 'w') as write_file:
+					jsonwrite(data, write_file)
+					return True
+			except KeyError as e:
+				return False
+
+		return False
+
+
+	def remove(regid, key, index):
+		batch = regid[:4]
+		fol = FSS(location='data/students/'+batch+'/'+regid)
+		with open(fol.location+'/content.json', 'r') as read_file:
+			data = jsonload(read_file)
+			try:
+				del(data[key][index])
+				with open(fol.location+'/content.json', 'w') as write_file:
+					jsonwrite(data, write_file)
+					return True
+			except KeyError as e:
+				return False
+
 		return False
