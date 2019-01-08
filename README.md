@@ -81,6 +81,7 @@
 ```json
 {
 	"bio" : "hellllllo",
+	"work" :["position at X", "position at Y"],
 	"interest" : ["X", "Y", "Z"],
 	"programming language" : ["C", "Python", "Java"],
 	"skill" : ["android", "django"],
