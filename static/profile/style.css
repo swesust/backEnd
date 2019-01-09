@@ -1,0 +1,145 @@
+html {
+    scroll-behavior: smooth;
+}
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #333 !important;
+    width: 100%;
+    height: 100%;
+    color: #ccc;
+    overflow-x: hidden;
+}
+a {
+    text-decoration: none !important;
+    color: #ccc !important;
+    transition: color .3s;
+}
+a:hover {
+    text-decoration: none !important;
+    color: #fff !important;
+}
+.contents {
+    width: 100vw;
+    position: absolute;
+}
+.cover {
+    width: 100vw;
+    position: absolute;
+    height: 15vw;
+    background-image: url('img/cover.jpeg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: -1;
+}
+.display-profile-pic {
+    object-fit: cover;
+    object-position: center;
+    width: 20vw;
+    height: 20vw;
+    border: 10px solid #333;
+    border-radius: 50%;
+    position: absolute;
+    top: 4vw;
+    left: 5vw;
+}
+.name{
+    color: #ddd;
+    line-height: 1.5vw;
+    position: absolute;
+    left: 25.5vw;
+    top: 17vw;
+}
+.display-name {
+    font-weight: bold;
+    font-size: 3vw;
+}
+
+.regno {
+    font-weight: lighter;
+    font-size: 2vw;
+}
+.container {
+    margin-top: 27vw;
+}
+.section {
+    margin-bottom: 100px;
+}
+.section-header {
+    font-size: 35px;
+    font-weight: lighter;
+    margin-left: -30px;
+}
+.hash {
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity .3s;
+}
+.section-header:hover .hash {
+    opacity: 80;
+}
+table{
+    margin-top: 25px;
+    width: 100%;
+    color: #ddd;
+    font-size: 18px;
+}
+.option-name{
+    width: 20%;
+}
+.colon {
+    width: 5%;
+}
+.value {
+    width: 40%;
+}
+.projects {
+    color: #ddd;
+}
+.project-card {
+    border: 1px solid #bbb;
+    border-radius: 10px;
+    margin-top: 30px;
+}
+.project-name {
+    font-size: 30px;
+    width: 100%;
+    padding: 20px;
+}
+.project-name::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #666;
+}
+.project-disc {
+    margin-top: -50px;
+    padding: 15px;
+    text-align: justify;
+}
+
+
+.clearfix {
+    display: block;
+    width: 100%;
+    height: 50px;
+}
+
+/*FOR RESPONSIVE NAVBAR*/
+@media only screen and (min-width: 992px) {
+    .alignEnd {
+        position: absolute !important;
+        right: 10px;
+    }
+    .nav-item{
+    	margin-left: 8px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .notImportant {
+		display: none;
+	}
+}

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 from os.path import pardir
+import django_heroku
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -29,6 +30,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# User Auth Model
+AUTH_USER_MODEL = 'swe.AuthUser'
 
 # Application definition
 
@@ -120,7 +123,7 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
+  
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
@@ -133,3 +136,5 @@ STATICROOT = os.path.join(BASE_DIR, 'static_collection')
 
 MEDIA_URL = '/data/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'data')
+
+django_heroku.settings(locals())

@@ -11,7 +11,7 @@ urlpatterns = [
 
     # a particular batch list: example.com/batch/2017
     path('batch/<batch_id>/', views.batch, name='batch'),
-    path('test/', views.error404, name='test'),
+    path('test/', views.test, name='test'),
     path('<user_id>/', views.profile, name='profile'),
 
     path('accounts/', include('django.contrib.auth.urls')),

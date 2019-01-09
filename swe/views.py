@@ -2,13 +2,15 @@ from django.shortcuts import render
 from swe.models import *
 from . import helper
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.shortcuts import redirect
 from django.core.files.uploadedfile import UploadedFile, TemporaryUploadedFile
 from PIL import Image as ImageProcess
 from io import BytesIO
 from swe.helper import Image
 
 from django.core.files.storage import FileSystemStorage as FSS
+
+from django.contrib.auth import authenticate
 
 # Create your views here.
 
@@ -27,9 +29,18 @@ def bulma(request):
 
 
 def index(request):
+    print(request.user)
+    print(request.user.is_authenticated)
     return render(request, 'index.html', {})
 
 def faculty(request):
+
+    try:
+        print(request.user)
+        print(request.user.is_anonymous)
+        print(request.user.is_active)
+    except Exception as e:
+        raise e
     teachers = Teacher.objects.all()
     context = {'teachers' : teachers }
     return render(request, 'faculty.html', context)
@@ -39,22 +50,13 @@ def login(request):
     if request.method == 'POST':
         uid = request.POST.get('uid')
         password = request.POST.get('password')
-        faculty = request.POST.get('faculty')
         
-        if faculty == None:
-            print('student login ')
-            if helper.Auth.isStudent(uid, password):
-                pass
-            else:
-                pass
-        else:
-            print('faculty login')
-            if helper.Auth.isTeacher(uid, password):
-                pass
-            else:
-                pass
+        user = authenticate(userid=uid, password=password)
+        if user is not None:
+            return render(request, 'index.html')
 
-        return render(request, 'login.html', {})
+        else:
+            return redirect('/login/')
         
     else:
         print('get method')    
@@ -100,10 +102,10 @@ def profile(request, user_id):
                 # for students
                 if len(user_id) == 10:
                     user = Student.objects.get(regid=user_id)
-                    Image.save(user, bytedata, 0)
+                    Image.save(user, bytedata)
                 elif len(user_id) == 8:
                     user = Teacher.objects.get(hid=user_id)
-                    Image.save(user, bytedata, 1)
+                    Image.save(user, bytedata)
 
 
     # load the information
@@ -168,3 +170,13 @@ def error404(request):
     
 
     return render(request, 'error404.html', context)
+
+
+from django.contrib.auth import authenticate
+def test(request):
+    if request.method == 'POST':
+        userid = request.POST.get('userid')
+        password = request.POST.get('password')
+
+
+    return render(request, 'error404.html');
