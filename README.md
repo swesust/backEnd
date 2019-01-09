@@ -91,3 +91,15 @@
 	"vjudge" : "user name"
 }
 ```
+
+
+***
+### User profile and authentication:
+![](doc/auth_model.png)
+
+#### `User types`
+
+
+General | Staff | Super
+--- | --- | --- 
+Can only log in into site have no permission to visit admin panel | Can log in into site and have the permission to visit admin panel and also have some limited permission on admin panel functionality | Can log in into site and admin panel and have every permission. Super user will destroy after deploying. Available in developing version.
