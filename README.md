@@ -1,5 +1,14 @@
 # :skull: backEnd (SWE Society Website)
 ### developing on django (2.0 or up)
+### database : postgresql (10.0)
+ * #### Name: swe
+ * #### Password: pass1234
+ * #### Database: swedb
+ * #### Host: localhost
+ * #### Port: 5432
+
+#### Server: localhost:8000
+ 
 
 ***
 
