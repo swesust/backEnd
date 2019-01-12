@@ -1,56 +1,6 @@
-from hashlib import sha256, sha1
-from uuid import uuid4
-
-class HashPass():
-	"""
-		Password hashing, random hash value and password validation checking
-	"""
-	def halfmirror(password):
-		l = len(password)
-		m = int(l/2)
-		return password[m:l]+password[:m]
-
-	def generate(password):
-		password = HashPass.halfmirror(password)
-		hashrand = uuid4().hex
-		return sha256(hashrand.encode()+password.encode()).hexdigest(),hashrand
-
-	def isValid(userpass, hashpass, hashrand):
-		userpass = HashPass.halfmirror(userpass)
-		userhash = sha256(hashrand.encode()+userpass.encode()).hexdigest()
-		if userhash == hashpass:
-			return True
-		else:
-			return False
-
-
-
 
 from swe import models
 from django.core.exceptions import ObjectDoesNotExist
-
-class Auth():
-	"""
-		This class contains two function for authentication
-		* student authentication: checking student login validation
-		* teacher authentication: checking teacher login validation
-	"""
-	def isStudent(uregid, upass):
-		# User Registration ID and User Password
-		try:
-			student = models.StudentLog.objects.get(regid=uregid)
-			return HashPass.isValid(upass, student.password, student.hashrand)
-		except ObjectDoesNotExist as e:
-			return False
-
-	def isTeacher(uemail, upass):
-		try:
-			teacher = models.TeacherLog.objects.get(email=uemail)
-			return HashPass.isValid(upass, teacher.password, teacher.hashrand)
-		except ObjectDoesNotExist as e:
-			return False
-
-
 
 
 from django.core.files.storage import FileSystemStorage as FSS
@@ -172,8 +122,6 @@ class Image():
 				return True
 		
 		return False
-
-
 
 
 from json import load as jsonload, dump as jsonwrite

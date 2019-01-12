@@ -2,7 +2,7 @@ from django.shortcuts import render
 from swe.models import *
 from . import helper
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.shortcuts import redirect
 from django.core.files.uploadedfile import UploadedFile, TemporaryUploadedFile
 from PIL import Image as ImageProcess
 from io import BytesIO
@@ -10,56 +10,54 @@ from swe.helper import Image
 
 from django.core.files.storage import FileSystemStorage as FSS
 
+from django.contrib.auth import (
+	authenticate, logout as auth_logout, login as auth_login)
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 
 
-def home(request):
-    if request.method == "POST":
-        reg_no = request.POST['reg_no']
-        email = request.POST['email']
-        print("Reg No:", reg_no)
-        print("Email: ", list(email))
-        return render(request, 'bulma.html',{})
-    return render(request, 'home.html', {})
-
-def bulma(request):
-    return render(request, 'bulma.html', {})
-
-
 def index(request):
+    print(request.user)
+    print(request.user.is_authenticated)
     return render(request, 'index.html', {})
 
 def faculty(request):
+
+    try:
+        print(request.user)
+        print(request.user.is_anonymous)
+        print(request.user.is_active)
+    except Exception as e:
+        raise e
     teachers = Teacher.objects.all()
     context = {'teachers' : teachers }
     return render(request, 'faculty.html', context)
 
 def login(request):
-    # user request for log
-    if request.method == 'POST':
-        uid = request.POST.get('uid')
-        password = request.POST.get('password')
-        faculty = request.POST.get('faculty')
-        
-        if faculty == None:
-            print('student login ')
-            if helper.Auth.isStudent(uid, password):
-                pass
-            else:
-                pass
-        else:
-            print('faculty login')
-            if helper.Auth.isTeacher(uid, password):
-                pass
-            else:
-                pass
+	if request.method == 'POST':
+		uid = request.POST.get('uid')
+		password = request.POST.get('password')
+		user = authenticate(userid=uid, password=password)
 
-        return render(request, 'login.html', {})
-        
-    else:
-        print('get method')    
-        return render(request, 'login.html', {})
+		if user is not None:
+			auth_login(request, user)
+			return render(request, 'index.html', {})
+		else:
+			return render(request, 'login.html', {})
 
+	else:
+		if request.user.is_authenticated:
+			return redirect('/')
+		else:
+			return render(request, 'login.html', {})
+			
+
+
+@login_required(login_url='/login/')
+def logout(request):
+	auth_logout(request)
+	return render(request, 'logout.html', {})
 
 def batchlist(request):
     queryset = Batch.objects.all()
@@ -73,7 +71,8 @@ def batch(request, batch_id):
         batch = Batch.objects.get(year=batch_id)
         
         # fetch all students with batch year and sorting with reg id in ascending order
-        students = Student.objects.filter(batch=batch_id).order_by('regid')
+        batch = Batch.objects.get(year=batch_id)
+        students = Student.objects.filter(batch=batch).order_by('regid')
         context = {
             'batch' : batch, 
             'students' : students}
@@ -82,7 +81,7 @@ def batch(request, batch_id):
     except ObjectDoesNotExist as e:
         return render(request, 'error404.html', {})
         
-
+@login_required(login_url='/login/')
 def profile(request, user_id):
 
     if request.method == 'POST':
@@ -100,10 +99,10 @@ def profile(request, user_id):
                 # for students
                 if len(user_id) == 10:
                     user = Student.objects.get(regid=user_id)
-                    Image.save(user, bytedata, 0)
+                    Image.save(user, bytedata)
                 elif len(user_id) == 8:
                     user = Teacher.objects.get(hid=user_id)
-                    Image.save(user, bytedata, 1)
+                    Image.save(user, bytedata)
 
 
     # load the information
@@ -127,8 +126,6 @@ def profile(request, user_id):
             return render(request, 'error404.html',{})
 
     return render(request, 'error404.html',{})
-
-
 
 def error404(request):
     context = {}

@@ -1,36 +1,52 @@
 {% load static %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Linking Bootstrap CSS-->
+        <link rel="stylesheet" href="{% static 'common/bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'base/style.css' %}">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    {% block link %}
-        <!-- This is for specify css framework -->
-    {% endblock %}
-    
-    {% block title %}
+        {% block extra_head %}
 
-    {% endblock %}
+        {% endblock %}
+    </head>
+    <body>
 
-    <link rel="icon" type="image/png" href="{% static './images/icon.png' %}" sizes="32x32">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
-    <link rel="stylesheet" type="text/css" href="{% static './css/style.css' %}">
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+	  	{% block extra_body %}
 
-   {% comment %} <link rel="stylesheet" type="text/css" href="{% static './css/debug.css' %}">{% endcomment %}
-    <script src="{% static './js/main.js' %}"></script>
-</head>
+        {% endblock %}
 
-<body style="margin: 0px;">
-{% block content %}
 
-{% endblock %}
-{% block script %}
-    <!-- This section is for css framework related javascript -->
-{% endblock %}
+        <!-- Responsive Mainmenu -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#theMainNav" aria-controls="theMainNav"
+             aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand bold" href="/">SWE</a>
 
-</body>
-
+            <div class="collapse navbar-collapse" id="theMainNav">
+                <ul class="navbar-nav justify-content-end alignEnd">
+                    <li class="nav-item"> <a class="nav-link" href="/">Home</a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="/#about">About Us</a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="/faculty/">Faculty</a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="/batch/">Batch</a> </li>
+                    {% if request.user.is_authenticated %}
+                    	<li class="nav-item"> <a class="nav-link" href="/{{ request.user.userid }}/">{{ request.user.userid }}</a> </li>
+                    	<li class="nav-item"> <a class="nav-link" href="/logout/">Logout</a> </li>
+                    {% else %}
+                		<li class="nav-item"> <a class="nav-link" href="/login/">Login</a> </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+        <!-- Linking JSs-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+        <script src="{% static 'common/bootstrap/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'base/script.js' %}"></script>
+    </body>
 </html>

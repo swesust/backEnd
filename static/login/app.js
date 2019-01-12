@@ -23,7 +23,7 @@ particlesJS('particles-js',
       }
     },
     "color": {
-      "value": "#777"
+      "value": "#fff"
     },
     "shape": {
       "type": "circle",
@@ -41,7 +41,7 @@ particlesJS('particles-js',
       }
     },
     "opacity": {
-      "value": 0.5,
+      "value": 0.6,
       "random": false,
       "anim": {
         "enable": false,
@@ -64,7 +64,7 @@ particlesJS('particles-js',
       "enable": true,
       "distance": 150,
       "color": "#ffffff",
-      "opacity": 0.4,
+      "opacity": 0.6,
       "width": 1
     },
     "move": {

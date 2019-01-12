@@ -1,17 +1,118 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>{{ user.name }} : SWE</title>
-</head>
-<body>
-	<img src="/{{ user.imgsrc }}" height="300px", width="300px">
-	<form method="POST" enctype="multipart/form-data">
-		{% csrf_token %}
-		<input type="file" name="profile" accept=".png, .jpg, .jpeg">
-		<button>Upload</button>
-	</form>
-	<h3>{{ user.name }}</h3>
+{% extends 'base.html' %}
+{% load static %}
 
-</body>
-</html>
+{% block extra_head %}
+	<!-- Pgae Title -->
+	<title>{{ user.name }} : SWE</title>
+	<!-- Linking CSS -->
+	<link rel="stylesheet" type="text/css" href="{% static 'profile/style.css' %}">
+	<!-- Linking Font Awesome Icons-->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+
+{% endblock %}
+
+{% block extra_body %}
+    <!-- Page Contents -->
+    <div class="contents wide-display">
+        <!-- Cover Pic -->
+        <div class="cover"></div>
+
+        <!-- Display Profile Pic -->
+        <div class="display-profile">
+            <img src="/{{ user.imgsrc }}" alt="Profile Pic" class="display-profile-pic">
+        </div>
+        <!-- Name and Reg no -->
+        <div class="name">
+            <p class="display-name">{{ user.name }}</p>
+            <p class="regno">{{ user.regid }}</p>
+        </div>
+        <div class="container">
+	        <div class="about section">
+	        	<a class="about-header section-header" id="about" href="#about"><span class="hash">#</span> About</a>
+		        <table>
+		        	<tr>
+		        		<td class="option-name">Full Name</td>
+		        		<td class="colon">:</td>
+		        		<td class="value">{{ user.name }}</td>
+		        	</tr>
+		        	<tr>
+		        		<td class="option-name">Batch</td>
+		        		<td class="colon">:</td>
+		        		<td class="value">{{ user.batch }}</td>
+		        	</tr>
+		        	<tr>
+		        		<td class="option-name">Blood Group</td>
+		        		<td class="colon">:</td>
+		        		<td class="value">{{ user.bloodgroup }}</td>
+		        	</tr>
+		        	<tr>
+		        		<td class="option-name">Hometown</td>
+		        		<td class="colon">:</td>
+		        		<td class="value">{{ user.address }}</td>
+		        	</tr>
+		        	<tr>
+		        		<td class="option-name">Religion</td>
+		        		<td class="colon">:</td>
+		        		<td class="value">Islam</td>
+		        	</tr>
+		        	<tr>
+		        		<td class="option-name">Date of Birth</td>
+		        		<td class="colon">:</td>
+		        		<td class="value">07/07/2000</td>
+		        	</tr>
+		        </table>
+	        </div>
+
+	        <div class="projects section">
+	        	<a class="project-header section-header" id="project" href="#project"><span class="hash">#</span> Projects</a>
+	        	<div class="row">
+
+	        		<div class="col-md-6 col-12">
+	        			<div class="project-card">
+	        				<a href="#" class="project-name">First Project</a>
+	        				<div class="project-disc">
+	        					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+								labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrudDuis aute irure dolor in reprehenderit in voluptate
+							</div>
+	        			</div>
+	        		</div>
+
+	        		<div class="col-md-6 col-12">
+	        			<div class="project-card">
+	        				<a href="#" class="project-name">Second Project</a>
+	        				<div class="project-disc">
+	        					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+								labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrudDuis aute irure dolor in reprehenderit in voluptate
+							</div>
+	        			</div>
+	        		</div>
+
+	        		<div class="col-md-6 col-12">
+	        			<div class="project-card">
+	        				<a href="#" class="project-name">Third Project</a>
+	        				<div class="project-disc">
+	        					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+								labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrudDuis aute irure dolor in reprehenderit in voluptate
+							</div>
+	        			</div>
+	        		</div>
+
+	        	</div>
+	        </div>
+
+	        <div class="contact section">
+	        	<a class="contact-header section-header" id="contact" href="#contact"><span class="hash">#</span> Contact</a>
+	        </div>
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+
+
+
+	<!-- Linking JSs-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+	<script src="{% static 'profile/main.js'%}"></script>
+
+{% endblock %}
