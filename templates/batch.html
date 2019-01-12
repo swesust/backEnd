@@ -1,50 +1,12 @@
+{% extends 'base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html>
+{% block extra_head %}
+	<title>{{ batch.name }} : SWE</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'batch/style.css' %}">
+{% endblock %}
 
-<head>
-	<!-- Meta tag for character set -->
-	<meta charset="utf-8">
-	<!-- Meta tag for viewport, Used to make the page responsive -->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- Pgae Title -->
-	<title>Batch</title>
-	<!-- Linking CSS -->
-	<link rel="stylesheet" type="text/css" href="{% static 'batch/style.css'%}">
-	<!-- Linking Bootstrap CSS-->
-	<link rel="stylesheet" href="{% static 'common/bootstrap/css/bootstrap.min.css' %}">
-	<!-- Linking Font Awesome Icons-->
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
-
-
-</head>
-
-<body>
-	
-	<!-- Faculty page section -->
-	<header class="header" id="header">
-		<!-- Responsive Mainmenu -->
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#theMainNav" aria-controls="theMainNav"
-			 aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<a class="navbar-brand bold" href="">SWE</a>
-
-			<div class="collapse navbar-collapse" id="theMainNav">
-				<ul class="navbar-nav justify-content-end alignEnd">
-					<li class="nav-item"> <a class="nav-link" href="/">Home</a> </li>
-					<li class="nav-item"> <a class="nav-link" href="/#about">About Us</a> </li>
-					<li class="nav-item"> <a class="nav-link" href="/faculty">Faculty</a> </li>
-					<li class="nav-item"> <a class="nav-link" href="/batch">Batch</a> </li>
-					<li class="nav-item"> <a class="nav-link" id="loginButton" href="/login">Login</a> </li>
-				</ul>
-			</div>
-		</nav>
-	</header>
-
-
+{% block extra_body %}
 	<!-- Page Datas -->
 	<div class="page-content">
 
@@ -79,8 +41,6 @@
 	<!-- Linking JSs-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-	<script src="{% static 'common/bootstrap/js/bootstrap.min.js' %}"></script>
 	<script src="{% static 'batch/script.js' %}"></script>
-</body>
 
-</html>
+{% endblock %}

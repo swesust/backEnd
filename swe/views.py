@@ -10,22 +10,11 @@ from swe.helper import Image
 
 from django.core.files.storage import FileSystemStorage as FSS
 
-from django.contrib.auth import authenticate
+from django.contrib.auth import (
+	authenticate, logout as auth_logout, login as auth_login)
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-
-
-def home(request):
-    if request.method == "POST":
-        reg_no = request.POST['reg_no']
-        email = request.POST['email']
-        print("Reg No:", reg_no)
-        print("Email: ", list(email))
-        return render(request, 'bulma.html',{})
-    return render(request, 'home.html', {})
-
-def bulma(request):
-    return render(request, 'bulma.html', {})
 
 
 def index(request):
@@ -46,22 +35,29 @@ def faculty(request):
     return render(request, 'faculty.html', context)
 
 def login(request):
-    # user request for log
-    if request.method == 'POST':
-        uid = request.POST.get('uid')
-        password = request.POST.get('password')
-        
-        user = authenticate(userid=uid, password=password)
-        if user is not None:
-            return render(request, 'index.html')
+	if request.method == 'POST':
+		uid = request.POST.get('uid')
+		password = request.POST.get('password')
+		user = authenticate(userid=uid, password=password)
 
-        else:
-            return redirect('/login/')
-        
-    else:
-        print('get method')    
-        return render(request, 'login.html', {})
+		if user is not None:
+			auth_login(request, user)
+			return render(request, 'index.html', {})
+		else:
+			return render(request, 'login.html', {})
 
+	else:
+		if request.user.is_authenticated:
+			return redirect('/')
+		else:
+			return render(request, 'login.html', {})
+			
+
+
+@login_required(login_url='/login/')
+def logout(request):
+	auth_logout(request)
+	return render(request, 'logout.html', {})
 
 def batchlist(request):
     queryset = Batch.objects.all()
@@ -75,7 +71,8 @@ def batch(request, batch_id):
         batch = Batch.objects.get(year=batch_id)
         
         # fetch all students with batch year and sorting with reg id in ascending order
-        students = Student.objects.filter(batch=batch_id).order_by('regid')
+        batch = Batch.objects.get(year=batch_id)
+        students = Student.objects.filter(batch=batch).order_by('regid')
         context = {
             'batch' : batch, 
             'students' : students}
@@ -84,7 +81,7 @@ def batch(request, batch_id):
     except ObjectDoesNotExist as e:
         return render(request, 'error404.html', {})
         
-
+@login_required(login_url='/login/')
 def profile(request, user_id):
 
     if request.method == 'POST':
@@ -130,8 +127,6 @@ def profile(request, user_id):
 
     return render(request, 'error404.html',{})
 
-
-
 def error404(request):
     context = {}
     if request.method == 'POST':
@@ -170,13 +165,3 @@ def error404(request):
     
 
     return render(request, 'error404.html', context)
-
-
-from django.contrib.auth import authenticate
-def test(request):
-    if request.method == 'POST':
-        userid = request.POST.get('userid')
-        password = request.POST.get('password')
-
-
-    return render(request, 'error404.html');

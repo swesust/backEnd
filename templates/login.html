@@ -1,38 +1,40 @@
+{% extends 'base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="" dir="ltr">
-    <head>
-        <meta charset="utf-8">
-    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Login</title>
-        <link rel="stylesheet" href="{% static 'login/style.css' %}">
-    </head>
-    <body>
+{% block extra_head %}
+    <title>Login</title>
+    <!-- Linking Bootstrap CSS-->
+    <link rel="stylesheet" href="{% static 'login/style.css' %}">
 
-        <!-- LOADING PARTICLES FROM particles.js -->
+{% endblock %}
 
-        <div id="particles-js" class="particle-background"></div>
-        <script src="{% static 'login/particles.js' %}"></script>
-        <script src="{% static 'login/app.js' %}"></script>
 
-        <!-- LOGIN FORM BOX -->
+{% block extra_body %}
+    <!-- LOADING PARTICLES FROM particles.js -->
 
-        <div class="box">
-            <form class="login-form" method="POST">
-                {% csrf_token %}
-                <input type="text" name="uid" class="regno-input full-width" placeholder="Registration No">
-                <input type="password" name="password" class="pass-input full-width" placeholder="Password">
-                <label class="checkbox" for="faculty-check">Faculty
-                    <input type="checkbox" name="faculty" value="y" class="faculty-check" id="faculty-check" onclick="facultyClicked(this);">
-                    <span class="checkmark"></span>
-                </label>
-                <button type="submit" name="submit" class="login-button full-width">Log In</button>
-                <a href="#" class="forgot-pass">Forgot Password?</a>
-            </form>
+    <div id="particles-js" class="particle-background"></div>
+    <script src="{% static 'login/particles.js' %}"></script>
+    <script src="{% static 'login/app.js' %}"></script>
 
-        </div>
+    <div class="box">
 
-        <script src="{% static 'login/main.js' %}"></script>
-    </body>
-</html>
+        <form class="login-form" method="post">
+        	{% csrf_token %}
+            <input type="text" name="uid" class="regno-input full-width" placeholder="Registration No">
+            <input type="password" name="password" class="pass-input full-width" placeholder="Password">
+            <label class="checkbox" for="faculty-check">Faculty
+                <input type="checkbox" name="faculty" value="false" class="faculty-check" id="faculty-check" onclick="facultyClicked(this);">
+                <span class="checkmark"></span>
+            </label>
+            <button type="submit" name="submit" class="login-button full-width">Log In</button>
+            <a href="#" class="forgot-pass">Forgot Password?</a>
+        </form>
+
+    </div>
+
+    <!-- Linking JSs-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="{% static 'login/main.js' %}"></script>
+
+{% endblock %}
