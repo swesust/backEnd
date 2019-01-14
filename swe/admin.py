@@ -6,14 +6,19 @@ from .models import *
 from .forms import UserAdminCreationForm, UserAdminChangeForm
 
 class UserAdmin(BaseUserAdmin):
+	"""
+	extended django Admin Interface
+	`see`: https://github.com/django/django/blob/master/django/contrib/auth/admin.py
+	"""
+
 	form = UserAdminChangeForm
 	add_form = UserAdminCreationForm
 
 
-	list_filter = ('is_admin',)
-	list_display = ('userid', 'is_admin', 'is_staff')
+	list_filter = ('is_admin','is_student',)
+	list_display = ('userid', 'is_admin', 'is_staff', 'is_student')
 	fieldsets = (
-		(None,{'fields' : ('userid', 'password')}),
+		(None,{'fields' : ('userid', 'password','is_student')}),
 		('Personal info', {'fields' : ()}),
 		('Permission', {'fields' : ('is_admin', 'is_staff', 'groups','user_permissions',)}),
 	)
@@ -21,7 +26,7 @@ class UserAdmin(BaseUserAdmin):
 	add_fieldsets = (
 		(None, {
 			'classes' : ('wide',),
-			'fields' : ('userid', 'password1', 'password2')}
+			'fields' : ('userid', 'password1', 'password2', 'is_student')}
 			),
 	)
 	ordering = ('userid',)

@@ -7,70 +7,91 @@ from django.core.files.uploadedfile import UploadedFile, TemporaryUploadedFile
 from PIL import Image as ImageProcess
 from io import BytesIO
 from swe.helper import Image
-
 from django.core.files.storage import FileSystemStorage as FSS
-
 from django.contrib.auth import (
 	authenticate, logout as auth_logout, login as auth_login)
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
-
+# response of: example.com/
 def index(request):
-    print(request.user)
-    print(request.user.is_authenticated)
     return render(request, 'index.html', {})
 
+# response of: example.com/faculty/
 def faculty(request):
-
-    try:
-        print(request.user)
-        print(request.user.is_anonymous)
-        print(request.user.is_active)
-    except Exception as e:
-        raise e
+    # retrive all rows from `teachers` table
     teachers = Teacher.objects.all()
+    # set the dictionary
     context = {'teachers' : teachers }
+    # render the template with this dictionary
     return render(request, 'faculty.html', context)
 
+# response of: example.com/login/
 def login(request):
-	if request.method == 'POST':
-		uid = request.POST.get('uid')
-		password = request.POST.get('password')
-		user = authenticate(userid=uid, password=password)
+    """
+    POST request:
+        retrieve the user id and password that inserted in the login form
+        try to authenticate with this information. If the authentication
+        method will return an object of AuthModel after successfully
+        authentication. 
 
-		if user is not None:
-			auth_login(request, user)
-			return render(request, 'index.html', {})
-		else:
-			return render(request, 'login.html', {})
-
-	else:
-		if request.user.is_authenticated:
-			return redirect('/')
-		else:
-			return render(request, 'login.html', {})
-			
+        Check the return value:
+            if `None` that means login user is not valid so return to login page
+            else call the `login` method to logged the user and return to home page
 
 
+    GET request:
+        if the requested user is already logged in or authenticated then return to home
+        else render the login page 
+    """
+    if request.method == 'POST':
+        uid = request.POST.get('uid')
+        password = request.POST.get('password')
+        user = authenticate(userid=uid, password=password)
+
+        if user is not None:
+            auth_login(request, user)
+            return render(request, 'index.html', {})
+        else:
+            return render(request, 'login.html', {})
+
+    else:
+        if request.user.is_authenticated:
+            return redirect('/')
+        else:
+            return render(request, 'login.html', {})
+
+# response of: example.com/logout/			
 @login_required(login_url='/login/')
 def logout(request):
-	auth_logout(request)
-	return render(request, 'logout.html', {})
+    """
+    if the requested user is not already logged in then render to login page
+    else logout the user and render the logout page
+    """
+    auth_logout(request)
+    return render(request, 'logout.html', {})
 
+# response of: example.com/batch/	
 def batchlist(request):
+    """
+    retrieve all the rows from `batch` table and make a dictionary
+    and render the template with that dictionary
+    """
     queryset = Batch.objects.all()
     context = {
         'queryset' : queryset,
     }
     return render(request, 'batchlist.html', context)
 
+# response of: example.com/batch/year/
 def batch(request, batch_id):
+    """
+    check the batch year is valid or not.
+    if valid then filter all the students of this batch then render the template
+    with the batch and students data dictionary.
+    """
     try:
-        batch = Batch.objects.get(year=batch_id)
-        
-        # fetch all students with batch year and sorting with reg id in ascending order
         batch = Batch.objects.get(year=batch_id)
         students = Student.objects.filter(batch=batch).order_by('regid')
         context = {
@@ -80,10 +101,19 @@ def batch(request, batch_id):
 
     except ObjectDoesNotExist as e:
         return render(request, 'error404.html', {})
-        
+
+# response of: example.com/userid        
 @login_required(login_url='/login/')
 def profile(request, user_id):
+    """
+    if the request user is not authenticated the return to login page
+    else:
+        POST request:
 
+        GET request:
+
+        TODO:
+    """
     if request.method == 'POST':
         data = request.FILES
         imgsrc = data.get('profile')
@@ -127,41 +157,11 @@ def profile(request, user_id):
 
     return render(request, 'error404.html',{})
 
+# response of: example.com/feeds/
+def feeds(request):
+    return render(request, 'feeds.html', {})
+
+# custom error request response
 def error404(request):
     context = {}
-    if request.method == 'POST':
-        data = request.FILES
-        imgsrc = data.get('profile')
-        if imgsrc != None:
-            print(type(imgsrc))
-            #TemporaryUploadedFile(imgsrc)
-            #print(imgsrc.temporary_file_path())
-            print(imgsrc.name)
-
-            print(Image.isValidFormat(imgsrc.name))
-
-            # from name check the file format : jpg, jpeg, .png
-            print(imgsrc.size)
-            if imgsrc.multiple_chunks(2500000):
-                imgsrc.chunks(2500000)
-
-            r = imgsrc.read()
-            #print('image loaded: ',r)
-            print('loaded type: ', type(r))
-            print('byte len: ',len(r))
-
-            print('read file: ',type(r))
-
-          
-            img = ImageProcess.open(BytesIO(r))
-            print(img.format)
-            print(type(img.format))
-
-    elif request.method == 'GET':
-
-        loc = FSS(location='./media/user/')
-        context = {'image' : '' }
-        print(context['image'])
-    
-
     return render(request, 'error404.html', context)

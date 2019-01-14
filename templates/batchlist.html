@@ -7,20 +7,13 @@
 {% endblock %}
 
 {% block extra_body %}
-	<div class="contents">
-		<ul class="list-contents">
-			{% for i in queryset %}
-			<li class="list-contents">
-				<div class="container">
-					<div class="batch-year li-view">
-						<a href="/batch/{{ i.year }}">{{ i.year }}</a>
-					</div>
-					<div class="batch-name li-view">
-						<a href="/batch/{{ i.year }}">{{ i.name }}</a>
-					</div>
-				</div>
-			</li>
-			{% endfor %}
-		</ul>
+	{% for i in queryset %}
+
+	<div class="outter">
+		<div class="inner">
+			<h2 class="batch"><a class="ref" href="{{ i.year }}"> {{ i }} </a></h1>
+		</div>
 	</div>
+
+	{% endfor %}
 {% endblock %}

@@ -4,7 +4,10 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
 User = get_user_model()
 
-
+"""
+	django custom user model form 
+	`see`: https://github.com/django/django/blob/master/django/contrib/auth/forms.py
+"""
 
 class RegisterForm(forms.ModelForm):
 	password1 = forms.CharField(widget=forms.PasswordInput)
@@ -12,9 +15,12 @@ class RegisterForm(forms.ModelForm):
 
 	class Meta:
 		model = User
-		fields = ('userid',)
+		fields = ('userid','is_student',)
 
 	def clean_userid(self):
+		"""	
+		to check the user is already taken or not
+		"""
 		userid = self.cleaned_data.get('userid')
 		query = User.objects.filter(userid=userid)
 
@@ -24,6 +30,9 @@ class RegisterForm(forms.ModelForm):
 		return userid
 
 	def clean_password2(self):
+		"""
+		checking two raw passwords and return the password if matched
+		"""
 		password1 = self.cleaned_data.get('password1')
 		password2 = self.cleaned_data.get('password2')
 
@@ -38,7 +47,7 @@ class UserAdminCreationForm(forms.ModelForm):
 
 	class Meta:
 		model = User
-		fields = ('userid',)
+		fields = ('userid','is_student',)
 
 	def clean_password2(self):
 		password1 = self.cleaned_data.get('password1')
@@ -61,7 +70,7 @@ class UserAdminChangeForm(forms.ModelForm):
 
 	class Meta:
 		model = User
-		fields = ('is_admin', 'is_staff')
+		fields = ('is_admin', 'is_staff', 'is_student',)
 
 
 	def clean_password(self):

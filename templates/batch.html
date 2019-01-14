@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block extra_head %}
-	<title>{{ batch.name }} : SWE</title>
+	<title>{{ batch }} : SWE</title>
 	<link rel="stylesheet" type="text/css" href="{% static 'batch/style.css' %}">
 {% endblock %}
 
@@ -11,7 +11,7 @@
 	<div class="page-content">
 
 		<div class="page-heading">
-			<h1>{{ batch.name}} : {{ batch.year }}</h1>
+			<h1>{{ batch }}</h1>
 		</div>
 
 		<div class="faculty-cards container-fluid">
