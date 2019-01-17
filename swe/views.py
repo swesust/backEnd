@@ -11,6 +11,8 @@ from django.core.files.storage import FileSystemStorage as FSS
 from django.contrib.auth import (
 	authenticate, logout as auth_logout, login as auth_login)
 from django.contrib.auth.decorators import login_required
+from . import variables as var 
+from django.core.mail import send_mail
 
 # Create your views here.
 
@@ -52,25 +54,25 @@ def login(request):
 
         if user is not None:
             auth_login(request, user)
-            return render(request, 'index.html', {})
+            return render(request, var.INDEX_TEMPLATE, {})
         else:
-            return render(request, 'login.html', {})
+            return render(request, var.LOGIN_TEMPLATE, {})
 
     else:
         if request.user.is_authenticated:
             return redirect('/')
         else:
-            return render(request, 'login.html', {})
+            return render(request, var.LOGIN_TEMPLATE, {})
 
 # response of: example.com/logout/			
-@login_required(login_url='/login/')
+@login_required(login_url=var.LOGIN_URL)
 def logout(request):
     """
     if the requested user is not already logged in then render to login page
     else logout the user and render the logout page
     """
     auth_logout(request)
-    return render(request, 'logout.html', {})
+    return render(request, var.LOGOUT_TEMPLATE, {})
 
 # response of: example.com/batch/	
 def batchlist(request):
@@ -103,7 +105,7 @@ def batch(request, batch_id):
         return render(request, 'error404.html', {})
 
 # response of: example.com/userid        
-@login_required(login_url='/login/')
+@login_required(login_url=var.LOGIN_URL)
 def profile(request, user_id):
     """
     if the request user is not authenticated the return to login page
@@ -134,9 +136,8 @@ def profile(request, user_id):
                     user = Teacher.objects.get(hid=user_id)
                     Image.save(user, bytedata)
 
-
-    # load the information
-    # student id
+    # TODO: identify user and render profile 
+    # use: request.user.is_student
     if(len(user_id) == 10):
         try:
             s = Student.objects.get(regid=user_id)
@@ -165,3 +166,62 @@ def feeds(request):
 def error404(request):
     context = {}
     return render(request, 'error404.html', context)
+
+
+def forget_password(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('userid')
+        user = AuthUser.objects.filter(userid = user_id)
+        
+        if user != None:
+            user = user[0]
+            user_profile = None
+            token = None
+            if user.is_student:
+                user_profile = Student.objects.get(user = user) 
+                token = helper.Token.get_token(user.userid, user.password)
+            else:
+                user_profile = Teacher.objects.get(user = user)
+                token = helper.Token.get_token(user.userid, user.password)
+            # mail this
+            send_mail('Password Reset Token',
+                'Your token: '+token,
+                var.EMAIL_HOST_USER,
+                [user_profile.email],
+                fail_silently=False)
+
+            return redirect('forget-password/varification')
+
+    return render(request, 'auth/forget_password.html',{})
+
+
+def forget_password_varification(request):
+    if request.method == 'POST':
+        token = request.POST.get('token')
+        if helper.Token.is_valid(token):
+            # reset the password
+            try:
+                # generate a new password
+                user_id = helper.Token.get_userid(token)
+                user = AuthUser.objects.filter(userid = user_id)
+                user = user[0]
+                user_profile = None
+                if user.is_student:
+                    user_profile = Student.objects.get(user=user)
+                else:
+                    user_profile = Teacher.objects.get(user=user)
+
+
+                send_mail('New Password',
+                    'pass12345',
+                    var.EMAIL_HOST_USER,
+                    [user_profile.email],
+                    fail_silently=False)
+
+                user.set_password('pass12345')
+                user.save()
+                return redirect('/login')
+            except Exception as e:
+                return redirect('/forget-password/varification')            
+
+    return render(request, 'auth/forget_password_varification.html',{})

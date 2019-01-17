@@ -137,4 +137,15 @@ STATICROOT = os.path.join(BASE_DIR, 'static_collection')
 MEDIA_URL = '/data/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'data')
 
+# email service configuration
+from swe import variables
+EMAIL_HOST = variables.EMAIL_HOST
+EMAIL_HOST_USER = variables.EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = variables.EMAIL_HOST_PASSWORD
+EMAIL_PORT = variables.EMAIL_PORT
+EMAIL_USE_TLS = variables.EMAIL_USE_TLS
+
+
+
 django_heroku.settings(locals())
+

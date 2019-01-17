@@ -20,17 +20,14 @@
 
         <form class="login-form" method="post">
         	{% csrf_token %}
-            <input type="text" name="uid" class="regno-input full-width" placeholder="Registration No">
+            <input type="text" name="uid" class="regno-input full-width" placeholder="User ID">
             <input type="password" name="password" class="pass-input full-width" placeholder="Password">
-            <label class="checkbox" for="faculty-check">Faculty
-                <input type="checkbox" name="faculty" value="false" class="faculty-check" id="faculty-check" onclick="facultyClicked(this);">
-                <span class="checkmark"></span>
-            </label>
             <button type="submit" name="submit" class="login-button full-width">Log In</button>
-            <a href="#" class="forgot-pass">Forgot Password?</a>
+            <a href="/forget-password" class="forgot-pass">Forget Password?</a>
         </form>
 
     </div>
+
 
     <!-- Linking JSs-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

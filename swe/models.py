@@ -93,6 +93,13 @@ class AuthUser(AbstractBaseUser,PermissionsMixin):
 		`USERNAME_FIELD`: must be defined for custom authentication model to identify the username field.
 		`REQUIRED_FIELDS`: list of required fields to create a new user. 
 
+		Extended methods for permission level checking
+			`has_perm(...)`
+			`has_perms(...)`
+			`has_module_perms(...)`
+			`username(self)`
+
+
 	"""
 	userid = models.CharField(max_length=120, unique=True)
 	is_active = models.BooleanField(default=True)
@@ -106,17 +113,6 @@ class AuthUser(AbstractBaseUser,PermissionsMixin):
 	USERNAME_FIELD = 'userid'
 	REQUIRED_FIELDS = ['is_student',]
 
-
-	def has_perm(self, perm, obj=None):
-		pass
-
-	def has_perms(self, perm_list, obj=None):
-		pass
-
-	def has_module_perms(self, app_label):
-		if self.is_admin or self.is_staff:
-			return True
-		return False
 
 	def has_perm(self, perm, obj=None):
 		if self.is_admin:
@@ -176,7 +172,7 @@ class Student(models.Model):
 	"""
 
 	# Connect with user authentication model
-	user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
+	user = models.OneToOneField(AuthUser, on_delete=models.CASCADE)
 	# Student Name
 	name = models.CharField(max_length=80)
 	# Student Reg ID
@@ -227,11 +223,12 @@ class Teacher(models.Model):
 	Teacher profile model to store a particular teacher information.
 	Information:
 		Name: X
-		Position: Assistant Professor
+		Position: Job position
 		Alumni: True | False
 		Email: **@****.***
 		Phone: +000000
 		Leaved: Indicate that the teacher is continuing or not
+		Head: Indicate the dept. head 
 		Gender: M(Male) | F(Female) | T(Third Gender)
 		Image: Storage location (data/teachers/userid/image.JPG)
 
@@ -245,13 +242,21 @@ class Teacher(models.Model):
 			}
 
 	"""
-	user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
+	user = models.OneToOneField(AuthUser, on_delete=models.CASCADE)
 	name = models.CharField(max_length=80)
-	position = models.CharField(max_length=30)
+
+	JOB_POSITIONS = (
+		('Lecturer', 'Lecturer'),
+		('Assistant Professor', 'Assistant Professor'),
+		('Associate Professor', 'Associate Professor'),
+		('Professor', 'Professor'))
+
+	position = models.CharField(max_length=25, choices=JOB_POSITIONS)
 	alumni = models.BooleanField(default=False)
 	email = models.EmailField(max_length=120,)
 	phone = models.CharField(max_length=16,default = '880')
 	leaved = models.BooleanField(default=False)
+	head = models.BooleanField(default=False)
 
 	GENDER_CHOICE = (
 		('M', 'Male'),
