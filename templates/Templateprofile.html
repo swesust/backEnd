@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+      <link rel="shortcut icon" href="./app.ico" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <!--Font awsome-->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <!-- font-style -->
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Open+Sans|Titillium+Web" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans|Indie+Flower|Kanit|Open+Sans|Staatliches|Titillium+Web" rel="stylesheet">
+
+    <style>
+      .profile-page{
+        font-family: 'Open Sans', sans-serif;
+        font-family: 'Indie Flower', cursive;
+        font-family: 'Titillium Web', sans-serif;
+      }
+
+      #upper-card {
+        margin-left: 12%;
+        width: 60%;
+        height: 420px;
+        box-shadow: 1px 1px 1px gray;
+      }
+      #cover{
+        background-color: #00bfff;  
+        height: 140px;
+        position: relative;
+      }
+
+      #profile-pic{
+        max-width: 250px;
+        max-height: 250px;
+        position:absolute;
+        border: gray solid 3px ;
+        left: 38%;
+        top: 8%;
+        
+      }
+
+      #upper-card-text{
+          position: relative;
+          top:140px; 
+      }
+
+      #lower-card {
+        margin-left: 12%;
+        margin-top: 10px;
+        border-top: #00bfff solid 3px;  
+        width: 60%;
+        box-shadow: 1px 1px 1px gray;
+      }
+     
+      #lower-card-body{
+           padding: 5% 2% 3% 7%;
+      }
+
+      #card-footer{
+          
+        padding: 7%;
+        text-align: center;
+      }
+
+      #social-span {
+        width: 35px;
+        height: 35px;
+        margin: 5px;
+        padding: 4px;
+        background-color: black;
+        border: #00ffffe7 solid 1px;
+      }
+
+      #social-ico {
+        color: #00ffffe7;
+        font-size: 25px;
+      }
+      
+
+      #highlight {
+        color: black;
+        font-size: 20px;
+        margin-bottom: 2%;
+        font-weight: bold;
+        font-family: 'Open Sans', sans-serif;
+        font-family: 'Indie Flower', cursive;
+        font-family: 'Titillium Web', sans-serif;
+      }
+      #edit {
+        background-color: #00bfff;
+        color: whitesmoke;
+      }
+      #colapse{
+        background-color: #00bfff;
+        color: whitesmoke; 
+      }
+
+      #right{
+        float: right;
+        margin-right: 10%;
+        margin-top: 430px;
+        border-top: #00bfff solid 3px;  
+          
+        width: 17%;
+        height: 500px;
+        box-shadow:0px  0px 1px 0px cyan; 
+      }
+    </style>
+    <title>Profile</title>
+  </head>
+  <body style="background-color:whitesmoke" class="profile-page">
+   
+    <!-- Left -->
+    <div class="card" id="right">
+        <div class="card-header">
+          <h5 id="highlight">Notice</h5>
+
+        </div>     
+    </div>
+   
+    <!--     About      -->
+ 
+    <div class="card" id="upper-card">
+      
+      <div id="cover"></div>
+      <img id="profile-pic"
+        class="card-img-top rounded-circle mx-auto d-block img-fluid"
+        src="https://cdn.pixabay.com/photo/2016/02/27/01/44/joker-1225027_960_720.jpg"
+        alt="pro"
+        style="width:300px;height:300px"
+      />
+      
+      <div class="card-body">
+        <button
+          id="edit"
+          type="button"
+          class="btn  float-right"
+          data-toggle="modal"
+          data-target="#myModal-upper"
+        >
+          <i class="fa fa-edit"></i>
+        </button>
+        <h5 id="upper-card-text" class="card-title text-center">Name</h5>
+        <h5 id="upper-card-text" class="card-subtitle mb-2 text-center">Registration No :</h6>
+        <div id="upper-card-text" class="media">
+             <i class="fa fa-university mr-2 " id="social-ico" style="color:black"></i>
+             <div class="media-body">
+               <h6>Shahjalal University of Science & Technology</h6>
+               <h6 class="text-muted">Sofware Engineering</h6>
+             </div>   
+        </div>
+        <!-- <a href="#" class="card-link">Card link</a>
+        <a href="#" class="btn btn-primary">Another link</a> -->
+      </div>
+    </div>
+
+
+    <div class="card" id="lower-card">
+      
+      
+      
+      <!-- Basic -->
+
+
+
+      <div class="card-body" id="lower-card-body">
+              <button
+                id="edit"
+                type="button"
+                class="btn  float-right"
+                data-toggle="modal"
+                data-target="#myModal-basic"
+              >
+                <i class="fa fa-edit"></i>
+              </button>
+              <h5 class="card-title">
+                    <span id="highlight">Basic</span>
+                  </h5>
+              
+             <label for="Email">Email:</label><br/>
+             <div class="collapse" id="moreBasic">
+                <label for="Name">Phone:</label><br/>
+                <label for="Name"> Home Town:</label><br/>
+                <label for="Name"> Blood Group:</label><br/>
+                    
+              </div>
+              <a class="card-link" data-toggle="collapse" href="#moreBasic"><span class="badge badge-pill" id="colapse">show more</span></a>
+             
+            </div>
+
+
+
+
+        <!--      Education     -->
+        
+        
+
+        <div class="card-body" id="lower-card-body">
+          <button
+            id="edit"
+            type="button"
+            class="btn  float-right"
+            data-toggle="modal"
+            data-target="#myModal-CV"
+          >
+            <i class="fa fa-edit"></i>
+          </button>
+          <h5 class="card-title">
+                  <span  id="highlight">CV Contents</span>
+          </h5>
+          
+         <label for="Overview">Overview</label><br>
+         <div class="collapse" id="moreCV">
+           <label for="Name">
+              Experience:</label><br/>
+           <label for="Name"> 
+               Education</label><br/>
+           <label for="Name"> 
+               Skill      
+          </label><br/>
+         </div>
+         <a class="card-link" data-toggle="collapse" href="#moreCV"><span class="badge badge-pill" id="colapse">show more</span></a>
+         
+      </div>
+      
+
+
+
+
+      <!--      Contact     -->
+   
+
+
+
+
+      <div class="card-footer" id="card-footer">
+        <h5 class="card-title">
+          <span class="badge badge" id="highlight">Integrated Profiles</span>
+        </h5>
+
+        <a
+          href="https://facebook.com"
+          data-toggle="tooltip"
+          title="facebook"
+          ><span class="badge badge-pill" id="social-span"
+            ><i id="social-ico" class="fa fa-facebook"></i
+          ></span>
+        </a>
+        <a
+          href="https://www.twitter.com"
+          data-toggle="tooltip"
+          title="twitter"
+          ><span class="badge badge-pill" id="social-span"
+            ><i class="fa fa-twitter" id="social-ico"></i
+          ></span>
+        </a>
+        <a
+          href="https://github.com"
+          data-toggle="tooltip"
+          title="github"
+          ><span class="badge badge-pill" id="social-span"
+            ><i class="fa fa-github" id="social-ico"></i
+          ></span>
+        </a>
+        <a
+          href="https://plus.google.com"
+          data-toggle="tooltip"
+          title="google plus"
+          ><span class="badge badge-pill" id="social-span"
+            ><i class="fa fa-google-plus" id="social-ico"></i
+          ></span>
+        </a>
+        <a
+          href="https://linkedin.com"
+          data-toggle="tooltip"
+          title="linkedin.com"
+          ><span class="badge badge-pill" id="social-span"
+            ><i class="	fa fa-linkedin" id="social-ico"></i
+          ></span>
+        </a>
+        <a
+          href="https://stackoverflow.com"
+          data-toggle="tooltip"
+          title="stack overflow"
+          ><span class="badge badge-pill" id="social-span"
+            ><i class="fa fa-stack-overflow" id="social-ico"></i
+          ></span>
+        </a>
+      </div>
+    </div>
+
+
+
+    
+
+    <!--      Dialog Box     -->
+
+    <!-- Upper -->
+
+    <div class="modal fade" id="myModal-upper">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="modal-title" id="highlight">Edit</div>
+            <button type="button" class="close" data-dismiss="modal">
+              <span class="badge badge-pill badge-danger">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="input-group">
+                  <div class="input-group-prepened">
+                    <span class="input-group-text" id="modal-input">Photo</span>
+                  </div>
+                  <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="modal-input">
+                      <label class="custom-file-label" for="customFile">Choose file</label>
+                    </div>
+              </div>
+              <div class="input-group">
+                  <div class="input-group-prepened">
+                    <span class="input-group-text" id="modal-input">Name</span>
+                  </div>
+                  <input type="email" class="form-control" id="email"/>
+              </div>
+
+              <div class="input-group">
+                  <div class="input-group-prepened">
+                    <span class="input-group-text" id="modal-input">Registration No</span>
+                  </div>
+                  <input type="email" class="form-control" id="email"/>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-dismiss="modal">
+              update
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Basic -->
+
+    <div class="modal fade" id="myModal-basic">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="modal-title" id="highlight">Edit</div>
+            <button type="button" class="close" data-dismiss="modal">
+              <span class="badge badge-pill badge-danger">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="input-group">
+                  <div class="input-group-prepened">
+                    <span class="input-group-text" id="modal-input">Eamil</span>
+                  </div>
+                  <input type="email" class="form-control" id="email"/>
+              </div>
+
+              <div class="input-group">
+                  <div class="input-group-prepened">
+                    <span class="input-group-text" id="modal-input">Phone No</span>
+                  </div>
+                  <input type="text" class="form-control" id="phone-no"/>
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepened">
+                  <span class="input-group-text" id="modal-input">Home town</span>
+                </div>
+                <input type="text" class="form-control" id="home-town"/>
+            </div>
+            <div class="input-group">
+              <div class="input-group-prepened">
+                <span class="input-group-text" id="modal-input">Blood group</span>
+              </div>
+              <input type="text" class="form-control" id="blood-group"/>
+          </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-dismiss="modal">
+              update
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CV contents -->
+
+    <div class="modal fade" id="myModal-CV">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="modal-title" id="highlight">Edit</div>
+            <button type="button" class="close" data-dismiss="modal">
+              <span class="badge badge-pill badge-danger">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="input-group">
+                  <div class="input-group-prepened">
+                    <span class="input-group-text" id="modal-input">Overview</span>
+                  </div>
+                      <input type="text" class="form-control" id="overview">
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepened">
+                  <span class="input-group-text" id="modal-input">Experience</span>
+                </div>
+                    <input type="text" class="form-control" id="experience">
+            </div>
+
+            <div class="input-group">
+              <div class="input-group-prepened">
+                <span class="input-group-text" id="modal-input">Education</span>
+              </div>
+                  <input type="text" class="form-control" id="eduction">
+          </div>
+          <div class="input-group">
+            <div class="input-group-prepened">
+              <span class="input-group-text" id="modal-input">Skill</span>
+            </div>
+                <input type="text" class="form-control" id="skill">
+        </div>
+ 
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-dismiss="modal">
+              update
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--      End     -->
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
