@@ -4,10 +4,10 @@ html {
 body {
     margin: 0;
     padding: 0;
-    background-color: #333 !important;
+    background-color: #ddd !important;
     width: 100%;
     height: 100%;
-    color: #ccc;
+    color: #333;
     overflow-x: hidden;
 }
 a {
@@ -38,14 +38,14 @@ a:hover {
     object-position: center;
     width: 20vw;
     height: 20vw;
-    border: 10px solid #333;
+    border: 10px solid #ddd;
     border-radius: 50%;
     position: absolute;
     top: 4vw;
     left: 5vw;
 }
 .name{
-    color: #ddd;
+    color: #333;
     line-height: 1.5vw;
     position: absolute;
     left: 25.5vw;
@@ -63,7 +63,20 @@ a:hover {
 .container {
     margin-top: 27vw;
 }
-.section {
+.box {
+    width: 100%;
+    background: #eee;
+    border: 1px solid #aaa;
+    padding: 15px;
+    -webkit-box-shadow: 0px 0px 19px 2px rgba(170,170,170,1);
+    -moz-box-shadow: 0px 0px 19px 2px rgba(170,170,170,1);
+    box-shadow: 0px 0px 19px 2px rgba(170,170,170,1);
+}
+.box-header {
+    font-size: 35px;
+}
+
+/*.section {
     margin-bottom: 100px;
 }
 .section-header {
@@ -119,7 +132,7 @@ table{
     padding: 15px;
     text-align: justify;
 }
-
+*/
 
 .clearfix {
     display: block;
@@ -134,12 +147,12 @@ table{
         right: 10px;
     }
     .nav-item{
-    	margin-left: 8px;
+        margin-left: 8px;
     }
 }
 
 @media only screen and (max-width: 768px) {
     .notImportant {
-		display: none;
-	}
+        display: none;
+    }
 }

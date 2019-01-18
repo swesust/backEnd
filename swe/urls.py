@@ -18,7 +18,7 @@ urlpatterns = [
     # example.com/batch/2016/
     path('batch/<batch_id>/', views.batch, name='batch'),
 
-    path('forget-password', views.forget_password, name='forget_password'),
+    path('forget-password/', views.forget_password, name='forget_password'),
 
     path('forget-password/varification/', views.forget_password_varification, 
         name ='forget_password_varification'),

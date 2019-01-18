@@ -222,25 +222,22 @@ class Token():
 		try:
 			h1 = token[0:16]
 
-			# remove first and last 16 char
-			userid = token[16:len(token)]
-			userid = userid[0:-16]
+			userid = Token.get_userid(token)
 
 			# split last 16 chars
 			h2 = token[-16:]
 
 			encode_password = h1+h2
 
-
-			user = models.AuthUser.objects.filter(userid = userid)
-			if user != None:
-				user = user[0]
+			try:
+				user = models.AuthUser.objects.get(userid=userid)
 				hashed_password = md5(user.password.encode()).hexdigest()
 
 				if encode_password != hashed_password:
 					return False
 				return True
+			except ObjectDoesNotExist as e:
+				return False
+			
 		except Exception as e:
 			return False
-
-

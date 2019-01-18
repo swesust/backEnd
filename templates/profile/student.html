@@ -1,13 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
     <meta charset="utf-8" />
       <link rel="shortcut icon" href="./app.ico" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
     <!-- Bootstrap CSS -->
     <link
@@ -26,94 +25,12 @@
     <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Open+Sans|Titillium+Web" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Fira+Sans|Indie+Flower|Kanit|Open+Sans|Staatliches|Titillium+Web" rel="stylesheet">
 
-    <style>
-      .profile-page{
-        font-family: 'Open Sans', sans-serif;
-        font-family: 'Indie Flower', cursive;
-        font-family: 'Titillium Web', sans-serif;
-      }
 
-      #upper-card {
-        margin-left: 15%;
-        width: 70%;
-        height: 420px;
-        box-shadow: 1px 1px 1px gray;
-      }
-      #cover{
-        background-color: #00bfff;  
-        height: 140px;
-        position: relative;
-      }
-
-      #profile-pic{
-        max-width: 40%;
-        max-height:250px;
-        position:absolute;
-        border: gray solid 3px ;
-        left: 38%;
-        top: 8%;
-        
-      }
-
-      #upper-card-text{
-          position: relative;
-          top:140px; 
-      }
-
-      #lower-card {
-        margin-left: 15%;
-        width: 70%;
-        margin-top: 10px;
-        border-top: #00bfff solid 3px;  
-        box-shadow: 1px 1px 1px gray;
-      }
-     
-      #lower-card-body{
-           padding: 5% 2% 3% 7%;
-      }
-
-      #card-footer{
-          
-        padding: 7%;
-        text-align: center;
-      }
-
-      #social-span {
-        width: 35px;
-        height: 35px;
-        margin: 5px;
-        padding: 4px;
-        background-color: black;
-        border: #00ffffe7 solid 1px;
-      }
-
-      #social-ico {
-        color: #00ffffe7;
-        font-size: 25px;
-      }
-      
-
-      #highlight {
-        color: black;
-        font-size: 20px;
-        margin-bottom: 2%;
-        font-weight: bold;
-        font-family: 'Open Sans', sans-serif;
-        font-family: 'Indie Flower', cursive;
-        font-family: 'Titillium Web', sans-serif;
-      }
-      #edit {
-        background-color: #00bfff;
-        color: whitesmoke;
-      }
-      #colapse{
-        background-color: #00bfff;
-        color: whitesmoke; 
-      }
-    </style>
     <title>Profile</title>
-  </head>
-  <body style="background-color:whitesmoke" class="profile-page">
+{% endblock %}
+
+{% block extra_body %}
+  <div class="profile-page">
    
     
     <!--     About      -->
@@ -125,7 +42,7 @@
         class="card-img-top rounded-circle mx-auto d-block img-fluid"
         src="https://cdn.pixabay.com/photo/2016/02/27/01/44/joker-1225027_960_720.jpg"
         alt="pro"
-        style=""
+        style="width:300px;height:300px"
       />
       
       <div class="card-body">
@@ -453,5 +370,8 @@
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"
     ></script>
-  </body>
-</html>
+
+
+</div>
+
+{% endblock %}

@@ -75,3 +75,24 @@ class UserAdminChangeForm(forms.ModelForm):
 
 	def clean_password(self):
 		return self.initial["password"]
+
+
+class LoginForm(forms.Form):
+	userid = forms.CharField(max_length=120,
+		widget=forms.TextInput(attrs={
+			'placeholder': 'User ID',
+			'class' : 'regno-input full-width'}))
+
+	password = forms.CharField(
+		widget=forms.PasswordInput(attrs={
+			'placeholder' : 'Password',
+			'class' : 'pass-input full-width'}))
+
+
+class UserRecognize(forms.Form):
+	userid = forms.CharField(max_length=120, widget=forms.TextInput(attrs={
+		'placeholder' : 'User ID'}))
+
+class UserToken(forms.Form):
+	token = forms.CharField(max_length=155, widget=forms.TextInput(attrs={
+		'placeholder' : 'Your Token'}))

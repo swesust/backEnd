@@ -1,0 +1,83 @@
+
+.profile-page{
+  font-family: 'Open Sans', sans-serif;
+  font-family: 'Indie Flower', cursive;
+  font-family: 'Titillium Web', sans-serif;
+
+}
+
+#upper-card {
+  margin-left: 15%;
+  width: 70%;
+  height: 420px;
+  box-shadow: 1px 1px 1px gray;
+}
+#cover{
+  background-color: #00bfff;  
+  height: 140px;
+  position: relative;
+}
+
+#profile-pic{
+
+  position:absolute;
+  border: gray solid 3px ;
+
+  
+}
+
+#upper-card-text{
+    position: relative;
+    top:140px; 
+}
+
+#lower-card {
+  margin-left: 15%;
+  width: 70%;
+  margin-top: 10px;
+  border-top: #00bfff solid 3px;  
+  box-shadow: 1px 1px 1px gray;
+}
+
+#lower-card-body{
+     padding: 5% 2% 3% 7%;
+}
+
+#card-footer{
+    
+  padding: 7%;
+  text-align: center;
+}
+
+#social-span {
+  width: 35px;
+  height: 35px;
+  margin: 5px;
+  padding: 4px;
+  background-color: black;
+  border: #00ffffe7 solid 1px;
+}
+
+#social-ico {
+  color: #00ffffe7;
+  font-size: 25px;
+}
+
+
+#highlight {
+  color: black;
+  font-size: 20px;
+  margin-bottom: 2%;
+  font-weight: bold;
+  font-family: 'Open Sans', sans-serif;
+  font-family: 'Indie Flower', cursive;
+  font-family: 'Titillium Web', sans-serif;
+}
+#edit {
+  background-color: #00bfff;
+  color: whitesmoke;
+}
+#colapse{
+  background-color: #00bfff;
+  color: whitesmoke; 
+}

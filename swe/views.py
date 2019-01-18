@@ -11,8 +11,11 @@ from django.core.files.storage import FileSystemStorage as FSS
 from django.contrib.auth import (
 	authenticate, logout as auth_logout, login as auth_login)
 from django.contrib.auth.decorators import login_required
-from . import variables as var 
+from . import variables as var
+from swe.forms import LoginForm, UserRecognize, UserToken
 from django.core.mail import send_mail
+from django.http import HttpResponse
+from django.template import loader
 
 # Create your views here.
 
@@ -48,21 +51,41 @@ def login(request):
         else render the login page 
     """
     if request.method == 'POST':
-        uid = request.POST.get('uid')
-        password = request.POST.get('password')
-        user = authenticate(userid=uid, password=password)
+        form = LoginForm(request.POST)
 
-        if user is not None:
-            auth_login(request, user)
-            return render(request, var.INDEX_TEMPLATE, {})
+        if form.is_valid():
+            uid = form.cleaned_data['userid']
+            password = form.cleaned_data['password']
+            user = authenticate(userid=uid, password=password)
+
+            if user is not None:
+                auth_login(request, user)
+                return render(request, var.INDEX_TEMPLATE, {})
+
+            else:
+                context = {
+                    'form' : form,
+                    'invalid' : True
+                }
+                return render(request, var.LOGIN_TEMPLATE, context)
+
         else:
-            return render(request, var.LOGIN_TEMPLATE, {})
+            context = {
+                'form' : form,
+                'invalid' : True
+            }
+            return render(request, var.LOGIN_TEMPLATE, context)            
 
     else:
         if request.user.is_authenticated:
             return redirect('/')
         else:
-            return render(request, var.LOGIN_TEMPLATE, {})
+            form = LoginForm()
+            context = {
+                'form' : form,
+                'invalid' : False
+            }
+            return render(request, var.LOGIN_TEMPLATE, context)
 
 # response of: example.com/logout/			
 @login_required(login_url=var.LOGIN_URL)
@@ -142,7 +165,7 @@ def profile(request, user_id):
         try:
             s = Student.objects.get(regid=user_id)
             context = {'user' : s }
-            return render(request, 'profile.html', context)
+            return render(request, 'profile/student.html', context)
 
         except ObjectDoesNotExist as e:
             return render(request, 'error404.html',{})
@@ -152,7 +175,7 @@ def profile(request, user_id):
         try:
             t = Teacher.objects.get(hid=user_id)
             context = {'user' : t }
-            return  render(request, 'profile.html', context)
+            return  render(request, 'profile/student.html', context)
         except ObjectDoesNotExist as e:
             return render(request, 'error404.html',{})
 
@@ -170,58 +193,92 @@ def error404(request):
 
 def forget_password(request):
     if request.method == 'POST':
-        user_id = request.POST.get('userid')
-        user = AuthUser.objects.filter(userid = user_id)
-        
-        if user != None:
-            user = user[0]
-            user_profile = None
-            token = None
-            if user.is_student:
-                user_profile = Student.objects.get(user = user) 
-                token = helper.Token.get_token(user.userid, user.password)
-            else:
-                user_profile = Teacher.objects.get(user = user)
-                token = helper.Token.get_token(user.userid, user.password)
-            # mail this
-            send_mail('Password Reset Token',
-                'Your token: '+token,
-                var.EMAIL_HOST_USER,
-                [user_profile.email],
-                fail_silently=False)
+        form = UserRecognize(request.POST)
 
-            return redirect('forget-password/varification')
-
-    return render(request, 'auth/forget_password.html',{})
-
-
-def forget_password_varification(request):
-    if request.method == 'POST':
-        token = request.POST.get('token')
-        if helper.Token.is_valid(token):
-            # reset the password
+        if  form.is_valid():
             try:
-                # generate a new password
-                user_id = helper.Token.get_userid(token)
-                user = AuthUser.objects.filter(userid = user_id)
-                user = user[0]
+                userid = form.cleaned_data['userid']
+                user = AuthUser.objects.get(userid = userid)
                 user_profile = None
+                token = None
                 if user.is_student:
-                    user_profile = Student.objects.get(user=user)
+                    user_profile = Student.objects.get(user = user) 
+                    token = helper.Token.get_token(user.userid, user.password)
                 else:
-                    user_profile = Teacher.objects.get(user=user)
-
-
-                send_mail('New Password',
-                    'pass12345',
+                    user_profile = Teacher.objects.get(user = user)
+                    token = helper.Token.get_token(user.userid, user.password)
+                # mail this
+                send_mail('Password Reset Token',
+                    'Your token: '+token,
                     var.EMAIL_HOST_USER,
                     [user_profile.email],
                     fail_silently=False)
 
-                user.set_password('pass12345')
-                user.save()
-                return redirect('/login')
-            except Exception as e:
-                return redirect('/forget-password/varification')            
+                return redirect('/forget-password/varification')
 
-    return render(request, 'auth/forget_password_varification.html',{})
+            except Exception as e:
+                context = {
+                    'form' : form,
+                    'invalid' : True}
+                return render(request, 'auth/forget_password.html', context)
+        else:
+            context = {
+                'form' : form,
+                'invalid' : True}
+            return render(request, 'auth/forget_password.html', context)
+
+    form = UserRecognize()
+    context = {
+        'form' : form,
+        'invalid' : False
+    }    
+    return render(request, 'auth/forget_password.html',context)
+
+def forget_password_varification(request):
+
+    if request.method == 'POST':
+        form = UserToken(request.POST)
+
+        if form.is_valid():
+            token = form.cleaned_data['token']
+            if helper.Token.is_valid(token):
+                # reset the password
+                try:
+                    # generate a new password
+                    user_id = helper.Token.get_userid(token)
+                    user = AuthUser.objects.get(userid = user_id)
+                    user_profile = None
+                    if user.is_student:
+                        user_profile = Student.objects.get(user=user)
+                    else:
+                        user_profile = Teacher.objects.get(user=user)
+
+                    send_mail('New Password',
+                        'pass12345',
+                        var.EMAIL_HOST_USER,
+                        [user_profile.email],
+                        fail_silently=False)
+
+                    user.set_password('pass12345')
+                    user.save()
+                    response = loader.get_template('auth/password_reset_done.html')
+                    return HttpResponse(response.render({}, request))
+                except Exception as e:
+                    context = {
+                        'form' : form,
+                        'invalid' : True}
+                    return render(request, 'auth/forget_password_varification.html', context)
+       
+
+        context = {
+            'form' : form,
+            'invalid' : True}
+        return render(request, 'auth/forget_password_varification.html', context)
+        
+    form = UserToken()
+    context = {
+        'form' : form,
+        'invalid' : False
+    }
+    return render(request, 'auth/forget_password_varification.html',context)
+

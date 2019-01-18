@@ -18,10 +18,11 @@
 
     <div class="box">
 
-        <form class="login-form" method="post">
+        <form class="login-form" method="POST">
         	{% csrf_token %}
-            <input type="text" name="uid" class="regno-input full-width" placeholder="User ID">
-            <input type="password" name="password" class="pass-input full-width" placeholder="Password">
+            {% for field in form %}
+                {{ field }}
+            {% endfor %}
             <button type="submit" name="submit" class="login-button full-width">Log In</button>
             <a href="/forget-password" class="forgot-pass">Forget Password?</a>
         </form>
