@@ -33,39 +33,53 @@ class UserManager(BaseUserManager):
 	`BaseUserManager`.
 	"""
 
-	def create_user(self, userid, password=None, is_staff=False, is_admin=False, is_student=False):
-		"""
-		to create a general account with no admin site login permission
-		"""
-		if not userid:
-			raise ValueError('must have reg id')
-		
-		user = self.model(userid = userid)
-		user.is_staff = is_staff
+	def create_user(self,userid,password=None,name=None,email=None,
+		is_staff=False,is_admin=False, is_student=True):
+		if not password:
+			raise ValueError('password needed')
+		if not name:
+			raise ValueError('name needed')
+		if not email:
+			raise ValueError('email needed')
+
+		user = self.model(userid=userid)
+		user.name = name
+		user.email = email
 		user.is_admin = is_admin
+		user.is_staff = is_staff
 		user.is_student = is_student
 		user.set_password(password)
 		user.save(self._db)
 		return user
 
-	def create_staffuser(self, userid, password, is_student):
+	def create_staffuser(self, userid, password, name, email, is_student):
 		"""
 		to create custom permission level user
 		"""
 		if not userid or password:
 			raise ValueError('must have the userid and password')
+		if not name:
+			raise ValueError('name needed')
+		if not email:
+			raise ValueError('email needed')
 
-		user = self.model(userid, password,True,False,is_student)
+
+		user = self.create_user(userid, password, name, email, True,False,is_student)
 		return user
 
-	def create_superuser(self, userid, password, is_student):
+	def create_superuser(self, userid, password, name, email, is_student):
 		"""
 		to create an admin
 		"""
 		if not userid or not password:
 			raise ValueError('must have userid and password')
+		if not name:
+			raise ValueError('name needed')
+		if not email:
+			raise ValueError('email needed')
 
-		user = self.create_user(userid, password, True, True, is_student)
+
+		user = self.create_user(userid, password, name, email, True, True, is_student)
 		return user
 
 class AuthUser(AbstractBaseUser,PermissionsMixin):
@@ -77,6 +91,10 @@ class AuthUser(AbstractBaseUser,PermissionsMixin):
 		`userid`: User unique id for user authentication. 
 				  Students - Reg ID
 				  Teachers - User Name
+
+		`name` : User Display name
+
+		`email` : User email account 
 
 		`is_active`: Identify whether the user is currently using the site or not. This is
 					 an extended variable from `AbstractBaseUser`
@@ -108,10 +126,15 @@ class AuthUser(AbstractBaseUser,PermissionsMixin):
 	is_admin = models.BooleanField(default=False)
 	is_staff = models.BooleanField(default=False)
 	
+	# user display Name
+	name = models.CharField(max_length=80)
+	# user email
+	email = models.EmailField(max_length=120, default='swe@student.sust.edu',unique=True)
+
 	objects = UserManager()
 
 	USERNAME_FIELD = 'userid'
-	REQUIRED_FIELDS = ['is_student',]
+	REQUIRED_FIELDS = ['name','email','is_student',]
 
 
 	def has_perm(self, perm, obj=None):
@@ -137,10 +160,8 @@ class Student(models.Model):
 	"""
 	Student profile model to store a particular student information
 	Informations:
-		* Name : Rafiul Islam
 		* Registration ID : 2016831035
 		* Batch : Foreign-Key-> Batch Object
-		* Email : mohammad35@student.sust.edu
 		* Phone : 01********
 		* Address : Brahmanbaria
 		* Birthday : 15th March ****
@@ -173,14 +194,10 @@ class Student(models.Model):
 
 	# Connect with user authentication model
 	user = models.OneToOneField(AuthUser, on_delete=models.CASCADE)
-	# Student Name
-	name = models.CharField(max_length=80)
 	# Student Reg ID
 	regid = models.CharField(max_length=10, unique=True, primary_key=True, editable=True)
 	# Connect with batch model
 	batch = models.ForeignKey(Batch, on_delete=models.CASCADE)
-	# Student email
-	email = models.EmailField(max_length=120, default='swe@student.sust.edu')
 	# Student Phone number
 	phone = models.CharField(max_length=16, default = '880') 
 	# Student address
@@ -216,16 +233,14 @@ class Student(models.Model):
 
 	# default: object output
 	def __str__(self):
-		return self.name
+		return self.regid
 
 class Teacher(models.Model):
 	"""
 	Teacher profile model to store a particular teacher information.
 	Information:
-		Name: X
 		Position: Job position
 		Alumni: True | False
-		Email: **@****.***
 		Phone: +000000
 		Leaved: Indicate that the teacher is continuing or not
 		Head: Indicate the dept. head 
@@ -243,7 +258,6 @@ class Teacher(models.Model):
 
 	"""
 	user = models.OneToOneField(AuthUser, on_delete=models.CASCADE)
-	name = models.CharField(max_length=80)
 
 	JOB_POSITIONS = (
 		('Lecturer', 'Lecturer'),
@@ -253,7 +267,6 @@ class Teacher(models.Model):
 
 	position = models.CharField(max_length=25, choices=JOB_POSITIONS)
 	alumni = models.BooleanField(default=False)
-	email = models.EmailField(max_length=120,)
 	phone = models.CharField(max_length=16,default = '880')
 	leaved = models.BooleanField(default=False)
 	head = models.BooleanField(default=False)
@@ -267,7 +280,7 @@ class Teacher(models.Model):
 	
 	# default: object output
 	def __str__(self):
-		return self.name
+		return self.user
 
 class Post(models.Model):
 	"""
@@ -286,10 +299,12 @@ class Post(models.Model):
 	# body can be a large text	
 	body = models.TextField()
 	# auto generate the created time
-	time = models.TimeField(auto_now_add=True)
+	time = models.TimeField(auto_now=True)
+	# auto genrate the current date
+	date = models.DateField(auto_now=True)
 	# link the post created user
 	user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
 	# if the post carry an image then this will be `True`
 	has_media = models.BooleanField(default=False)
 	# image location: posts/currentmillisec.type
-	imgsrc = models.CharField(max_length=30)
+	imgsrc = models.CharField(max_length=30, default='none')

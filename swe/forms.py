@@ -15,7 +15,7 @@ class RegisterForm(forms.ModelForm):
 
 	class Meta:
 		model = User
-		fields = ('userid','is_student',)
+		fields = ('userid','name','email','is_student',)
 
 	def clean_userid(self):
 		"""	
@@ -26,6 +26,12 @@ class RegisterForm(forms.ModelForm):
 
 		if query.exists():
 			raise forms.ValidationError('User id taken')
+
+		email =  self.cleaned_data.get('email')
+		query = User.objects.filter(email=email)
+
+		if query.exists():
+			raise forms.ValidationError('Email is taken')
 
 		return userid
 
@@ -47,7 +53,7 @@ class UserAdminCreationForm(forms.ModelForm):
 
 	class Meta:
 		model = User
-		fields = ('userid','is_student',)
+		fields = ('userid','name', 'email', 'is_student',)
 
 	def clean_password2(self):
 		password1 = self.cleaned_data.get('password1')
@@ -70,7 +76,7 @@ class UserAdminChangeForm(forms.ModelForm):
 
 	class Meta:
 		model = User
-		fields = ('is_admin', 'is_staff', 'is_student',)
+		fields = ('name','email','is_admin', 'is_staff', 'is_student',)
 
 
 	def clean_password(self):

@@ -15,18 +15,18 @@ class UserAdmin(BaseUserAdmin):
 	add_form = UserAdminCreationForm
 
 
-	list_filter = ('is_admin','is_student',)
-	list_display = ('userid', 'is_admin', 'is_staff', 'is_student')
+	list_filter = ('is_admin','is_student','email')
+	list_display = ('userid','name', 'is_admin', 'is_staff', 'is_student')
 	fieldsets = (
 		(None,{'fields' : ('userid', 'password','is_student')}),
-		('Personal info', {'fields' : ()}),
+		('Personal info', {'fields' : ('name', 'email',)}),
 		('Permission', {'fields' : ('is_admin', 'is_staff', 'groups','user_permissions',)}),
 	)
 
 	add_fieldsets = (
 		(None, {
 			'classes' : ('wide',),
-			'fields' : ('userid', 'password1', 'password2', 'is_student')}
+			'fields' : ('userid','name', 'email', 'password1', 'password2', 'is_student')}
 			),
 	)
 	ordering = ('userid',)
@@ -38,3 +38,4 @@ admin.site.register(AuthUser, UserAdmin)
 admin.site.register(Batch)
 admin.site.register(Student)
 admin.site.register(Teacher)
+admin.site.register(Post)

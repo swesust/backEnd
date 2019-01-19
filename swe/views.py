@@ -183,7 +183,11 @@ def profile(request, user_id):
 
 # response of: example.com/feeds/
 def feeds(request):
-    return render(request, 'feeds.html', {})
+    posts = Post.objects.order_by('time', 'date')[::-1]
+    context = {
+        'posts' : posts
+        }
+    return render(request, 'feeds.html', context)
 
 # custom error request response
 def error404(request):
@@ -197,21 +201,14 @@ def forget_password(request):
 
         if  form.is_valid():
             try:
-                userid = form.cleaned_data['userid']
+                userid = form.cleaned_data.get('userid')
                 user = AuthUser.objects.get(userid = userid)
-                user_profile = None
-                token = None
-                if user.is_student:
-                    user_profile = Student.objects.get(user = user) 
-                    token = helper.Token.get_token(user.userid, user.password)
-                else:
-                    user_profile = Teacher.objects.get(user = user)
-                    token = helper.Token.get_token(user.userid, user.password)
+                token = helper.Token.get_token(user.userid, user.password)
                 # mail this
                 send_mail('Password Reset Token',
                     'Your token: '+token,
                     var.EMAIL_HOST_USER,
-                    [user_profile.email],
+                    [user.email],
                     fail_silently=False)
 
                 return redirect('/forget-password/varification')
@@ -240,23 +237,18 @@ def forget_password_varification(request):
         form = UserToken(request.POST)
 
         if form.is_valid():
-            token = form.cleaned_data['token']
+            token = form.cleaned_data.get('token')
             if helper.Token.is_valid(token):
                 # reset the password
                 try:
                     # generate a new password
                     user_id = helper.Token.get_userid(token)
                     user = AuthUser.objects.get(userid = user_id)
-                    user_profile = None
-                    if user.is_student:
-                        user_profile = Student.objects.get(user=user)
-                    else:
-                        user_profile = Teacher.objects.get(user=user)
 
                     send_mail('New Password',
                         'pass12345',
                         var.EMAIL_HOST_USER,
-                        [user_profile.email],
+                        [user.email],
                         fail_silently=False)
 
                     user.set_password('pass12345')
