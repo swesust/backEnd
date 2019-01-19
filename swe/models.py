@@ -10,70 +10,132 @@ from django.contrib.auth import get_backends
 
 class Batch(models.Model):
 	"""
-		Contains the batch list
-		Attributes:
-		* Batch Name : The Initial(Prarombik) 
-		* Year : 2016
+	contain the Batch information
+	Parameters:
+
+		`name`: batch name 
+		`year`: batch year
 	"""
 	name = models.CharField(max_length=100)
 	year = models.CharField(max_length=4, unique=True)
 
 	# default: object output
 	def __str__(self):
-		return self.name+ "|" + self.year
+		return self.name+ " - " + self.year
 
 class UserManager(BaseUserManager):
 
-	def create_user(self, userid, password=None, is_staff=False, is_admin=False):
-		if not userid:
-			raise ValueError('must have reg id')
-		
-		user = self.model(userid = userid)
-		user.is_staff = is_staff
+	"""
+	UserManager stands for creating new AuthUser.
+	For custom authentication model there must need a custom manager.
+	`create_user` and `create_superuser` are the abstract methods of the
+	`BaseUserManager`. `create_staffuser` is an extended method of the 
+	`BaseUserManager`.
+	"""
+
+	def create_user(self,userid,password=None,name=None,email=None,
+		is_staff=False,is_admin=False, is_student=True):
+		if not password:
+			raise ValueError('password needed')
+		if not name:
+			raise ValueError('name needed')
+		if not email:
+			raise ValueError('email needed')
+
+		user = self.model(userid=userid)
+		user.name = name
+		user.email = email
 		user.is_admin = is_admin
+		user.is_staff = is_staff
+		user.is_student = is_student
 		user.set_password(password)
 		user.save(self._db)
 		return user
 
-	def create_staffuser(self, userid, password):
+	def create_staffuser(self, userid, password, name, email, is_student):
+		"""
+		to create custom permission level user
+		"""
 		if not userid or password:
 			raise ValueError('must have the userid and password')
+		if not name:
+			raise ValueError('name needed')
+		if not email:
+			raise ValueError('email needed')
 
-		user = self.model(userid, password,True,False)
+
+		user = self.create_user(userid, password, name, email, True,False,is_student)
 		return user
 
-	def create_superuser(self, userid, password):
-
+	def create_superuser(self, userid, password, name, email, is_student):
+		"""
+		to create an admin
+		"""
 		if not userid or not password:
 			raise ValueError('must have userid and password')
+		if not name:
+			raise ValueError('name needed')
+		if not email:
+			raise ValueError('email needed')
 
-		user = self.create_user(userid, password, True, True)
+
+		user = self.create_user(userid, password, name, email, True, True, is_student)
 		return user
 
 class AuthUser(AbstractBaseUser,PermissionsMixin):
 	
+	"""
+	Custom user model for authentication.
+	
+	Parameters:
+		`userid`: User unique id for user authentication. 
+				  Students - Reg ID
+				  Teachers - User Name
+
+		`name` : User Display name
+
+		`email` : User email account 
+
+		`is_active`: Identify whether the user is currently using the site or not. This is
+					 an extended variable from `AbstractBaseUser`
+		`is_student`: Identify the user is a student or a teacher. This is a flag variable
+		              decalered for differentiate the user.
+
+		`is_admin`: Identify the user is an admin or not. This is an extended value from
+					`AbstractBaseUser`
+		`is_staff`: Identify the user to providing access in the admin panel with limited permissions.
+					This is an extended variable from `AbstractBaseUser`
+		`object`: Instance of the UserManager to connect with the database. 
+
+
+		`USERNAME_FIELD`: must be defined for custom authentication model to identify the username field.
+		`REQUIRED_FIELDS`: list of required fields to create a new user. 
+
+		Extended methods for permission level checking
+			`has_perm(...)`
+			`has_perms(...)`
+			`has_module_perms(...)`
+			`username(self)`
+
+
+	"""
 	userid = models.CharField(max_length=120, unique=True)
 	is_active = models.BooleanField(default=True)
+	is_student = models.BooleanField(default=True)
 
 	is_admin = models.BooleanField(default=False)
 	is_staff = models.BooleanField(default=False)
 	
+	# user display Name
+	name = models.CharField(max_length=80)
+	# user email
+	email = models.EmailField(max_length=120, default='swe@student.sust.edu',unique=True)
+
 	objects = UserManager()
 
 	USERNAME_FIELD = 'userid'
-	REQUIRED_FIELDS = []
+	REQUIRED_FIELDS = ['name','email','is_student',]
 
-
-	def has_perm(self, perm, obj=None):
-		pass
-
-	def has_perms(self, perm_list, obj=None):
-		pass
-
-	def has_module_perms(self, app_label):
-		if self.is_admin or self.is_staff:
-			return True
-		return False
 
 	def has_perm(self, perm, obj=None):
 		if self.is_admin:
@@ -96,81 +158,153 @@ class AuthUser(AbstractBaseUser,PermissionsMixin):
 
 class Student(models.Model):
 	"""
-	Student model contains all the basic informations about a student
+	Student profile model to store a particular student information
 	Informations:
-		* Name : Rafiul Islam
 		* Registration ID : 2016831035
-		* Batch : 2016 
-		* Email : mohammad35@student.sust.edu
+		* Batch : Foreign-Key-> Batch Object
 		* Phone : 01********
-		* Address : Akhaura, Brahmanbaria
-		* Birthday : 15th March 1998
+		* Address : Brahmanbaria
+		* Birthday : 15th March ****
+		* Alumni: True(student graduated) | False(studying)
 		* Blood Group : B+
 		* Gender : M (Male)
-		* Display Image : storagelocation:Image
-		* Github Profile : https://github.com/rafiulgits
-		* Linkedin Profile : https://linkedin.com/in/rafiul15
+		* Display Image : storagelocation:(data/student/2016/2016831035/image.png)
+		* Github Profile : rafiulgits (https://github.com/rafiulgits)
+		* Linkedin Profile : rafiul15 (https://linkedin.com/in/rafiul15)
 
-		CV contents will saved in a JSON file:
+	Student extra informations will saved as JSON: 
+		data/students/2016/2016831035/contents.json 
+		
+		prototype:
 		{
-			'knowing' : ['C', 'Java'],
-			'interested' : ['Cyber Security']
+			'bio' : 'This is user bio',
+			'works' ['working as a programmer in X', 'worked as a program tester in Y'],
+			'skill': ['android', 'django'],
+			'programming language' : ['C', 'Java', 'Python'],
+			'interested': ['programming', 'developing', 'leadership'],
+			'projects': ['github.com/rafiulgits/IP-Messenger', 'github.com/sakkhat/Project250'],
+			'codefores': account id
+			.
+			.
+			.
 		}
+
+		`see`: swe.helper.Conntent for more informations
 	"""
-	user = models.ForeignKey(AuthUser, on_delete=models.CASCADE, default='')
-	name = models.CharField(max_length=80, default = '')
-	regid = models.CharField(max_length=10)
-	#batch: 2016, 2017;
-	batch = models.ForeignKey(Batch, on_delete=models.CASCADE, default = '')
-	email = models.EmailField(max_length=120, default = '')
-	phone = models.CharField(max_length=16, default = '') 
-	address = models.CharField(max_length=30,default = '')
-	# date of birth: 01011900 = 01 Jan 1900
+
+	# Connect with user authentication model
+	user = models.OneToOneField(AuthUser, on_delete=models.CASCADE)
+	# Student Reg ID
+	regid = models.CharField(max_length=10, unique=True, primary_key=True, editable=True)
+	# Connect with batch model
+	batch = models.ForeignKey(Batch, on_delete=models.CASCADE)
+	# Student Phone number
+	phone = models.CharField(max_length=16, default = '880') 
+	# Student address
+	address = models.CharField(max_length=30,default = 'Sylhet')
+	# Student birthday
 	birthday = models.DateField(default=now)
-	#blood group: AB+, O-, O+, B+
-	bloodgroup = models.CharField(max_length=3,default = '')
-	#gender: F = female; M = male
-	gender = models.CharField(max_length=1,default = '')
-	# static storage location : data/students/batch/regid/image.png 
-	imgsrc = models.CharField(max_length=100,default = '')
-	# githubid : rafiulgits
-	githubid = models.CharField(max_length=20,default = '')
-	# linkedin : rafiul15
-	linkedinid = models.CharField(max_length=30,default = '')
+	# If student graduated then True or False
+	alumni = models.BooleanField(default=False)
+	# Student blood group
+	BLOOD_GROUPS = (
+		('A+', 'A+'),
+		('A-', 'A-'),
+		('B+', 'B+'),
+		('B-', 'B-'),
+		('O+', 'O-'),
+		('O-', 'O-'),
+		('AB+', 'AB+'),
+		('AB-', 'AB-')
+		)
+	bloodgroup = models.CharField(max_length=3, choices=BLOOD_GROUPS)
+	# {M:Male} {F:Female} {T:Third Gender}
+	GENDER_CHOICE = (
+		('M', 'Male'),
+		('F', 'Female'),
+		('T', 'Third Gender'))
+	gender = models.CharField(max_length=1, choices=GENDER_CHOICE, default='F')
+	# Profile Image location
+	imgsrc = models.CharField(max_length=100,default = 'data/image.PNG')
+	# Githubid : rafiulgits
+	githubid = models.CharField(max_length=20,default = 'none')
+	# Linkedin : rafiul15
+	linkedinid = models.CharField(max_length=30,default = 'none')
 
 	# default: object output
-
 	def __str__(self):
-		return self.name
+		return self.regid
 
 class Teacher(models.Model):
 	"""
-		Contains teachers informations
-		Attributes:
-		* Name : Asif Mohammad Samir
-		* Email : ****@gmail.com
-		* Position : Assistant Professor
-		* Phone : 01*********
-		* Gender : M (Male)
-		* Display Image : storagelocation:Image
+	Teacher profile model to store a particular teacher information.
+	Information:
+		Position: Job position
+		Alumni: True | False
+		Phone: +000000
+		Leaved: Indicate that the teacher is continuing or not
+		Head: Indicate the dept. head 
+		Gender: M(Male) | F(Female) | T(Third Gender)
+		Image: Storage location (data/teachers/userid/image.JPG)
 
-		Teachers contents:
-		a json file
-	"""
-	user = models.ForeignKey(AuthUser, on_delete=models.CASCADE,default='')
-	name = models.CharField(max_length=80,default = '')
-	# TODO: 100001 starting id
-	hid = models.CharField(max_length = 5, default = '')
-	email = models.EmailField(max_length=120, default = '')
-	position = models.CharField(max_length=30,default = '')
-	phone = models.CharField(max_length=16,default = '')
-	gender = models.CharField(max_length=1,default = '')
-	# static storage location : data/teachers/hid/image.png
-	imgsrc = models.CharField(max_length=100,default = '')
 	
-		
+		Extra informations will similary saved in a JSON file. 
+			data/teachers/userid/contents.json
+
+			prototype:
+			{
+				'reseach' : ['natural langauage processing', 'AI'],
+			}
+
+	"""
+	user = models.OneToOneField(AuthUser, on_delete=models.CASCADE)
+
+	JOB_POSITIONS = (
+		('Lecturer', 'Lecturer'),
+		('Assistant Professor', 'Assistant Professor'),
+		('Associate Professor', 'Associate Professor'),
+		('Professor', 'Professor'))
+
+	position = models.CharField(max_length=25, choices=JOB_POSITIONS)
+	alumni = models.BooleanField(default=False)
+	phone = models.CharField(max_length=16,default = '880')
+	leaved = models.BooleanField(default=False)
+	head = models.BooleanField(default=False)
+
+	GENDER_CHOICE = (
+		('M', 'Male'),
+		('F', 'Female'),
+		('T', 'Third Gender'))
+	gender = models.CharField(max_length=1, choices=GENDER_CHOICE, default='F')
+	imgsrc = models.CharField(max_length=100,default = 'data/image.PNG')
+	
 	# default: object output
 	def __str__(self):
-		return self.name
+		return self.user
 
-
+class Post(models.Model):
+	"""
+	Feed post model. 
+	
+	Parameters:
+		`title`: Post title
+		`body`: Post body
+		`time`: Post created time
+		`user`: User who create a post
+		`has_media`: Indicate that the post has any image or not
+		`imgsrc`: Post image storage link
+	"""
+	# title can be bengali, so make max_length little bit larger
+	title = models.CharField(max_length=150)
+	# body can be a large text	
+	body = models.TextField()
+	# auto generate the created time
+	time = models.TimeField(auto_now=True)
+	# auto genrate the current date
+	date = models.DateField(auto_now=True)
+	# link the post created user
+	user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
+	# if the post carry an image then this will be `True`
+	has_media = models.BooleanField(default=False)
+	# image location: posts/currentmillisec.type
+	imgsrc = models.CharField(max_length=30, default='none')

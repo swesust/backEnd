@@ -7,70 +7,116 @@ from django.core.files.uploadedfile import UploadedFile, TemporaryUploadedFile
 from PIL import Image as ImageProcess
 from io import BytesIO
 from swe.helper import Image
-
 from django.core.files.storage import FileSystemStorage as FSS
-
 from django.contrib.auth import (
 	authenticate, logout as auth_logout, login as auth_login)
 from django.contrib.auth.decorators import login_required
+from . import variables as var
+from swe.forms import LoginForm, UserRecognize, UserToken
+from django.core.mail import send_mail
+from django.http import HttpResponse
+from django.template import loader
 
 # Create your views here.
 
-
+# response of: example.com/
 def index(request):
-    print(request.user)
-    print(request.user.is_authenticated)
     return render(request, 'index.html', {})
 
+# response of: example.com/faculty/
 def faculty(request):
-
-    try:
-        print(request.user)
-        print(request.user.is_anonymous)
-        print(request.user.is_active)
-    except Exception as e:
-        raise e
+    # retrive all rows from `teachers` table
     teachers = Teacher.objects.all()
+    # set the dictionary
     context = {'teachers' : teachers }
+    # render the template with this dictionary
     return render(request, 'faculty.html', context)
 
+# response of: example.com/login/
 def login(request):
-	if request.method == 'POST':
-		uid = request.POST.get('uid')
-		password = request.POST.get('password')
-		user = authenticate(userid=uid, password=password)
+    """
+    POST request:
+        retrieve the user id and password that inserted in the login form
+        try to authenticate with this information. If the authentication
+        method will return an object of AuthModel after successfully
+        authentication. 
 
-		if user is not None:
-			auth_login(request, user)
-			return render(request, 'index.html', {})
-		else:
-			return render(request, 'login.html', {})
-
-	else:
-		if request.user.is_authenticated:
-			return redirect('/')
-		else:
-			return render(request, 'login.html', {})
-			
+        Check the return value:
+            if `None` that means login user is not valid so return to login page
+            else call the `login` method to logged the user and return to home page
 
 
-@login_required(login_url='/login/')
+    GET request:
+        if the requested user is already logged in or authenticated then return to home
+        else render the login page 
+    """
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+
+        if form.is_valid():
+            uid = form.cleaned_data['userid']
+            password = form.cleaned_data['password']
+            user = authenticate(userid=uid, password=password)
+
+            if user is not None:
+                auth_login(request, user)
+                return render(request, var.INDEX_TEMPLATE, {})
+
+            else:
+                context = {
+                    'form' : form,
+                    'invalid' : True
+                }
+                return render(request, var.LOGIN_TEMPLATE, context)
+
+        else:
+            context = {
+                'form' : form,
+                'invalid' : True
+            }
+            return render(request, var.LOGIN_TEMPLATE, context)            
+
+    else:
+        if request.user.is_authenticated:
+            return redirect('/')
+        else:
+            form = LoginForm()
+            context = {
+                'form' : form,
+                'invalid' : False
+            }
+            return render(request, var.LOGIN_TEMPLATE, context)
+
+# response of: example.com/logout/			
+@login_required(login_url=var.LOGIN_URL)
 def logout(request):
-	auth_logout(request)
-	return render(request, 'logout.html', {})
+    """
+    if the requested user is not already logged in then render to login page
+    else logout the user and render the logout page
+    """
+    auth_logout(request)
+    return render(request, var.LOGOUT_TEMPLATE, {})
 
+# response of: example.com/batch/	
 def batchlist(request):
+    """
+    retrieve all the rows from `batch` table and make a dictionary
+    and render the template with that dictionary
+    """
     queryset = Batch.objects.all()
     context = {
         'queryset' : queryset,
     }
     return render(request, 'batchlist.html', context)
 
+# response of: example.com/batch/year/
 def batch(request, batch_id):
+    """
+    check the batch year is valid or not.
+    if valid then filter all the students of this batch then render the template
+    with the batch and students data dictionary.
+    """
     try:
-        batch = Batch.objects.get(year=batch_id)
-        
-        # fetch all students with batch year and sorting with reg id in ascending order
         batch = Batch.objects.get(year=batch_id)
         students = Student.objects.filter(batch=batch).order_by('regid')
         context = {
@@ -80,10 +126,19 @@ def batch(request, batch_id):
 
     except ObjectDoesNotExist as e:
         return render(request, 'error404.html', {})
-        
-@login_required(login_url='/login/')
-def profile(request, user_id):
 
+# response of: example.com/userid        
+@login_required(login_url=var.LOGIN_URL)
+def profile(request, user_id):
+    """
+    if the request user is not authenticated the return to login page
+    else:
+        POST request:
+
+        GET request:
+
+        TODO:
+    """
     if request.method == 'POST':
         data = request.FILES
         imgsrc = data.get('profile')
@@ -104,14 +159,13 @@ def profile(request, user_id):
                     user = Teacher.objects.get(hid=user_id)
                     Image.save(user, bytedata)
 
-
-    # load the information
-    # student id
+    # TODO: identify user and render profile 
+    # use: request.user.is_student
     if(len(user_id) == 10):
         try:
             s = Student.objects.get(regid=user_id)
             context = {'user' : s }
-            return render(request, 'profile.html', context)
+            return render(request, 'profile/student.html', context)
 
         except ObjectDoesNotExist as e:
             return render(request, 'error404.html',{})
@@ -121,47 +175,102 @@ def profile(request, user_id):
         try:
             t = Teacher.objects.get(hid=user_id)
             context = {'user' : t }
-            return  render(request, 'profile.html', context)
+            return  render(request, 'profile/student.html', context)
         except ObjectDoesNotExist as e:
             return render(request, 'error404.html',{})
 
     return render(request, 'error404.html',{})
 
+# response of: example.com/feeds/
+def feeds(request):
+    posts = Post.objects.order_by('time', 'date')[::-1]
+    context = {
+        'posts' : posts
+        }
+    return render(request, 'feeds.html', context)
+
+# custom error request response
 def error404(request):
     context = {}
-    if request.method == 'POST':
-        data = request.FILES
-        imgsrc = data.get('profile')
-        if imgsrc != None:
-            print(type(imgsrc))
-            #TemporaryUploadedFile(imgsrc)
-            #print(imgsrc.temporary_file_path())
-            print(imgsrc.name)
-
-            print(Image.isValidFormat(imgsrc.name))
-
-            # from name check the file format : jpg, jpeg, .png
-            print(imgsrc.size)
-            if imgsrc.multiple_chunks(2500000):
-                imgsrc.chunks(2500000)
-
-            r = imgsrc.read()
-            #print('image loaded: ',r)
-            print('loaded type: ', type(r))
-            print('byte len: ',len(r))
-
-            print('read file: ',type(r))
-
-          
-            img = ImageProcess.open(BytesIO(r))
-            print(img.format)
-            print(type(img.format))
-
-    elif request.method == 'GET':
-
-        loc = FSS(location='./media/user/')
-        context = {'image' : '' }
-        print(context['image'])
-    
-
     return render(request, 'error404.html', context)
+
+
+def forget_password(request):
+    if request.method == 'POST':
+        form = UserRecognize(request.POST)
+
+        if  form.is_valid():
+            try:
+                userid = form.cleaned_data.get('userid')
+                user = AuthUser.objects.get(userid = userid)
+                token = helper.Token.get_token(user.userid, user.password)
+                # mail this
+                send_mail('Password Reset Token',
+                    'Your token: '+token,
+                    var.EMAIL_HOST_USER,
+                    [user.email],
+                    fail_silently=False)
+
+                return redirect('/forget-password/varification')
+
+            except Exception as e:
+                context = {
+                    'form' : form,
+                    'invalid' : True}
+                return render(request, 'auth/forget_password.html', context)
+        else:
+            context = {
+                'form' : form,
+                'invalid' : True}
+            return render(request, 'auth/forget_password.html', context)
+
+    form = UserRecognize()
+    context = {
+        'form' : form,
+        'invalid' : False
+    }    
+    return render(request, 'auth/forget_password.html',context)
+
+def forget_password_varification(request):
+
+    if request.method == 'POST':
+        form = UserToken(request.POST)
+
+        if form.is_valid():
+            token = form.cleaned_data.get('token')
+            if helper.Token.is_valid(token):
+                # reset the password
+                try:
+                    # generate a new password
+                    user_id = helper.Token.get_userid(token)
+                    user = AuthUser.objects.get(userid = user_id)
+
+                    send_mail('New Password',
+                        'pass12345',
+                        var.EMAIL_HOST_USER,
+                        [user.email],
+                        fail_silently=False)
+
+                    user.set_password('pass12345')
+                    user.save()
+                    response = loader.get_template('auth/password_reset_done.html')
+                    return HttpResponse(response.render({}, request))
+                except Exception as e:
+                    context = {
+                        'form' : form,
+                        'invalid' : True}
+                    return render(request, 'auth/forget_password_varification.html', context)
+       
+
+        context = {
+            'form' : form,
+            'invalid' : True}
+        return render(request, 'auth/forget_password_varification.html', context)
+        
+    form = UserToken()
+    context = {
+        'form' : form,
+        'invalid' : False
+    }
+    return render(request, 'auth/forget_password_varification.html',context)
+

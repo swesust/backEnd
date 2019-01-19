@@ -4,7 +4,10 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
 User = get_user_model()
 
-
+"""
+	django custom user model form 
+	`see`: https://github.com/django/django/blob/master/django/contrib/auth/forms.py
+"""
 
 class RegisterForm(forms.ModelForm):
 	password1 = forms.CharField(widget=forms.PasswordInput)
@@ -12,18 +15,30 @@ class RegisterForm(forms.ModelForm):
 
 	class Meta:
 		model = User
-		fields = ('userid',)
+		fields = ('userid','name','email','is_student',)
 
 	def clean_userid(self):
+		"""	
+		to check the user is already taken or not
+		"""
 		userid = self.cleaned_data.get('userid')
 		query = User.objects.filter(userid=userid)
 
 		if query.exists():
 			raise forms.ValidationError('User id taken')
 
+		email =  self.cleaned_data.get('email')
+		query = User.objects.filter(email=email)
+
+		if query.exists():
+			raise forms.ValidationError('Email is taken')
+
 		return userid
 
 	def clean_password2(self):
+		"""
+		checking two raw passwords and return the password if matched
+		"""
 		password1 = self.cleaned_data.get('password1')
 		password2 = self.cleaned_data.get('password2')
 
@@ -38,7 +53,7 @@ class UserAdminCreationForm(forms.ModelForm):
 
 	class Meta:
 		model = User
-		fields = ('userid',)
+		fields = ('userid','name', 'email', 'is_student',)
 
 	def clean_password2(self):
 		password1 = self.cleaned_data.get('password1')
@@ -61,8 +76,29 @@ class UserAdminChangeForm(forms.ModelForm):
 
 	class Meta:
 		model = User
-		fields = ('is_admin', 'is_staff')
+		fields = ('name','email','is_admin', 'is_staff', 'is_student',)
 
 
 	def clean_password(self):
 		return self.initial["password"]
+
+
+class LoginForm(forms.Form):
+	userid = forms.CharField(max_length=120,
+		widget=forms.TextInput(attrs={
+			'placeholder': 'User ID',
+			'class' : 'regno-input full-width'}))
+
+	password = forms.CharField(
+		widget=forms.PasswordInput(attrs={
+			'placeholder' : 'Password',
+			'class' : 'pass-input full-width'}))
+
+
+class UserRecognize(forms.Form):
+	userid = forms.CharField(max_length=120, widget=forms.TextInput(attrs={
+		'placeholder' : 'User ID'}))
+
+class UserToken(forms.Form):
+	token = forms.CharField(max_length=155, widget=forms.TextInput(attrs={
+		'placeholder' : 'Your Token'}))

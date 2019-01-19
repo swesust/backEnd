@@ -31,11 +31,11 @@
             <div class="collapse navbar-collapse" id="theMainNav">
                 <ul class="navbar-nav justify-content-end alignEnd">
                     <li class="nav-item"> <a class="nav-link" href="/">Home</a> </li>
-                    <li class="nav-item"> <a class="nav-link" href="/#about">About Us</a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="/feeds">Feeds</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="/faculty/">Faculty</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="/batch/">Batch</a> </li>
                     {% if request.user.is_authenticated %}
-                    	<li class="nav-item"> <a class="nav-link" href="/{{ request.user.userid }}/">{{ request.user.userid }}</a> </li>
+                    	<li class="nav-item"> <a class="nav-link" href="/{{ request.user.userid }}/">{{ request.user.name }}</a> </li>
                     	<li class="nav-item"> <a class="nav-link" href="/logout/">Logout</a> </li>
                     {% else %}
                 		<li class="nav-item"> <a class="nav-link" href="/login/">Login</a> </li>

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+		<title>Feeds</title>
+		<link rel="stylesheet" type="text/css" href="{% static 'post/style.css'%} ">
+{% endblock %}
+
+{% block extra_body %}
+
+	<center>
+	{% for post in posts %}
+	<div class="post-container">
+			<h3 class="post-title">{{ post.title }}</h3>
+			{% if post.has_media %}
+				<div class="post-image-block">
+					<img src="/{{ post.imgsrc }}" class="post-image">
+				</div>
+			{% endif %}
+			<p class="post-body">
+				{{ post.body }}
+			</p>
+			<a href="/{{ post.user.userid }}" class="post-user">{{ post.user.name }}</a>
+			<p class="post-date">{{ post.time }}</p>
+			<p class="post-date">{{ post.date }}</p>
+			{% if request.user.is_authenticated %}
+				<img src="{% static 'post/delete.png' %}" class="edit-icon">
+			{% endif %}
+		</div>
+	{% endfor %}
+	</center>
+
+{% endblock %}

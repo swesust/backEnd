@@ -199,3 +199,45 @@ class Content():
 				return False
 
 		return False
+
+
+from hashlib import md5
+class Token():
+
+	def get_token(userid, hashed_password):
+		hash_token = md5(hashed_password.encode()).hexdigest()
+		return hash_token[0:16] + userid + hash_token[16:32]
+
+
+	def get_userid(token):
+		try:
+			# remove first 16 char
+			userid = token[16:len(token)]
+			# remove last 16 char
+			return userid[0:-16]
+		except Exception as e:
+			return None
+
+	def is_valid(token):
+		try:
+			h1 = token[0:16]
+
+			userid = Token.get_userid(token)
+
+			# split last 16 chars
+			h2 = token[-16:]
+
+			encode_password = h1+h2
+
+			try:
+				user = models.AuthUser.objects.get(userid=userid)
+				hashed_password = md5(user.password.encode()).hexdigest()
+
+				if encode_password != hashed_password:
+					return False
+				return True
+			except ObjectDoesNotExist as e:
+				return False
+			
+		except Exception as e:
+			return False

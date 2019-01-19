@@ -1,50 +1,28 @@
-body {
-	margin: 0px auto;
-	background-color: darkgray;
-}
-
-.contents {
-	margin: 0px;
-}
-
-.list-contents {
-	list-style: none;
-}
-
-.container {
-	margin: 0px;
-}
-.batch-year {
-	border-top-left-radius: 30px;
-	border-bottom-left-radius: 30px;
-	background-color: black;
-	width: 150px;
-}
-
-.batch-name {
-	border-top-right-radius: 30px;
-	border-bottom-right-radius: 30px;
-	background-color: white;
-	width: 500px; 
-}
-
-.li-view {
+.outter{
+	display: table;
+	width: 100%;
 	height: 50px;
-	font-size: 25px;
-	line-height: 30px;
+	margin-top: 10px;
+}
+.inner{
+	display: table-cell;
+	vertical-align: middle;
 	text-align: center;
-	float: left;
-	padding: 10px 0 10px 0;
 }
-
-.li-view a {
-	text-decoration: none;
+.batch{
+	width: 600px;
+	margin: 0 auto;
+	background-color: white;
+	font-size: 30px;
+	padding: 10px 30px 10px 30px;
+	text-align: center;
+	border-radius: 30px;
 }
-
-.batch-name a {
+.ref{
+	text-orientation: none;
 	color: black;
+	font-weight: bold;
 }
-
-.batch-year a {
-	color: white;
+.ref:hover {
+	text-decoration: none;
 }
