@@ -152,9 +152,6 @@ class AuthUser(AbstractBaseUser,PermissionsMixin):
 
 	def get_username(self):
 		return self.userid
-		
-	def __str__(self):
-		return self.userid
 
 class Student(models.Model):
 	"""
@@ -226,10 +223,14 @@ class Student(models.Model):
 	gender = models.CharField(max_length=1, choices=GENDER_CHOICE, default='F')
 	# Profile Image location
 	imgsrc = models.CharField(max_length=100,default = 'data/image.PNG')
-	# Githubid : rafiulgits
-	githubid = models.CharField(max_length=20,default = 'none')
+	# Github : rafiulgits
+	githubid = models.CharField(max_length=20,default = 'home')
 	# Linkedin : rafiul15
-	linkedinid = models.CharField(max_length=30,default = 'none')
+	linkedinid = models.CharField(max_length=30,default = 'home')
+	# Facebook : ******
+	facebookid = models.CharField(max_length=30, default='home')
+	# twitter : rafiultweets
+	twitterid = models.CharField(max_length=20, default='home')
 
 	# default: object output
 	def __str__(self):
@@ -280,7 +281,7 @@ class Teacher(models.Model):
 	
 	# default: object output
 	def __str__(self):
-		return self.user
+		return self.user.name
 
 class Post(models.Model):
 	"""

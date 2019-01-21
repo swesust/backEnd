@@ -24,10 +24,16 @@
 			<p class="post-date">{{ post.time }}</p>
 			<p class="post-date">{{ post.date }}</p>
 			{% if request.user.is_authenticated %}
-				<img src="{% static 'post/delete.png' %}" class="edit-icon">
+				<a href="/feeds/delete/{{ post.pk }}"><img src="{% static 'post/delete.png' %}" class="edit-icon"></a>
 			{% endif %}
 		</div>
 	{% endfor %}
 	</center>
+
+	{% if request.user.is_authenticated %}
+		<div class="new-post-create">Create Post</div>
+	{% endif %}
+	<div class="footer-gap">	
+	</div>
 
 {% endblock %}

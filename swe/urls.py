@@ -23,6 +23,7 @@ urlpatterns = [
     path('forget-password/varification/', views.forget_password_varification, 
         name ='forget_password_varification'),
 
+    path('feeds/delete/<pk>/', views.feed_delete, name='feed_delete' ),
     # make sure that this path is always in last position
     # example.com/2016831035/
     path('<user_id>/', views.profile, name='profile')

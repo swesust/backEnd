@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+  <link rel="stylesheet" type="text/css" href="{% static 'profile/style.css'%}">
+  <title>{{ user.name }} | SWE</title>
+{% endblock %}
+
+{% block extra_body %}
+  <div class="card-block">
+    <div class="profile-image-block">
+      <img src="/{{ profile.imgsrc }}" class="profile-image">
+    </div>
+    <div class="user-name-block">
+      {{ user.name }}
+    </div>
+      
+    <div class="user-summary-block">
+      {{ profile.position }} <br>
+      Gender : {{ profile.gender }}
+      {% if profile.alumni %}
+        | Alumni
+      {% endif %}
+      {% if profile.leaved %}
+        Leaved
+      {% endif %}
+    </div>
+
+    {% if is_self %}
+      <a href="/student/{{ user.userid }}/edit" class="card-block-edit">
+         <img src="{% static 'profile/edit.png' %}" class="card-block-edit">
+      </a>
+    {% endif %}
+  </div>
+
+  {% if is_auth %}
+    <div class="card-block">
+      <div class="card-label">About</div>
+      <div class="card-content-label"> Email </div>
+      <div class="card-content-data">{{ user.email }}</div>
+      <div class="card-content-label"> Phone </div>
+      <div class="card-content-data"> {{ profile.phone }} </div>
+    </div>
+  {% endif %}
+
+  <!-- About edit pop up window -->
+  <div class="footer">
+  </div>
+
+
+  <script type="text/javascript" src="{% static 'profile/main.js'%}"></script>
+{% endblock %}

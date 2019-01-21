@@ -16,11 +16,7 @@
     </div>
       
     <div class="user-summary-block">
-      {% if user.is_student %}
-        {{ user.userid }}
-      {% else  %}
-          {{ user.position }}
-      {% endif %}
+      {{ user.userid }}
 
       {% if profile.alumni %}
         | Alumni
@@ -28,14 +24,11 @@
     </div>
 
     <div class="user-summary-block">
-      Gender : {{ profile.gender }}
-      {% if user.is_student %}
-        | Blood: {{ profile.bloodgroup}} <br>
+      Gender : {{ profile.gender }} | Blood: {{ profile.bloodgroup}} <br>
         <a href="/batch/{{ profile.batch.year }}">{{ profile.batch }}</a>
-      {% endif %}
     </div>
     {% if is_self %}
-      <a href="/{{ user.userid }}/edit" class="card-block-edit">
+      <a href="/student/{{ user.userid }}/edit" class="card-block-edit">
          <img src="{% static 'profile/edit.png' %}" class="card-block-edit">
       </a>
     {% endif %}
