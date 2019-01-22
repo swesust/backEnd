@@ -75,3 +75,58 @@
 	border-radius: 30px;
 	cursor: pointer;
 }
+
+.new-post-create:hover {
+	background-color: #14D181;
+}
+
+.pop-window {
+	display: none;
+	width: 100%; height: 100%;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(0,0,0,0.6);
+	position: fixed;
+	top: 0;
+}
+
+.pop-window-container {
+	width: 500px; height: auto;
+	padding: 10px;
+	background-color: white;
+	margin: 0;
+}
+
+.pop-window-container input {
+	display: block;
+	width: 480px;
+	margin-top: 10px;
+}
+
+.pop-window-container textarea {
+	width: 480px; height: 300px;
+	margin-top: 10px;
+}
+
+.pop-window-container button {
+	margin-top: 10px; 
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+	cursor: pointer;
+	background-color: #14D181;
+	padding: 5px 10px 5px 10px;
+	border-radius: 2px;
+	font-weight: bold;
+	color: black;
+}
+
+.close-icon {
+	position: absolute;
+	top: 10px; right: 20px;
+	font-size: 50px;
+	font-weight: bold;
+	color: #F2D1D1;
+	transform: rotate(45deg);
+	cursor: pointer;
+}

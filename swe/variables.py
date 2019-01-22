@@ -14,3 +14,8 @@ LOGIN_URL = '/login/'
 LOGIN_TEMPLATE = 'auth/login.html'
 LOGOUT_TEMPLATE = 'auth/logout.html'
 INDEX_TEMPLATE = 'index.html'
+
+FOLDER_STUDENT = 'data/student'
+FOLDER_TEACHER = 'data/teacher'
+FOLDER_POST = 'data/post'
+

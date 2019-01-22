@@ -299,13 +299,28 @@ class Post(models.Model):
 	title = models.CharField(max_length=150)
 	# body can be a large text	
 	body = models.TextField()
-	# auto generate the created time
-	time = models.TimeField(auto_now=True)
-	# auto genrate the current date
-	date = models.DateField(auto_now=True)
+	# auto generate date and time 
+	# TODO: timezone problem
+	time_date = models.DateTimeField(auto_now_add=True)
 	# link the post created user
 	user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
 	# if the post carry an image then this will be `True`
 	has_media = models.BooleanField(default=False)
 	# image location: posts/currentmillisec.type
-	imgsrc = models.CharField(max_length=30, default='none')
+	imgsrc = models.CharField(max_length=50, default='none')
+
+
+
+# TODO
+# class Endrosements(models.Model):
+# 	key = models.CharField()
+# 	value = models.TextField()
+# 	user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
+
+
+# class Working(models.Model):
+# 	company = models.CharField(max_length=40)
+# 	position = models.CharField(max_length = 25)
+# 	from_date = models.DateField()
+# 	current = models.BooleanField(default=False)
+# 	to_date = models.DateField()

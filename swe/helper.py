@@ -15,7 +15,7 @@ class Image():
 		storing display images of profiles. 
 		root location : data/
 	"""
-	def save(user, bytesdata):
+	def save(loc, bytesdata):
 		"""
 			to save user display image
 			>>helper.Image.save(Student object, image bytes file)
@@ -33,64 +33,36 @@ class Image():
 			image will rename with current millisecond.type
 
 		"""
-		if type(user) == models.Student:
-			img,ext = Image.process(bytesdata)
-			# save the image
-			loc = 'data/students/'+user.batch+'/'+user.regid
-			f = FSS(location = loc)
+		img,ext = Image.process(bytesdata)
+		# save the image
+		f = FSS(location = loc)
 
 
-			filename = str(int(time()*1000000))
-			filename = filename+'.'+ext
+		filename = str(int(time()*1000000))
+		filename = filename+'.'+ext
 
-			# make sure the dir already exist or not
-			if isdir(f.location) == False:
-				makedirs(f.location)
-
-
-			# if a previous image is available then delete the previous one first
-			if len(user.imgsrc) != 0:
-				remove(user.imgsrc)
-
-			# save in storage 
-			img.save(f.location+'/'+filename, format=ext, quality=90)
-
-			# set the location in model
-			user.imgsrc =loc+'/'+filename
-			# to show the image in templete use:
-			#	<img src="/{{ user.imgsrc }}">
-
-			# migrate the information in database
-			user.save()
-
-		elif type(user) == models.Teacher:
-			img,ext = Image.process(bytesdata)
-
-			# unique folder for every teacher
-			loc = 'data/teachers/'+user.hid
-			f = FSS(location = loc)
-			filename = str(int(time()*1000000))
-			filename = filename+'.'+ext
-
-			# make sure the dir already exist or not
-			if isdir(f.location) == False:
-				makedirs(f.location)
+		# make sure the dir already exist or not
+		if isdir(f.location) == False:
+			makedirs(f.location)
 
 
-			# if previous image is available then delete the previous one first
-			if len(user.imgsrc) != 0:
-				remove(user.imgsrc)
-			
+		# # if a previous image is available then delete the previous one first
+		# if len(user.imgsrc) != 0:
+		# 	remove(user.imgsrc)
 
-			# save the file in storage
-			img.save(f.location+'/'+filename, format=ext, quality=90)
+		# save in storage 
+		img.save(f.location+'/'+filename, format=ext, quality=90)
 
-			# set the location in model
-			user.imgsrc = loc +'/'+filename
+		# return the storage location
+		return loc+'/'+filename
 
-			# migrate the information in database
-			user.save()
 
+	def delete(loc):
+		try:
+			remove(loc)
+			return True
+		except Exception as e:
+			return False
 	def process(bytesdata):
 		"""
 			retrieve the image file from bytes and resize (1000*x)

@@ -132,31 +132,8 @@ def profile(request, user_id):
     """
     POST Request:
     """
-    if request.method == 'POST':
-        data = request.FILES
-        imgsrc = data.get('profile')
-        if imgsrc != None:
 
-            # from name check the file format : jpg, jpeg, .png
-            if Image.isValidFormat(imgsrc.name):
-                if imgsrc.multiple_chunks(2500000):
-                    imgsrc.chunks(2500000)
-                # read the stream
-                bytedata = imgsrc.read()
-
-                # for students
-                if len(user_id) == 10:
-                    user = Student.objects.get(regid=user_id)
-                    Image.save(user, bytedata)
-                elif len(user_id) == 8:
-                    user = Teacher.objects.get(hid=user_id)
-                    Image.save(user, bytedata)
-
-    """
-    try to fetch the requested user account. If the account exist then
-    check the account type; whether its a student account or teacher account
-    and then fetch the profile from the particular model
-    """
+    
     try:
         user = AuthUser.objects.get(userid = user_id)
         profile = None
@@ -194,16 +171,52 @@ def profile(request, user_id):
 
 # response of: example.com/feeds/
 def feeds(request):
-    posts = Post.objects.order_by('time', 'date')[::-1]
+
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        body = request.POST.get('body')
+        file_data = request.FILES
+        image_file = file_data.get('image')
+
+        post = Post()
+
+        if image_file != None:
+            if Image.isValidFormat(image_file.name):
+
+                # chunk the total stream for bufferring
+                if image_file.multiple_chunks(2500000):
+                    image_file.chunks(2500000)
+
+                # read the image file stream
+                bytes_data = image_file.read()
+                imgsrc = Image.save(var.FOLDER_POST, bytes_data)
+                post.imgsrc = imgsrc
+                post.has_media = True
+            else:
+                post.has_media = False
+        else:
+            post.has_media = False
+
+        post.title = title
+        post.body = body
+        post.user = request.user
+        
+
+        post.save()
+
+    posts = Post.objects.order_by('time_date')[::-1]
     context = {
         'posts' : posts
         }
     return render(request, 'feeds.html', context)
 
-
+@login_required(login_url = var.LOGIN_URL)
 def feed_delete(request, pk):
     try:
-        Post.objects.get(pk = pk).delete()
+        post = Post.objects.get(pk = pk)
+        if post.has_media:
+            Image.delete(post.imgsrc)
+        post.delete()
         # redirect to current page
         return redirect('/feeds')
     except ObjectDoesNotExist as e:

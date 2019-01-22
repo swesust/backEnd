@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
+
 {% block extra_head %}
 		<title>Feeds</title>
 		<link rel="stylesheet" type="text/css" href="{% static 'post/style.css'%} ">
@@ -21,8 +22,7 @@
 				{{ post.body }}
 			</p>
 			<a href="/{{ post.user.userid }}" class="post-user">{{ post.user.name }}</a>
-			<p class="post-date">{{ post.time }}</p>
-			<p class="post-date">{{ post.date }}</p>
+			<p class="post-date">{{ post.time_date }}</p>
 			{% if request.user.is_authenticated %}
 				<a href="/feeds/delete/{{ post.pk }}"><img src="{% static 'post/delete.png' %}" class="edit-icon"></a>
 			{% endif %}
@@ -31,9 +31,31 @@
 	</center>
 
 	{% if request.user.is_authenticated %}
-		<div class="new-post-create">Create Post</div>
+		<div class="new-post-create" onclick="show()">Create Post</div>
+
+		<div class="pop-window">
+			<div class="pop-window-container">
+				<form method="POST" enctype="multipart/form-data">
+					{% csrf_token %}
+					<input type="text" name="title" placeholder="Title" required>
+					<textarea placeholder="Body" name="body" required></textarea>
+					<input type="file" name="image" accept=".png , .jpg , .jpeg">
+					<button>Create Post</button>
+				</form>
+			</div>
+
+			<div class="close-icon" onclick="hide()">
+				+
+			</div>
+		</div>
+
+
+
+		<!-- TODO: post delete confirmations -->
 	{% endif %}
 	<div class="footer-gap">	
 	</div>
+
+	<script type="text/javascript" src="{% static 'post/script.js' %}"></script>
 
 {% endblock %}
