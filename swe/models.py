@@ -152,9 +152,6 @@ class AuthUser(AbstractBaseUser,PermissionsMixin):
 
 	def get_username(self):
 		return self.userid
-		
-	def __str__(self):
-		return self.userid
 
 class Student(models.Model):
 	"""
@@ -168,28 +165,12 @@ class Student(models.Model):
 		* Alumni: True(student graduated) | False(studying)
 		* Blood Group : B+
 		* Gender : M (Male)
-		* Display Image : storagelocation:(data/student/2016/2016831035/image.png)
+		* Display Image : storagelocation:(data/students/2016/2016831035/image.png)
+		* Cover Image : storagelocation:(data/students/2016/2016831035/cover.jpg)
 		* Github Profile : rafiulgits (https://github.com/rafiulgits)
 		* Linkedin Profile : rafiul15 (https://linkedin.com/in/rafiul15)
-
-	Student extra informations will saved as JSON: 
-		data/students/2016/2016831035/contents.json 
-		
-		prototype:
-		{
-			'bio' : 'This is user bio',
-			'works' ['working as a programmer in X', 'worked as a program tester in Y'],
-			'skill': ['android', 'django'],
-			'programming language' : ['C', 'Java', 'Python'],
-			'interested': ['programming', 'developing', 'leadership'],
-			'projects': ['github.com/rafiulgits/IP-Messenger', 'github.com/sakkhat/Project250'],
-			'codefores': account id
-			.
-			.
-			.
-		}
-
-		`see`: swe.helper.Conntent for more informations
+		* Twitter Profile : rafiultweets (https://twitter.com/rafiultweets)
+		* Facebook Profile : ****** (https://facebook.com/*****)
 	"""
 
 	# Connect with user authentication model
@@ -226,10 +207,16 @@ class Student(models.Model):
 	gender = models.CharField(max_length=1, choices=GENDER_CHOICE, default='F')
 	# Profile Image location
 	imgsrc = models.CharField(max_length=100,default = 'data/image.PNG')
-	# Githubid : rafiulgits
-	githubid = models.CharField(max_length=20,default = 'none')
+	# Cover Image location 
+	cover = models.CharField(max_length=100,default = 'data/cover.JPEG')
+	# Github : rafiulgits
+	githubid = models.CharField(max_length=20,default = 'home')
 	# Linkedin : rafiul15
-	linkedinid = models.CharField(max_length=30,default = 'none')
+	linkedinid = models.CharField(max_length=30,default = 'home')
+	# Facebook : ******
+	facebookid = models.CharField(max_length=30, default='home')
+	# twitter : rafiultweets
+	twitterid = models.CharField(max_length=20, default='home')
 
 	# default: object output
 	def __str__(self):
@@ -245,16 +232,8 @@ class Teacher(models.Model):
 		Leaved: Indicate that the teacher is continuing or not
 		Head: Indicate the dept. head 
 		Gender: M(Male) | F(Female) | T(Third Gender)
-		Image: Storage location (data/teachers/userid/image.JPG)
-
-	
-		Extra informations will similary saved in a JSON file. 
-			data/teachers/userid/contents.json
-
-			prototype:
-			{
-				'reseach' : ['natural langauage processing', 'AI'],
-			}
+		Profile Image: Storage location (data/teachers/userid/image.JPG)
+		Cover Image: Storage location (data/teachers/userid/cover.jpg
 
 	"""
 	user = models.OneToOneField(AuthUser, on_delete=models.CASCADE)
@@ -277,10 +256,11 @@ class Teacher(models.Model):
 		('T', 'Third Gender'))
 	gender = models.CharField(max_length=1, choices=GENDER_CHOICE, default='F')
 	imgsrc = models.CharField(max_length=100,default = 'data/image.PNG')
+	cover = models.CharField(max_length=100,default = 'data/cover.JPEG')
 	
 	# default: object output
 	def __str__(self):
-		return self.user
+		return self.user.name
 
 class Post(models.Model):
 	"""
@@ -298,13 +278,62 @@ class Post(models.Model):
 	title = models.CharField(max_length=150)
 	# body can be a large text	
 	body = models.TextField()
-	# auto generate the created time
-	time = models.TimeField(auto_now=True)
-	# auto genrate the current date
-	date = models.DateField(auto_now=True)
+	# auto generate date and time 
+	# TODO: timezone problem
+	time_date = models.DateTimeField(auto_now_add=True)
 	# link the post created user
 	user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
 	# if the post carry an image then this will be `True`
 	has_media = models.BooleanField(default=False)
 	# image location: posts/currentmillisec.type
-	imgsrc = models.CharField(max_length=30, default='none')
+	imgsrc = models.CharField(max_length=50, default='none')
+
+class Endrosement(models.Model):
+	"""
+	Profile endrosements:
+	
+	`key` : What the endrosement about
+	`value` : What have to endrose
+	`user` : who endrose this 
+
+	example:
+		'key' : 'Programming Language'
+		'value' : 'C, Java, Python'
+		'user' : AuthUser(userid = '2016831035')
+
+
+	key choices are predefined
+	"""
+	ENDROSEMENTS_KEYS = (
+		('Teaching', 'Teaching'),
+		('Research Interest', 'Research Interest'),
+		('Education', 'Education'),
+		('Publications', 'Publications'),
+		('Award & Recognizations', 'Award & Recognizations'),
+		('Programming Language', 'Programming Language'),
+		('Technology', 'Technology')
+	)
+	key = models.CharField(max_length=40, choices = ENDROSEMENTS_KEYS)
+	value = models.TextField()
+	user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
+
+
+class Working(models.Model):
+	"""
+	Working status information:
+
+	`company` : Comany name
+	`position` : Job position
+	`from_date` : When job started
+	`current` : Whether the user currently working there
+	`to_date` : If the user already left this job
+	`comment` : Comment about this job
+	`user` : The user
+	"""
+	company = models.CharField(max_length=40)
+	position = models.CharField(max_length = 25)
+	from_date = models.DateField()
+	current = models.BooleanField(default=False)
+	to_date = models.DateField()
+	comment =  models.TextField()
+	user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)

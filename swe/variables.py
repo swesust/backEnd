@@ -14,3 +14,9 @@ LOGIN_URL = '/login/'
 LOGIN_TEMPLATE = 'auth/login.html'
 LOGOUT_TEMPLATE = 'auth/logout.html'
 INDEX_TEMPLATE = 'index.html'
+
+# storage folder locations
+FOLDER_STUDENT = 'data/students'
+FOLDER_TEACHER = 'data/teachers'
+FOLDER_POST = 'data/posts'
+

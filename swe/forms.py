@@ -102,3 +102,5 @@ class UserRecognize(forms.Form):
 class UserToken(forms.Form):
 	token = forms.CharField(max_length=155, widget=forms.TextInput(attrs={
 		'placeholder' : 'Your Token'}))
+
+

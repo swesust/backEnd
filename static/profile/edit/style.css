@@ -1,0 +1,177 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    overflow-x: hidden;
+}
+
+
+.editBlock {
+    position: absolute;
+    top: 120px;
+    margin: 0 auto;
+    left: 50%;
+    transform: translate(-50%);
+}
+.editTitle {
+    text-align: center;
+}
+.box {
+    width: 100%;
+    background: #eee;
+    border: 1px solid #aaa;
+    padding: 15px;
+    -webkit-box-shadow: 0px 0px 19px 2px rgba(170,170,170,1);
+    -moz-box-shadow: 0px 0px 19px 2px rgba(170,170,170,1);
+    box-shadow: 0px 0px 19px 2px rgba(170,170,170,1);
+    margin-top: 50px;
+    position: relative;
+}
+.box-header {
+    font-size: 35px;
+    margin-left: 20px;
+}
+.box-container {
+    margin-top: 20px;
+    margin-bottom: 15px;
+    margin-left: 50px;
+}
+.proPicChangePic {
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+    object-position: center;
+    display: inline-block;
+    border-radius: 50% 50%;
+}
+.coverPicChangePic {
+    height: 50px;
+    width: 100px;
+    object-fit: cover;
+    object-position: center;
+    display: inline-block;
+}
+.PicChange label p{
+    display: inline-block;
+    font-size: 20px;
+    margin: 20px;
+}
+.PicChange {
+    margin-bottom: 30px;
+}
+.form-group label {
+    font-size: 20px;
+    width: 200px;
+    margin-bottom: 20px;
+}
+.form-group input, .form-group textarea {
+    color: #333;
+    padding: 2px;
+    width: 400px;
+}
+#alumniChange, #stillWorkingChange {
+    height: 20px;
+    width: 20px;
+}
+.addMoreEndorsement{
+    position: relative;
+    left: 46%;
+    font-size: 40px;
+}
+.addMoreEndorsement a{
+    color: #666;
+    transition: ease 0.3s;
+}
+.addMoreEndorsement a:hover{
+    color: #333;
+}
+.deleteBox {
+    color: #333;
+    margin-left: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: ease 0.3s;
+}
+.deleteBox:hover {
+    color: #d63031;
+}
+.endorPopUp {
+    display: none;
+    z-index: 10;
+    position: fixed;
+    min-height: 100%;
+    min-width: 100%;
+    background-color: #000000bb;
+}
+.idPopUp {
+    display: none;
+    z-index: 10;
+    position: fixed;
+    min-height: 100%;
+    min-width: 100%;
+    background-color: #000000bb;
+}
+.popUpForm{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-height: 300px;
+    min-width: 500px;
+    background: #ffffffdd;
+    border-radius: 20px;
+}
+.formData{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.endorsementData, .endorsementSelect{
+    min-width: 400px;
+    margin: 10px;
+    border-radius: 5px;
+    padding: 4px;
+}
+.idData, .idSelect{
+    min-width: 400px;
+    margin: 10px;
+    border-radius: 5px;
+    padding: 4px;
+}
+.formData button {
+    width: 175px;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+.submit-buttons{
+    margin-top: 50px;
+    margin-bottom: 50px;
+    position: relative;
+    left: 40%;
+}
+.sub-btn {
+    width: 100px;
+    margin-left: 10px;
+}
+
+
+
+
+
+/*FOR RESPONSIVE NAVBAR*/
+@media only screen and (min-width: 992px) {
+    .alignEnd {
+        position: absolute !important;
+        right: 10px;
+    }
+    .nav-item{
+        margin-left: 8px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .notImportant {
+        display: none;
+    }
+}

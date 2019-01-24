@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+  <link rel="stylesheet" type="text/css" href="{% static 'profile/style.css'%}">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+  <title>{{ user.name }} | SWE</title>
+{% endblock %}
+
+{% block extra_body %}
+
+  <div class="contents wide-display">
+    <!-- Cover Pic -->
+    <div class="cover">
+      <img src="/{{ profile.cover }}" alt="Profile Pic" class="cover-pic">
+      <a href="#" class="edit-profile"><i class="fas fa-edit"></i></a>
+    </div>
+
+    <!-- Display Profile Pic -->
+    <div class="display-profile">
+        <img src="/{{ profile.imgsrc }}" alt="Profile Pic" class="display-profile-pic">
+    </div>
+    <!-- Name and Reg no -->
+    <div class="name">
+        <p class="display-name">{{ user.name }}</p>
+        <p class="regno">
+          {{ profile.position }}
+          {% if profile.head %}
+            | Head
+          {% endif %}
+          {% if profile.leaved %}
+            | on leave
+          {% endif %}
+          {% if profile.alumni %}
+          <br> Alumni <br>
+          {% endif %}
+        </p>
+  </div>
+
+<!-- No integrated profile for teachers -->
+<!--   <div class="profileContainer">
+    <a href="https://github.com/{{ profile.githubid }}" class="profileLink githubLink">
+      <i class="fab fa-github-square"></i>
+    </a>
+    <a href="https://twitter.com/{{ profile.twitterid }}" class="profileLink twitterLink">
+      <i class="fab fa-twitter-square"></i>
+    </a>
+    <a href="https://linkedin.com/in/{{ profile.linkedinid }}" class="profileLink linkedinLink">
+      <i class="fab fa-linkedin"></i>
+    </a>
+    <a href="https://facebook.com/{{ profile.facebookid }}" class="profileLink fbLink">
+      <i class="fab fa-facebook-square"></i>
+    </a>
+  </div> -->
+
+  <div class="container about-block-gap">
+
+    <!--  Authentication needed :::::::::::::::::::::::::
+      :::::::::::::::::::::User about:::::::::::::::::::
+       :::::::::::::::::::::::::::::::::::::::::::::::::-->
+
+    {% if is_auth %}
+      <div class="box">
+        <div class="box-header">
+          About
+        </div>
+        <div class="box-container">
+          <table>
+            <tr>
+              <td class="rowTitle">Email</td>
+              <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+              <td class="rowTitle">Phone</td>
+              <td>{{ profile.phone }}</td>
+            </tr>
+            <tr>
+              <td class="rowTitle">Address</td>
+              <td>{{ profile.address }}</td>
+            </tr>
+
+          </table>
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="box">
+      <div class="box-header">
+        Endorsements
+      </div>
+      <div class="box-container">
+        <table>
+          {% for item in endrosements %}
+            <tr>
+              <td class="rowTitle">{{ item.key }}</td>
+              <td>{{ item.value }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+
+
+  <!-- Linking JSs-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="{% static 'profile/main.js' %}"></script>
+{% endblock %}

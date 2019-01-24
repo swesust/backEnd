@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+	<!-- Meta tag for character set -->
+	<meta charset="utf-8">
+	<!-- Meta tag for viewport, Used to make the page responsive -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Pgae Title -->
+	<title>{{ user.name }} | Settings</title>
+	<!-- Linking CSS -->
+	<link rel="stylesheet" type="text/css" href="{% static 'profile/edit/style.css' %}">
+	<!-- Linking Bootstrap CSS-->
+	<link rel="stylesheet" href="{% static 'common/bootstrap/css/bootstrap.min.css' %}">
+	<!-- Linking Font Awesome Icons-->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+
+{% endblock %}
+
+{% block extra_body %}
+
+    <div class="container editBlock">
+    	<h2 class="editTitle">Edit Profile</h2>
+
+		<form class="editForm" action="index.html" method="POST" enctype="multipart/form-data">
+			{% csrf_token %}
+			<div class="box">
+        		<div class="box-header">
+        			Basics
+        		</div>
+        		<div class="box-container">
+					<div class="PicChange">
+        				<img src="/{{ profile.imgsrc }}" alt="Profile Pic" class="proPicChangePic">
+						<label for="uploadProPic"><p>Change Profile Pic</p></label>
+						<input type="file" name="profilePic" id="uploadProPic" accept=".jpeg, .png, .jpg">
+					</div>
+					<div class="PicChange">
+        				<img src="/{{ profile.cover }}" alt="Cover Pic" class="coverPicChangePic">
+						<label for="uploadCoverPic"><p>Change Cover Pic</p></label>
+						<input type="file" name="coverPic" id="uploadCoverPic" accept=".jpeg, .png, .jpg">
+					</div>
+					<div class="form-group">
+						<label for="nameChange">Name</label>
+						<input type="text" name="name" value="{{ user.name }}" id="nameChange" required>
+					</div>
+					<div class="form-group">
+						<label for="emailChange">Email</label>
+						<input type="email" name="email" value="{{ user.email }}" id="emailChange" required>
+					</div>
+					<div class="form-group">
+						<label for="phoneChange">Phone</label>
+						<input type="text" name="phone" value="{{ profile.phone }}" id="phoneChange" required>
+					</div>
+					{% if user.is_student %}
+					<div class="form-group">
+						<label for="addressChange">Address</label>
+						<!-- <textarea name="address" id="addressChange" required></textarea> -->
+						<input type="text" name="address" value="{{ profile.address }}" id="addressChange" required>
+					</div>
+					{% endif %}
+					<div class="form-group">
+						<label for="alumniChange">Alumni</label>
+						{% if profile.alumni %}
+							<input type="checkbox" name="alumni" value="true" id="alumniChange" checked>
+						{% else %}
+							<input type="checkbox" name="alumni" value="true" id="alumniChange">
+						{% endif %}
+					</div>
+        		</div>
+        	</div>
+			
+			<div class="box">
+        		<div class="box-header">
+        			Endorsements
+        		</div>
+        		<div class="box-container">
+
+        			{% for item in endrosements %}
+						<div class="form-group">
+							<label for="progLang">{{ item.key }}</label>
+							<textarea name="ProgrammingLanguage" id="progLang">{{ item.value }}</textarea> <i class="fas fa-times-circle deleteBox"></i>
+						</div>			
+					{% endfor %}
+
+					<div class="addMoreEndorsement">
+						<a href="#" onclick="document.getElementById('endorPopUp').style.display='block'"> <i class="fas fa-plus-circle"></i> </a>
+					</div>
+        		</div>
+        	</div>
+			
+			<div class="box">
+        		<div class="box-header">
+        			Integrated Profiles
+        		</div>
+        		<div class="box-container">
+					<div class="form-group">
+						<label for="fb">Facebook ID</label>
+						<input type="text" name="facebookid" value="{{ profile.facebookid }}" id="fb"> <i class="fas fa-times-circle deleteBox"></i>
+					</div>
+					<div class="form-group">
+						<label for="git">Github ID</label>
+						<input type="text" name="githubid" value="{{ profile.githubid }}" id="git"> <i class="fas fa-times-circle deleteBox"></i>
+					</div>
+					<div class="form-group">
+						<label for="git">Linkedin ID</label>
+						<input type="text" name="linkedinid" value="{{ profile.linkedinid }}" id="git"> <i class="fas fa-times-circle deleteBox"></i>
+					</div>
+					<div class="form-group">
+						<label for="git">Twitter ID</label>
+						<input type="text" name="twitterid" value="{{ profile.twitterid }}" id="git"> <i class="fas fa-times-circle deleteBox"></i>
+					</div>
+        		</div>
+        	</div>
+			
+			<div class="box">
+        		<div class="box-header">
+        			Work
+        		</div>
+				<div class="box-container">
+					<div class="form-group">
+						<label for="companyNameChange">Company</label>
+						<input type="text" name="company" value="Google" id="companyNameChange">
+					</div>
+					<div class="form-group">
+						<label for="positionChange">Position</label>
+						<input type="text" name="jobPosition" value="CEO" id="positionChange">
+					</div>
+					<div class="form-group">
+						<label for="startingDateChange">From</label>
+						<input type="date" name="startingDate" value="" id="startingDateChange">
+					</div>
+					<div class="form-group">
+						<label for="stillWorkingChange">Still Working</label>
+						<input type="checkbox" name="stillWorking" value="true" id="stillWorkingChange" onclick="enableTo();">
+					</div>
+					<div class="form-group">
+						<label for="endingDateChange">To</label>
+						<input type="date" name="endingDate" value="" id="endingDateChange" disabled>
+					</div>
+					<div class="form-group">
+						<label for="jobCommentChange">Say Something</label>
+						<textarea name="jobComment" id="jobCommentChange"></textarea>
+					</div>
+        		</div>
+        	</div>
+
+			<div class="submit-buttons">
+				<button type="submit" name="submit" class="btn sub-btn btn-success">Save</button>
+				<button type="reset" name="reset" class="btn sub-btn btn-danger">Reset</button>
+			</div>
+		</form>
+
+    </div>
+
+	<!-- Id Pop Up -->
+
+	<!-- Endorsement Pop Up -->
+
+	<div class="endorPopUp" id="endorPopUp">
+		<div class="popUpForm">
+			<div class="formData">
+				<select class="endorsementSelect" name="EndorsementSelect">
+					<option value="0">Programming Language</option>
+					<option value="1">Interested In</option>
+					<option value="2">Skill</option>
+					<option value="3">Experience</option>
+					<option value="4">Projects</option>
+				</select>
+				<textarea name="endorsementData" class="endorsementData" placeholder="Endorsement"></textarea>
+				<button type="button" name="button" class="btn endoBtn btn-info">Add</button>
+				<button type="button" name="button" class="btn endoBtn btn-danger" onclick="document.getElementById('endorPopUp').style.display='none'">Close</button>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Linking JSs-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+	<script src="{% static 'common/bootstrap/js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'profile/edit/main.js' %}"></script>
+
+{% endblock %}
