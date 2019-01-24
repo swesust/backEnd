@@ -60,7 +60,7 @@ def login(request):
 
             if user is not None:
                 auth_login(request, user)
-                return render(request, var.INDEX_TEMPLATE, {})
+                return redirect('/')
 
             else:
                 context = {
@@ -130,10 +130,8 @@ def batch(request, batch_id):
 # response of: example.com/userid
 def profile(request, user_id):
     """
-    POST Request:
+    User profile 
     """
-
-    
     try:
         user = AuthUser.objects.get(userid = user_id)
         profile = None
@@ -154,19 +152,84 @@ def profile(request, user_id):
             # checking the request user is trying to access his/her/ze's account
             is_self = (request.user.userid == user_id)
 
+        # fetch all endrosements of this user
+        endrosements = Endrosement.objects.filter(user=user)
         context = {
             'user' : user,
             'profile' : profile,
             'is_auth' : is_auth,
-            'is_self' : is_self
+            'is_self' : is_self,
+            'endrosements' : endrosements
         }
         if user.is_student:
+            # fetch all working information of this user
+            works = Working.objects.filter(user=user)
+            context['works'] = works
             return render(request, 'profiles/student.html', context)
         else:
             return render(request, 'profiles/teacher.html', context)
 
     except ObjectDoesNotExist as e:
         return HttpResponse('User Profile Not Found') 
+
+
+#response of: example.com/userid/edit
+@login_required(login_url=var.LOGIN_URL)
+def profile_edit(request, user_id):
+    if request.user.userid != user_id:
+        return redirect('/'+user_id+'/')
+
+
+    """
+    POST request:
+
+    User and Profile:
+        Profile Image = 'profilePic'
+        Cover Image = 'coverPic'
+        User Name = 'name'
+        User Emal = 'email'
+        Profile Phone = 'phone'
+        Student Profile Address = 'address'
+        Profile Alumni = 'alumni'
+
+
+    Endrosements:
+        #options
+
+
+    Integrated Profile:
+        Facebook = 'facebookid'
+        Github = 'githubid'
+        Twitter = 'twitterid'
+        LinkedIn = 'linkedinid'
+
+
+    Working:
+        Company Name = 'company'
+        Position = 'jobPosition'
+        From Date = 'startingDate'
+        Is working = 'stillWorking'
+        To Date = 'endingDate'
+        Comment  = 'jobComment'
+    """
+    
+    # profile edit
+    context = {}
+    user = AuthUser.objects.get(userid = user_id)
+    context['user'] = user 
+    if user.is_student:
+        profile = Student.objects.get(user = user)
+        working = Working.objects.filter(user = user)
+        context['working'] = working
+        context['profile'] = profile
+    else:
+        profile = Teacher.objects.get(user = user)
+        context['profile'] = profile
+
+    endrosements = Endrosement.objects.filter(user = user)    
+    context['endrosements'] = endrosements
+
+    return render(request, 'profiles/edit.html',context)
 
 
 # response of: example.com/feeds/
@@ -181,7 +244,7 @@ def feeds(request):
         post = Post()
 
         if image_file != None:
-            if Image.isValidFormat(image_file.name):
+            if Image.is_valid_format(image_file.name):
 
                 # chunk the total stream for bufferring
                 if image_file.multiple_chunks(2500000):

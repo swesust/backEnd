@@ -3,83 +3,108 @@
 
 {% block extra_head %}
   <link rel="stylesheet" type="text/css" href="{% static 'profile/style.css'%}">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
   <title>{{ user.name }} | SWE</title>
 {% endblock %}
 
 {% block extra_body %}
-  <div class="card-block">
-    <div class="profile-image-block">
-      <img src="/{{ profile.imgsrc }}" class="profile-image">
-    </div>
-    <div class="user-name-block">
-      {{ user.name }}
-    </div>
-      
-    <div class="user-summary-block">
-      {{ user.userid }}
 
-      {% if profile.alumni %}
-        | Alumni
-      {% endif %}
+  <div class="contents wide-display">
+    <!-- Cover Pic -->
+    <div class="cover">
+      <img src="/{{ profile.cover }}" alt="Profile Pic" class="cover-pic">
+      <a href="/{{ user.userid }}/edit" class="edit-profile"><i class="fas fa-edit"></i></a>
     </div>
 
-    <div class="user-summary-block">
-      Gender : {{ profile.gender }} | Blood: {{ profile.bloodgroup}} <br>
-        <a href="/batch/{{ profile.batch.year }}">{{ profile.batch }}</a>
+    <!-- Display Profile Pic -->
+    <div class="display-profile">
+        <img src="/{{ profile.imgsrc }}" alt="Profile Pic" class="display-profile-pic">
     </div>
-    {% if is_self %}
-      <a href="/student/{{ user.userid }}/edit" class="card-block-edit">
-         <img src="{% static 'profile/edit.png' %}" class="card-block-edit">
-      </a>
+    <!-- Name and Reg no -->
+    <div class="name">
+        <p class="display-name">{{ user.name }}</p>
+        <p class="regno">
+          {{ user.userid }}
+          {% if profile.alumni %}
+            | Alumni
+          {% endif %}
+        </p>
+    <a href="/batch/{{ profile.batch.year}}" class="batchName">{{ profile.batch }}</a>
+  </div>
+
+  <div class="profileContainer">
+    <a href="https://github.com/{{ profile.githubid }}" class="profileLink githubLink">
+      <i class="fab fa-github-square"></i>
+    </a>
+    <a href="https://twitter.com/{{ profile.twitterid }}" class="profileLink twitterLink">
+      <i class="fab fa-twitter-square"></i>
+    </a>
+    <a href="https://linkedin.com/in/{{ profile.linkedinid }}" class="profileLink linkedinLink">
+      <i class="fab fa-linkedin"></i>
+    </a>
+    <a href="https://facebook.com/{{ profile.facebookid }}" class="profileLink fbLink">
+      <i class="fab fa-facebook-square"></i>
+    </a>
+  </div>
+
+  <div class="container about-block-gap">
+
+    <!--  Authentication needed :::::::::::::::::::::::::
+      :::::::::::::::::::::User about:::::::::::::::::::
+       :::::::::::::::::::::::::::::::::::::::::::::::::-->
+
+    {% if is_auth %}
+      <div class="box">
+        <div class="box-header">
+          About
+        </div>
+        <div class="box-container">
+          <table>
+            <tr>
+              <td class="rowTitle">Email</td>
+              <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+              <td class="rowTitle">Phone</td>
+              <td>{{ profile.phone }}</td>
+            </tr>
+            <tr>
+              <td class="rowTitle">Address</td>
+              <td>{{ profile.address }}</td>
+            </tr>
+            <tr>
+              <td class="rowTitle">Blood Group</td>
+              <td>{{ profile.bloodgroup }}</td>
+            </tr>
+
+          </table>
+        </div>
+      </div>
     {% endif %}
 
-    <div class="integrated-profile-block">
-      <a href="https://github.com/{{ profile.githubid}}">
-        <img src="{% static 'profile/github.png' %}"></a>
-      <a href="https://linkedin.com/in/{{ profile.linkedinid }}">
-        <img src="{% static 'profile/linkedin.png' %}"></a>
-      <a href="https://twitter.com/{{ profile.twitterid }}">
-        <img src="{% static 'profile/twitter.png' %}"></a>
-      <a href="https://facebook.com/{{ profile.facebookid }}">
-        <img src="{% static 'profile/facebook.png' %}"></a>
+
+    <div class="box">
+      <div class="box-header">
+        Endorsements
+      </div>
+      <div class="box-container">
+        <table>
+          {% for item in endrosements %}
+            <tr>
+              <td class="rowTitle">{{ item.key }}</td>
+              <td>{{ item.value }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
     </div>
-  </div>
 
-  {% if is_auth %}
-    <div class="card-block">
-      <div class="card-label">About</div>
-      <div class="card-content-label"> Email </div>
-      <div class="card-content-data">{{ user.email }}</div>
-      <div class="card-content-label"> Phone </div>
-      <div class="card-content-data"> {{ profile.phone }} </div>
-      <div class="card-content-label"> Address </div>
-      <div class="card-content-data"> Brahmanbaria </div>
-    </div>
-  {% endif %}
-
-  <div class="card-block">
-    <div class="card-label">Endrosements</div>
-    <div class="card-content-label"> Programming Language </div>
-    <div class="card-content-data">C, Java, Python</div>
-    <div class="card-content-label"> Skill and Experience </div>
-    <div class="card-content-data"> Android, Django </div>
-    <div class="card-content-label"> Interested </div>
-    <div class="card-content-data"> AI, Blockchain </div>
-  </div>
-
-  <div class="card-block">
-    <div class="card-label"> Working Experience</div>
-    <div class="card-content-label"> manager </div>
-    <div class="card-content-data">Toto company</div>
-    <div class="card-content-label"> CEO </div>
-    <div class="card-content-data"> My Computer </div>
   </div>
 
 
-  <!-- About edit pop up window -->
-  <div class="footer">
-  </div>
 
-
-  <script type="text/javascript" src="{% static 'profile/main.js'%}"></script>
+  <!-- Linking JSs-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="{% static 'profile/main.js' %}"></script>
 {% endblock %}

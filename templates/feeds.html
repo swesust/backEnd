@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load tz %}
 
 
 {% block extra_head %}
@@ -8,7 +9,9 @@
 {% endblock %}
 
 {% block extra_body %}
-
+	
+	<div class="header-gap">	
+	</div>
 	<center>
 	{% for post in posts %}
 	<div class="post-container">
@@ -22,7 +25,7 @@
 				{{ post.body }}
 			</p>
 			<a href="/{{ post.user.userid }}" class="post-user">{{ post.user.name }}</a>
-			<p class="post-date">{{ post.time_date }}</p>
+			<p class="post-date">{{ post.time_date | date }}</p>
 			{% if request.user.is_authenticated %}
 				<a href="/feeds/delete/{{ post.pk }}"><img src="{% static 'post/delete.png' %}" class="edit-icon"></a>
 			{% endif %}
@@ -53,8 +56,7 @@
 
 		<!-- TODO: post delete confirmations -->
 	{% endif %}
-	<div class="footer-gap">	
-	</div>
+
 
 	<script type="text/javascript" src="{% static 'post/script.js' %}"></script>
 
