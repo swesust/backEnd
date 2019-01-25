@@ -26,7 +26,15 @@ urlpatterns = [
     path('feeds/delete/<pk>/', views.feed_delete, name='feed_delete' ),
     
     # example.com/2016831035/edit/
-    path('<user_id>/edit', views.profile_edit, name='profile_edit'),
+    path('<user_id>/edit/', views.profile_edit, name='profile_edit'),
+    # example.com/endrosement/add/
+    path('endrosement/add/', views.endrosement_add, name='endrosement_add'), 
+    # example.com/endrosement/delete/10/
+    path('endrosement/delete/<pk>/', views.endrosement_delete, name='endrosement_delete'),
+    # example.com/endrosement/edit/10/
+    path('endrosement/edit/<pk>/', views.endrosement_edit, name='endrosement_edit'),
+    # example.com/2016831035/edit/workings
+    path('<user_id>/edit/workings/', views.workings, name='workings'),
     # make sure that this path is always in last position to avoid conflict
     # example.com/2016831035/
     path('<user_id>/', views.profile, name='profile')

@@ -37,16 +37,11 @@ a:hover {
     max-height: 35vh;
     width: 100vw;
 }
-.edit-profile {
-    font-size: 30px;
-    position: absolute;
-    right: 30px;
-    bottom: -45px;
-    color: #888 !important;
+.edit-icon {
+    position: absolute; right: 10px; top: 20px; 
+    width: 30px; height: 30px;
 }
-.edit-profile:hover{
-    color: #333 !important;
-}
+
 .display-profile-pic {
     object-fit: cover;
     object-position: center;
@@ -138,6 +133,61 @@ a:hover {
     height: 50px;
 }
 
+
+.pop-window {
+    width: 100%; height: 100%;
+    display: none; top: 0;
+    position: fixed;
+    background-color: rgba(0,0,0, 0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+.pop-window-card {
+    width: 400px;
+    height: 400px;
+    padding: 10px;
+    background-color: white;    
+    border-radius: 15px;
+}
+
+.pop-window-card button {
+    background-color: red;
+    color: white;
+    cursor: pointer;
+    width: 150px;
+    border-radius: 10px;
+    display: block;
+    margin-left: auto; margin-right: auto;
+    margin-top: 4px;
+}
+.django-form select {
+    padding: 5px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    border: 1px solid black;
+}
+.django-form textarea {
+    width: 380px;
+    height: 260px;
+    padding: 2px; 
+    border-radius: 5px;
+    border: 1px solid black; 
+}
+
+.django-form button {
+    background-color: #1EAA3E;
+    display: block;
+    margin-left: auto; margin-right: auto;
+    color: white; cursor: pointer;
+    width: 150px;
+    border-radius: 10px;
+}
+
+.row-edit {
+    width: 15px; height: 15px;
+    margin: 2px; 
+}
 /*FOR RESPONSIVE NAVBAR*/
 @media only screen and (min-width: 992px) {
     .alignEnd {

@@ -12,7 +12,7 @@ from django.contrib.auth import (
 	authenticate, logout as auth_logout, login as auth_login)
 from django.contrib.auth.decorators import login_required
 from . import variables as var
-from swe.forms import LoginForm, UserRecognize, UserToken
+from swe.forms import LoginForm, UserRecognize, UserToken, EndrosementForm
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.template import loader
@@ -130,7 +130,23 @@ def batch(request, batch_id):
 # response of: example.com/userid
 def profile(request, user_id):
     """
-    User profile 
+    POST request
+
+    
+        Working:
+            Company Name = 'company'
+            Position = 'jobPosition'
+            From Date = 'startingDate'
+            Is working = 'stillWorking'
+            To Date = 'endingDate'
+            Comment  = 'jobComment'
+
+
+        Endrosements:
+            #options
+
+
+
     """
     try:
         user = AuthUser.objects.get(userid = user_id)
@@ -154,12 +170,15 @@ def profile(request, user_id):
 
         # fetch all endrosements of this user
         endrosements = Endrosement.objects.filter(user=user)
+
+        endrose_form = EndrosementForm()
         context = {
             'user' : user,
             'profile' : profile,
             'is_auth' : is_auth,
             'is_self' : is_self,
-            'endrosements' : endrosements
+            'endrosements' : endrosements,
+            'endrose_form' : endrose_form
         }
         if user.is_student:
             # fetch all working information of this user
@@ -173,7 +192,7 @@ def profile(request, user_id):
         return HttpResponse('User Profile Not Found') 
 
 
-#response of: example.com/userid/edit
+# response of: example.com/userid/edit
 @login_required(login_url=var.LOGIN_URL)
 def profile_edit(request, user_id):
     if request.user.userid != user_id:
@@ -193,27 +212,108 @@ def profile_edit(request, user_id):
         Profile Alumni = 'alumni'
 
 
-    Endrosements:
-        #options
-
-
     Integrated Profile:
         Facebook = 'facebookid'
         Github = 'githubid'
         Twitter = 'twitterid'
         LinkedIn = 'linkedinid'
 
-
-    Working:
-        Company Name = 'company'
-        Position = 'jobPosition'
-        From Date = 'startingDate'
-        Is working = 'stillWorking'
-        To Date = 'endingDate'
-        Comment  = 'jobComment'
     """
     
     # profile edit
+
+    if request.method == 'POST':
+        data = request.POST
+        password = data.get('password')
+        user = authenticate(userid=request.user.userid, password = password)
+
+        if user == None:
+            return HttpResponse('Unknown password')
+
+        elif user != request.user:
+            return HttpResponse('Invalid User')
+
+        if user.is_student:
+            profile = Student.objects.get(user = user)
+        else:
+            profile = Teacher.objects.get(user = user)
+
+        files = request.FILES
+
+        profile_img = files.get('profile_img')
+        cover_img = files.get('cover_img')
+
+        if profile_img != None:
+            if Image.is_valid_format(profile_img.name):
+                if profile_img.multiple_chunks(var.FILE_CHUNK):
+                    profile_img.chunks(var.FILE_CHUNK)
+
+                bytes_data = profile_img.read()
+                if user.is_student:
+                    profile.imgsrc = Image.save(var.FOLDER_STUDENT, bytes_data)
+                else:
+                    profile.imgsrc = Image.save(var.FOLDER_TEACHER, bytes_data)
+
+
+        if cover_img != None:
+            if Image.is_valid_format(cover_img.name):
+                if cover_img.multiple_chunks(var.FILE_CHUNK):
+                    cover_img.chunks(var.FILE_CHUNK)
+
+                bytes_data = cover_img.read()
+                if user.is_student:
+                    profile.cover = Image.save(var.FOLDER_STUDENT, bytes_data)
+                else:
+                    profile.cover = Image.save(var.FOLDER_TEACHER, bytes_data)
+
+
+        user.name = data.get('name')
+        user.email = data.get('email')
+        profile.phone = data.get('phone')
+
+        alumni = data.get('alumni')
+
+        if alumni is not None:
+            profile.alumni = True
+        else:
+            profile.alumni = False
+
+
+
+        if user.is_student:
+            profile.address = data.get('address')
+            githubid = data.get('githubid')
+            facebookid = data.get('facebookid')
+            linkedinid = data.get('linkedinid')
+            twitterid = data.get('twitterid')
+
+            if githubid is not None:
+                profile.githubid = githubid
+            else:
+                profile.githubid = 'home'
+            if facebookid is not None:
+                profile.facebookid = facebookid
+            else:
+                profile.facebookid = 'home'
+            if linkedinid is not None:
+                profile.linkedinid = linkedinid
+            else:
+                profile.linkedinid = 'home'
+            if twitterid is not None:
+                profile.twitterid = twitterid
+            else:
+                profile.twitterid = 'home'
+
+        user.save()
+        profile.save()
+
+        return redirect('/'+user.userid)
+
+
+
+
+
+
     context = {}
     user = AuthUser.objects.get(userid = user_id)
     context['user'] = user 
@@ -231,6 +331,92 @@ def profile_edit(request, user_id):
 
     return render(request, 'profiles/edit.html',context)
 
+# response of: example.com/userid/edit/endrosements
+@login_required(login_url=var.LOGIN_URL)
+def endrosement_add(request):
+
+    if request.method == 'POST':
+        form = EndrosementForm(request.POST)
+        if form.is_valid():
+            key = form.cleaned_data['key']
+            value = form.cleaned_data['value']
+
+            endrose = Endrosement()
+            endrose.key = key
+            endrose.value = value
+            endrose.user = request.user 
+
+            endrose.save()
+
+        return redirect ('/'+request.user.userid)
+    return HttpResponse('Invalid URL')
+
+
+
+
+@login_required(login_url=var.LOGIN_URL)
+def endrosement_delete(request, pk):
+    if request.method == 'GET':
+        return HttpResponse('Invalid Request')
+    try:
+        endrose = Endrosement.objects.get(pk = pk)
+        if endrose.user == request.user:
+            endrose.delete()
+            return redirect('/'+request.user.userid)
+        else:
+            return HttpResponse('Invalid Request')
+    except ObjectDoesNotExist as o:
+        return HttpResponse('Invalid url')
+
+
+
+
+@login_required(login_url=var.LOGIN_URL)
+def endrosement_edit(request, pk):
+    if request.method == 'POST':
+        form = EndrosementForm(request.POST)
+        if form.is_valid():
+            key = form.cleaned_data['key']
+            value = form.cleaned_data['value']
+
+            try:
+                endrose = Endrosement.objects.get(pk = pk)
+                endrose.key = key
+                endrose.value = value
+                endrose.save()
+
+                return redirect('/'+request.user.userid)
+            except ObjectDoesNotExist as e:
+                return HttpResponse('Invalid Request')
+                
+
+    else:
+        try:
+            endrose = Endrosement.objects.get(pk=pk)
+            if endrose.user != request.user:
+                return HttpResponse('Invalid Request')
+
+            form = EndrosementForm()
+            form.fields['key'].initial = endrose.key
+            form.fields['value'].initial = endrose.value
+
+            context = {
+                'form' : form,
+                'pk' : pk
+            }
+
+            return render(request, 'profiles/edit_endrosement.html', context)
+        except ObjectDoesNotExist as e:
+            return HttpResponse('Invalid URL')
+
+
+# response of: example.com/userid/edit/working
+@login_required(login_url=var.LOGIN_URL)
+def workings(request, user_id):
+    if request.method == 'POST':
+        pass
+
+    return HttpResponse('Invalid URL')
 
 # response of: example.com/feeds/
 def feeds(request):

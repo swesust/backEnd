@@ -20,3 +20,7 @@ FOLDER_STUDENT = 'data/students'
 FOLDER_TEACHER = 'data/teachers'
 FOLDER_POST = 'data/posts'
 
+
+FILE_CHUNK = 2500000
+DEFAULT_PROFILE_IMAGE = 'data/image.PNG'
+DEFAULT_COVER_IMAGE = 'data/cover.JPEG'

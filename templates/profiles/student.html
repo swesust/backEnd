@@ -13,13 +13,13 @@
     <!-- Cover Pic -->
     <div class="cover">
       <img src="/{{ profile.cover }}" alt="Profile Pic" class="cover-pic">
-      <a href="/{{ user.userid }}/edit" class="edit-profile"><i class="fas fa-edit"></i></a>
     </div>
-
+    
     <!-- Display Profile Pic -->
     <div class="display-profile">
         <img src="/{{ profile.imgsrc }}" alt="Profile Pic" class="display-profile-pic">
     </div>
+
     <!-- Name and Reg no -->
     <div class="name">
         <p class="display-name">{{ user.name }}</p>
@@ -58,6 +58,11 @@
         <div class="box-header">
           About
         </div>
+        <div>
+         <a href="/{{ user.userid }}/edit">
+          <img src="{% static 'profile/img/edit.png' %}" class="edit-icon">
+        </a>
+        </div>
         <div class="box-container">
           <table>
             <tr>
@@ -87,13 +92,26 @@
       <div class="box-header">
         Endorsements
       </div>
+      {% if is_self %}
+        <div>
+           <a href="javascript:(void)" onclick="showEndroseCreateDialog()">
+            <img src="{% static 'profile/img/add.png' %}" class="edit-icon">
+          </a>
+        </div>
+      {% endif %}
       <div class="box-container">
         <table>
           {% for item in endrosements %}
             <tr>
+              {% if is_self %}
+                <td>
+                  <a href="/endrosement/edit/{{ item.pk }}"><img  class="row-edit" src="{% static 'profile/img/edit.png' %}"></a>
+                </td>
+              {% endif %}
               <td class="rowTitle">{{ item.key }}</td>
               <td>{{ item.value }}</td>
           </tr>
+
           {% endfor %}
         </table>
       </div>
@@ -102,6 +120,20 @@
   </div>
 
 
+  <!-- pop up window -->
+  <div class="pop-window" id="endroseCreateDialog">
+    <div class="pop-window-card">
+      <form class="django-form" method="POST" action="/endrosement/add/">
+        {% csrf_token %}
+        <!-- find out the form : `swe.forms.EndrosementForm` -->
+           {{ endrose_form.key }}
+           {{ endrose_form.value }}  
+        
+        <button type="submit">Add</button>
+      </form>
+      <button onclick="hideEndrseCreateDialog()">Cancel</button>
+    </div>
+  </div>
 
   <!-- Linking JSs-->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

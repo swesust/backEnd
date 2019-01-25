@@ -1,6 +1,9 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from .models import (
+	Endrosement, Working
+)
 
 User = get_user_model()
 
@@ -104,3 +107,23 @@ class UserToken(forms.Form):
 		'placeholder' : 'Your Token'}))
 
 
+
+class EndrosementForm(forms.ModelForm):
+
+	class Meta:
+		model = Endrosement
+		fields = ['key', 'value']
+
+
+class WorkingForm(forms.ModelForm):
+
+	class Meta:
+		model = Working
+		fields = [ 	
+					'company' , 
+					'position' ,
+					'from_date' , 
+					'current', 
+					'to_date', 
+					'comment'
+				]
