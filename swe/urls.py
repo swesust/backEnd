@@ -33,8 +33,12 @@ urlpatterns = [
     path('endrosement/delete/<pk>/', views.endrosement_delete, name='endrosement_delete'),
     # example.com/endrosement/edit/10/
     path('endrosement/edit/<pk>/', views.endrosement_edit, name='endrosement_edit'),
-    # example.com/2016831035/edit/workings
-    path('<user_id>/edit/workings/', views.workings, name='workings'),
+    # example.com/2016831035/working/add
+    path('working/add/', views.working_add, name='working_add'),
+    # example.com/2016831035/working/edit
+    path('working/edit/<pk>', views.working_edit, name='working_edit'),
+    # example.com/2016831035/working/edit
+    path('working/delete/<pk>', views.working_delete, name='working_delete'),
     # make sure that this path is always in last position to avoid conflict
     # example.com/2016831035/
     path('<user_id>/', views.profile, name='profile')

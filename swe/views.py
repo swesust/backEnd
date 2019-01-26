@@ -12,10 +12,12 @@ from django.contrib.auth import (
 	authenticate, logout as auth_logout, login as auth_login)
 from django.contrib.auth.decorators import login_required
 from . import variables as var
-from swe.forms import LoginForm, UserRecognize, UserToken, EndrosementForm
+from swe.forms import (
+    LoginForm, UserRecognize, UserToken, EndrosementForm, WorkingForm)
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.template import loader
+from django.utils.timezone import datetime
 
 # Create your views here.
 
@@ -410,13 +412,121 @@ def endrosement_edit(request, pk):
             return HttpResponse('Invalid URL')
 
 
-# response of: example.com/userid/edit/working
-@login_required(login_url=var.LOGIN_URL)
-def workings(request, user_id):
-    if request.method == 'POST':
-        pass
 
-    return HttpResponse('Invalid URL')
+# response of: example.com/userid/working/edit
+@login_required(login_url=var.LOGIN_URL)
+def working_add(request):
+
+    if request.method == 'POST':
+        form = WorkingForm(request.POST)
+        if form.is_valid():
+            company = form.cleaned_data['company']
+            position = form.cleaned_data['position']
+            from_date = form.cleaned_data['from_date']
+            current = form.cleaned_data['current']
+            to_date = form.cleaned_data['to_date']
+            comment = form.cleaned_data['comment']
+
+            work = Working()
+            work.company = company
+            work.position = position
+            work.from_date = from_date
+            work.current = current
+            if not current:
+                work.to_date = to_date
+            else:
+                work.to_date = datetime.today()
+            work.comment = comment
+            work.user = request.user
+
+            work.save()
+
+            return HttpResponse('successfully saved')
+
+        else:
+            return HttpResponse('Not Working')
+
+
+    form = WorkingForm()
+    context = {
+        'form' : form,
+        'edit' : False
+    }
+    return render(request, 'profiles/edit_working.html',context)
+
+
+
+@login_required(login_url=var.LOGIN_URL)
+def working_edit(request, pk):
+    
+    if request.method == 'POST':
+        form = WorkingForm(request.POST)
+        if form.is_valid():
+            company = form.cleaned_data['company']
+            position = form.cleaned_data['position']
+            from_date = form.cleaned_data['from_date']
+            current = form.cleaned_data['current']
+            to_date = form.cleaned_data['to_date']
+            comment = form.cleaned_data['comment']
+
+            work = Working.objects.get(pk = pk)
+            work.company = company
+            work.position = position
+            work.from_date = from_date
+            work.current = current
+            if not current:
+                work.to_date = to_date
+            work.comment = comment
+
+            work.save()
+
+            return HttpResponse('successfully saved')
+
+        else:
+            return HttpResponse('Not Working')
+
+    try:
+        work = Working.objects.get(pk = pk)
+
+        form = WorkingForm()
+        form.fields['company'].initial = work.company
+        form.fields['position'].initial = work.position
+        form.fields['from_date'].initial = work.from_date
+        form.fields['current'].initial = work.current
+        form.fields['to_date'].initial = work.to_date
+        form.fields['comment'].initial = work.comment
+
+        context = {
+            'form' : form,
+            'edit' : True,
+            'pk' : pk
+        }
+
+        return render(request, 'profiles/edit_working.html', context)
+    except ObjectDoesNotExist as e:
+        return HttpResponse('Invalid Request')
+
+
+
+# response of: example.com/userid/working/delete/pk/
+@login_required(login_url=var.LOGIN_URL)
+def working_delete(request, pk):
+    if request.method == 'POST':
+        try:
+            work = Working.objects.get(pk = pk)
+            if work.user != request.user:
+                pass
+
+            work.delete()
+            return HttpResponse('Deleted')
+
+        except ObjectDoesNotExist as e:
+            pass
+
+
+    return HttpResponse('Invalid Request')
+
+
 
 # response of: example.com/feeds/
 def feeds(request):

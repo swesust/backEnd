@@ -1,28 +1,13 @@
+
+document.getElementById("id_current").addEventListener("change", enableTo);
+
 function enableTo() {
-    if(document.getElementById('stillWorkingChange').checked) {
-        document.getElementById('endingDateChange').disabled=true;
+	if(document.getElementById('id_current').checked) {
+        document.getElementById('id_to_date').disabled=true;
     }
     else {
-        document.getElementById('endingDateChange').disabled=false;
+        document.getElementById('id_to_date').disabled=false;
     }
 }
 
 enableTo();
-enableWorkingBlock();
-
-function enableWorkingBlock() {
-    if(document.getElementById('hasWorkingBlock').checked) {
-        document.getElementById('workingBlockContainer').style.display = 'block';
-    }
-    else {
-        document.getElementById('workingBlockContainer').style.display = 'none';
-    }
-} 
-
-
-function addEndrosement() {
-	container = document.getElementById("endrosementContainer");
-	form = document.getElementById("endrosementForm");
-
-	container.append(form)
-}

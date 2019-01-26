@@ -127,3 +127,15 @@ class WorkingForm(forms.ModelForm):
 					'to_date', 
 					'comment'
 				]
+
+		widgets = {
+            'from_date': forms.DateInput(attrs = {'type' : 'date'}),
+            'to_date' : forms.DateInput(attrs = {'type' : 'date'}),
+        }
+
+
+	def __init__(self, *args, **kwargs):
+		super(WorkingForm, self).__init__(*args, **kwargs)
+		self.fields['current'].required = False
+		self.fields['to_date'].required = False
+		self.fields['comment'].required = False

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{%  block extra_head %}
+	<title>{{ request.user.name }} | working</title>
+	<!-- Linking CSS -->
+	<link rel="stylesheet" type="text/css" href="{% static 'profile/edit/style.css' %}">
+	<!-- Linking Bootstrap CSS-->
+	<link rel="stylesheet" href="{% static 'common/bootstrap/css/bootstrap.min.css' %}">
+	<!-- Linking Font Awesome Icons-->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+{% endblock %}
+
+
+{% block extra_body %}
+    <div class="container editBlock">
+		<div class="box">
+			<div class="box-header">
+				Work
+			</div>
+			<form method="POST">
+				{% csrf_token %}
+				<div class="box-container" id="workingBlockContainer">
+					<div class="form-group">
+						<label for="companyNameChange">Company</label>
+						{{ form.company }}
+					</div>
+					<div class="form-group">
+						<label for="positionChange">Position</label>
+						{{ form.position }}
+					</div>
+					<div class="form-group">
+						<label for="startingDateChange">From</label>
+						{{ form.from_date }}
+					</div>
+					<div class="form-group">
+						<label for="stillWorkingChange">Still Working</label>
+						{{ form.current }}
+					</div>
+					<div class="form-group" id="from-date-block">
+						<label for="to_date">To Date</label>
+						{{ form.to_date }}
+					</div>
+					<div class="form-group">
+						<label for="jobCommentChange">Say Something</label>
+						{{ form.comment }}
+					</div>
+				</div>
+
+				<div class="submit-buttons">
+					<button type="submit" class="btn sub-btn btn-success">Save</button>
+				</div>
+			</form>
+
+			{% if edit %}
+				<form method="POST" action="/working/delete/{{ pk }}">
+					{% csrf_token %}
+					<div class="submit-buttons">
+						<button type="submit" name="reset" class="btn sub-btn btn-danger">Delete</button>
+					</div>
+				</form>
+			{% endif %}
+		</div>
+
+	</div>
+
+	<!-- Linking JSs-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+	<script src="{% static 'common/bootstrap/js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'profile/edit/main.js' %}"></script>
+{% endblock %}
