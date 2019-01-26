@@ -17,7 +17,7 @@ class Image():
 	"""
 	def save(loc, bytesdata):
 		"""
-			to save user display image
+			this function will save an image and return the file location
 			>>helper.Image.save(location, image bytes file)
 			locations:
 				`see` : swe.variable #storage folder locations

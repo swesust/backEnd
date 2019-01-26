@@ -215,6 +215,7 @@ def profile_edit(request, user_id):
         Profile Alumni = 'alumni'
 
 
+
     Integrated Profile:
         Facebook = 'facebookid'
         Github = 'githubid'
@@ -222,7 +223,42 @@ def profile_edit(request, user_id):
         LinkedIn = 'linkedinid'
 
     """
-    
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone = request.POST('phone')
+        files = request.FILES
+        profile_img = files.get('profilePic')
+        cover_img = files.get('coverPic')
+
+        user = request.user 
+        if user.is_student:
+            profile = Student.objects.get(user = user)
+        else:
+            profile = Teacher.objects.get(user = user)
+
+        if Image.is_valid_format(profile_img):
+            if profile_img.multiple_chunks(var.FILE_CHUNK_SIZE):
+                profile_img.chunks(var.FILE_CHUNK_SIZE)
+
+            bytes_data = profile_img.read()
+            if request.user.is_student:
+                imgsrc = Image.save(var.FOLDER_STUDENT, bytes_data)
+            else:
+                imgsrc = Image.save(var.FOLDER_TEACHER, bytes_data)
+
+
+        if Image.is_valid_format(cover_img):
+            if cover_img.multiple_chunks(var.FILE_CHUNK_SIZE):
+                cover_img.chunks(var.FILE_CHUNK_SIZE)
+            bytes_data = cover_img.read()
+            if request.user.is_student:
+                cover = Image.save(var.FOLDER_STUDENT, bytes_data)
+            else:
+                cover = Image.save(var.FOLDER_TEACHER, bytes_data)
+
+
+
     # profile edit
 
     if request.method == 'POST':
