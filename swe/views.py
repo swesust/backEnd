@@ -13,11 +13,12 @@ from django.contrib.auth import (
 from django.contrib.auth.decorators import login_required
 from . import variables as var
 from swe.forms import (
-    LoginForm, UserRecognize, UserToken, EndrosementForm, WorkingForm)
+    LoginForm, UserRecognize, UserToken, EndrosementForm, WorkingForm, ChangePasswordForm)
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.template import loader
 from django.utils.timezone import datetime
+
 
 # Create your views here.
 
@@ -587,6 +588,51 @@ def feed_delete(request, pk):
 def error404(request):
     context = {}
     return render(request, 'error404.html', context)
+
+
+@login_required(login_url=var.LOGIN_URL)
+def change_password(request):
+
+    context = {
+        'error' : False,
+        'message' : ''
+    }
+
+    if request.method == 'POST':
+        form = ChangePasswordForm(request.POST)
+        if form.is_valid():
+            current_password = form.cleaned_data['current_password']
+            new_password = form.cleaned_data['new_password']
+            confirm_password = form.cleaned_data['confirm_password']
+
+            if new_password != confirm_password:
+                context['error'] = True
+                context['message'] = 'New and Confirm Password not matched'
+
+            else:
+                user = authenticate(userid = request.user.userid, password = current_password)
+                if user is not None:
+                    # valid user
+                    user.set_password(new_password)
+                    user.save()
+
+                    user = authenticate(userid = user.userid, password = new_password)
+                    auth_login(request, user)
+
+                    return HttpResponse('Passwod Changed Successfully')
+
+                else:
+                    context['error'] = True
+                    context['message'] = 'Passwod not matched with user'
+        else:
+            context['error'] = True
+            context['message'] = 'Invalid data'
+
+    form = ChangePasswordForm()
+    context['form'] = form
+
+    return render(request, 'auth/change_password.html', context)
+
 
 
 def forget_password(request):

@@ -22,6 +22,7 @@ urlpatterns = [
     # example.com/forget-password/varification/
     path('forget-password/varification/', views.forget_password_varification, 
         name ='forget_password_varification'),
+    path('change-password/', views.change_password, name='change_password'),
     # example.com/feeds/delete/10/
     path('feeds/delete/<pk>/', views.feed_delete, name='feed_delete' ),
     

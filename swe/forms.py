@@ -107,6 +107,19 @@ class UserToken(forms.Form):
 		'placeholder' : 'Your Token'}))
 
 
+class ChangePasswordForm(forms.Form):
+	current_password = forms.CharField(widget=forms.PasswordInput(attrs={
+		'placeholder' : 'Current Password', 'minlength' : '6'
+		}))
+
+	new_password = forms.CharField(widget=forms.PasswordInput(attrs={
+		'placeholder' : 'New Password', 'minlength' : '6'
+		}))
+
+	confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={
+		'placeholder' : 'Confirm Password', 'minlength' : '6'
+		}))
+
 
 class EndrosementForm(forms.ModelForm):
 
