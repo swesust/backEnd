@@ -57,7 +57,7 @@
 {% block extra_body %}
 	
 	<div class="form-block">
-		<form class="django-form"  method="POST" action="/endrosement/edit/{{ pk }}/">
+		<form class="django-form"  method="POST" action="/{{ request.user.userid }}/endrosement/edit/{{ pk }}/">
 			{% csrf_token %}
 			{{ form.key }}
 			{{ form.value }}
@@ -66,7 +66,7 @@
 	</div>
 
 	<div class="form-block">
-		<form action="/endrosement/delete/{{ pk }}/" method="POST">
+		<form action="/{{ request.user.userid }}/endrosement/delete/{{ pk }}/" method="POST">
 			{% csrf_token %}
 			<button type="submit" class="delete">Delete</button>
 		</form>

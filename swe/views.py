@@ -230,10 +230,10 @@ def profile_edit(request, user_id):
         user = authenticate(userid=request.user.userid, password = password)
 
         if user == None:
-            return HttpResponse('Unknown password')
+            return invalid(request)
 
         elif user != request.user:
-            return HttpResponse('Invalid User')
+            return invalid(request)
 
         if user.is_student:
             profile = Student.objects.get(user = user)
@@ -312,10 +312,6 @@ def profile_edit(request, user_id):
         return redirect('/'+user.userid)
 
 
-
-
-
-
     context = {}
     user = AuthUser.objects.get(userid = user_id)
     context['user'] = user 
@@ -333,9 +329,12 @@ def profile_edit(request, user_id):
 
     return render(request, 'profiles/edit.html',context)
 
+
+
+
 # response of: example.com/userid/edit/endrosements
 @login_required(login_url=var.LOGIN_URL)
-def endrosement_add(request):
+def endrosement_add(request, user_id):
 
     if request.method == 'POST':
         form = EndrosementForm(request.POST)
@@ -351,30 +350,30 @@ def endrosement_add(request):
             endrose.save()
 
         return redirect ('/'+request.user.userid)
-    return HttpResponse('Invalid URL')
+    return invalid(request)
 
 
 
 
 @login_required(login_url=var.LOGIN_URL)
-def endrosement_delete(request, pk):
+def endrosement_delete(request, user_id, pk):
     if request.method == 'GET':
-        return HttpResponse('Invalid Request')
+        return invalid(request)
     try:
         endrose = Endrosement.objects.get(pk = pk)
         if endrose.user == request.user:
             endrose.delete()
             return redirect('/'+request.user.userid)
         else:
-            return HttpResponse('Invalid Request')
+            return invalid(request)
     except ObjectDoesNotExist as o:
-        return HttpResponse('Invalid url')
+        return invalid(request)
 
 
 
 
 @login_required(login_url=var.LOGIN_URL)
-def endrosement_edit(request, pk):
+def endrosement_edit(request, user_id, pk):
     if request.method == 'POST':
         form = EndrosementForm(request.POST)
         if form.is_valid():
@@ -389,14 +388,14 @@ def endrosement_edit(request, pk):
 
                 return redirect('/'+request.user.userid)
             except ObjectDoesNotExist as e:
-                return HttpResponse('Invalid Request')
+                return invalid(request)
                 
 
     else:
         try:
             endrose = Endrosement.objects.get(pk=pk)
             if endrose.user != request.user:
-                return HttpResponse('Invalid Request')
+                return invalid(request)
 
             form = EndrosementForm()
             form.fields['key'].initial = endrose.key
@@ -409,13 +408,13 @@ def endrosement_edit(request, pk):
 
             return render(request, 'profiles/edit_endrosement.html', context)
         except ObjectDoesNotExist as e:
-            return HttpResponse('Invalid URL')
+            return invalid(request)
 
 
 
 # response of: example.com/userid/working/edit
 @login_required(login_url=var.LOGIN_URL)
-def working_add(request):
+def working_add(request, user_id):
 
     if request.method == 'POST':
         form = WorkingForm(request.POST)
@@ -441,10 +440,10 @@ def working_add(request):
 
             work.save()
 
-            return HttpResponse('successfully saved')
+            return redirect('/'+user_id)
 
         else:
-            return HttpResponse('Not Working')
+            return invalid(request)
 
 
     form = WorkingForm()
@@ -457,7 +456,7 @@ def working_add(request):
 
 
 @login_required(login_url=var.LOGIN_URL)
-def working_edit(request, pk):
+def working_edit(request, user_id, pk):
     
     if request.method == 'POST':
         form = WorkingForm(request.POST)
@@ -480,10 +479,10 @@ def working_edit(request, pk):
 
             work.save()
 
-            return HttpResponse('successfully saved')
+            return redirect('/'+user_id)
 
         else:
-            return HttpResponse('Not Working')
+            return invalid(request)
 
     try:
         work = Working.objects.get(pk = pk)
@@ -504,13 +503,13 @@ def working_edit(request, pk):
 
         return render(request, 'profiles/edit_working.html', context)
     except ObjectDoesNotExist as e:
-        return HttpResponse('Invalid Request')
+        return invalid(request)
 
 
 
 # response of: example.com/userid/working/delete/pk/
 @login_required(login_url=var.LOGIN_URL)
-def working_delete(request, pk):
+def working_delete(request, user_id, pk):
     if request.method == 'POST':
         try:
             work = Working.objects.get(pk = pk)
@@ -518,13 +517,13 @@ def working_delete(request, pk):
                 pass
 
             work.delete()
-            return HttpResponse('Deleted')
+            return redirect('/'+user_id)
 
         except ObjectDoesNotExist as e:
-            pass
+            return invalid(request)
 
 
-    return HttpResponse('Invalid Request')
+    return invalid(request)
 
 
 
@@ -569,6 +568,8 @@ def feeds(request):
         }
     return render(request, 'feeds.html', context)
 
+
+
 @login_required(login_url = var.LOGIN_URL)
 def feed_delete(request, pk):
     try:
@@ -580,6 +581,8 @@ def feed_delete(request, pk):
         return redirect('/feeds')
     except ObjectDoesNotExist as e:
         return HttpResponse("Post not found")
+
+
 # custom error request response
 def error404(request):
     context = {}
@@ -621,6 +624,8 @@ def forget_password(request):
         'invalid' : False
     }    
     return render(request, 'auth/forget_password.html',context)
+
+
 
 def forget_password_varification(request):
 
@@ -665,3 +670,8 @@ def forget_password_varification(request):
     }
     return render(request, 'auth/forget_password_varification.html',context)
 
+
+
+def invalid(request):
+    response = loader.get_template('invalid.html');
+    return HttpResponse(response.render({}, request))

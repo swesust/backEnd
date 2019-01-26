@@ -59,7 +59,7 @@
           About
         </div>
         <div>
-         <a href="/{{ user.userid }}/edit">
+         <a href="edit">
           <img src="{% static 'profile/img/edit.png' %}" class="edit-icon">
         </a>
         </div>
@@ -105,7 +105,7 @@
             <tr>
               {% if is_self %}
                 <td>
-                  <a href="/endrosement/edit/{{ item.pk }}"><img  class="row-edit" src="{% static 'profile/img/edit.png' %}"></a>
+                  <a href="endrosement/edit/{{ item.pk }}"><img  class="row-edit" src="{% static 'profile/img/edit.png' %}"></a>
                 </td>
               {% endif %}
               <td class="rowTitle">{{ item.key }}</td>
@@ -117,23 +117,63 @@
       </div>
     </div>
 
-  </div>
+
+    <div class="box">
+        <div class="box-header">
+          Working
+        </div>
+        {% if is_self %}
+          <div>
+           <a href="working/add">
+            <img src="{% static 'profile/img/add.png' %}" class="edit-icon">
+          </a>
+          </div>
+        {% endif %}
+        <div class="box-container">
+          <table>
+            {% for item in works %}
+              <tr>
+                {% if is_self %}
+                  <td>
+                    <a href="working/edit/{{ item.pk }}"><img  class="row-edit" src="{% static 'profile/img/edit.png' %}"></a>
+                  </td>
+                {% endif %}
+                <td class="rowTitle">{{ item.position }} : {{ item.company }}</td>
+                <td>
+                  {{ item.from_date }}
+                  {% if item.current %}
+                    - current
+                  {% else %}
+                    - {{ item.to_date }}
+                  {% endif %}
+                  <br>
+                  {{ item.comment }}
+                </td>
+              </tr>
+            {% endfor %}
+          </table>
+        </div>
+      </div>
+
+
 
 
   <!-- pop up window -->
-  <div class="pop-window" id="endroseCreateDialog">
-    <div class="pop-window-card">
-      <form class="django-form" method="POST" action="/endrosement/add/">
-        {% csrf_token %}
-        <!-- find out the form : `swe.forms.EndrosementForm` -->
-           {{ endrose_form.key }}
-           {{ endrose_form.value }}  
-        
-        <button type="submit">Add</button>
-      </form>
-      <button onclick="hideEndrseCreateDialog()">Cancel</button>
+  {% if is_self %}
+    <div class="pop-window" id="endroseCreateDialog">
+      <div class="pop-window-card">
+        <form class="django-form" method="POST" action="endrosement/add/">
+          {% csrf_token %}
+          <!-- find out the form : `swe.forms.EndrosementForm` -->
+             {{ endrose_form.key }}
+             {{ endrose_form.value }}  
+          
+          <button type="submit">Add</button>
+        </form>
+        <button onclick="hideEndrseCreateDialog()">Cancel</button>
+      </div>
     </div>
-  </div>
+  {% endif %}
 
   <!-- Linking JSs-->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
