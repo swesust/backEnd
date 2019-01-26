@@ -12,10 +12,13 @@ from django.contrib.auth import (
 	authenticate, logout as auth_logout, login as auth_login)
 from django.contrib.auth.decorators import login_required
 from . import variables as var
-from swe.forms import LoginForm, UserRecognize, UserToken
+from swe.forms import (
+    LoginForm, UserRecognize, UserToken, EndrosementForm, WorkingForm, ChangePasswordForm)
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.template import loader
+from django.utils.timezone import datetime
+
 
 # Create your views here.
 
@@ -130,7 +133,23 @@ def batch(request, batch_id):
 # response of: example.com/userid
 def profile(request, user_id):
     """
-    User profile 
+    POST request
+
+    
+        Working:
+            Company Name = 'company'
+            Position = 'jobPosition'
+            From Date = 'startingDate'
+            Is working = 'stillWorking'
+            To Date = 'endingDate'
+            Comment  = 'jobComment'
+
+
+        Endrosements:
+            #options
+
+
+
     """
     try:
         user = AuthUser.objects.get(userid = user_id)
@@ -154,12 +173,15 @@ def profile(request, user_id):
 
         # fetch all endrosements of this user
         endrosements = Endrosement.objects.filter(user=user)
+
+        endrose_form = EndrosementForm()
         context = {
             'user' : user,
             'profile' : profile,
             'is_auth' : is_auth,
             'is_self' : is_self,
-            'endrosements' : endrosements
+            'endrosements' : endrosements,
+            'endrose_form' : endrose_form
         }
         if user.is_student:
             # fetch all working information of this user
@@ -173,7 +195,7 @@ def profile(request, user_id):
         return HttpResponse('User Profile Not Found') 
 
 
-#response of: example.com/userid/edit
+# response of: example.com/userid/edit
 @login_required(login_url=var.LOGIN_URL)
 def profile_edit(request, user_id):
     if request.user.userid != user_id:
@@ -193,15 +215,6 @@ def profile_edit(request, user_id):
         Profile Alumni = 'alumni'
 
 
-    Endrosement keys:
-        Teaching
-        Research Interest
-        Education
-        Publications
-        Award & Recognizations
-        Programming Language
-        Technology
-
 
     Integrated Profile:
         Facebook = 'facebookid'
@@ -209,14 +222,6 @@ def profile_edit(request, user_id):
         Twitter = 'twitterid'
         LinkedIn = 'linkedinid'
 
-
-    Working:
-        Company Name = 'company'
-        Position = 'jobPosition'
-        From Date = 'startingDate'
-        Is working = 'stillWorking'
-        To Date = 'endingDate'
-        Comment  = 'jobComment'
     """
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -255,6 +260,95 @@ def profile_edit(request, user_id):
 
 
     # profile edit
+
+    if request.method == 'POST':
+        data = request.POST
+        password = data.get('password')
+        user = authenticate(userid=request.user.userid, password = password)
+
+        if user == None:
+            return invalid(request)
+
+        elif user != request.user:
+            return invalid(request)
+
+        if user.is_student:
+            profile = Student.objects.get(user = user)
+        else:
+            profile = Teacher.objects.get(user = user)
+
+        files = request.FILES
+
+        profile_img = files.get('profile_img')
+        cover_img = files.get('cover_img')
+
+        if profile_img != None:
+            if Image.is_valid_format(profile_img.name):
+                if profile_img.multiple_chunks(var.FILE_CHUNK):
+                    profile_img.chunks(var.FILE_CHUNK)
+
+                bytes_data = profile_img.read()
+                if user.is_student:
+                    profile.imgsrc = Image.save(var.FOLDER_STUDENT, bytes_data)
+                else:
+                    profile.imgsrc = Image.save(var.FOLDER_TEACHER, bytes_data)
+
+
+        if cover_img != None:
+            if Image.is_valid_format(cover_img.name):
+                if cover_img.multiple_chunks(var.FILE_CHUNK):
+                    cover_img.chunks(var.FILE_CHUNK)
+
+                bytes_data = cover_img.read()
+                if user.is_student:
+                    profile.cover = Image.save(var.FOLDER_STUDENT, bytes_data)
+                else:
+                    profile.cover = Image.save(var.FOLDER_TEACHER, bytes_data)
+
+
+        user.name = data.get('name')
+        user.email = data.get('email')
+        profile.phone = data.get('phone')
+
+        alumni = data.get('alumni')
+
+        if alumni is not None:
+            profile.alumni = True
+        else:
+            profile.alumni = False
+
+
+
+        if user.is_student:
+            profile.address = data.get('address')
+            githubid = data.get('githubid')
+            facebookid = data.get('facebookid')
+            linkedinid = data.get('linkedinid')
+            twitterid = data.get('twitterid')
+
+            if githubid is not None:
+                profile.githubid = githubid
+            else:
+                profile.githubid = 'home'
+            if facebookid is not None:
+                profile.facebookid = facebookid
+            else:
+                profile.facebookid = 'home'
+            if linkedinid is not None:
+                profile.linkedinid = linkedinid
+            else:
+                profile.linkedinid = 'home'
+            if twitterid is not None:
+                profile.twitterid = twitterid
+            else:
+                profile.twitterid = 'home'
+
+        user.save()
+        profile.save()
+
+        return redirect('/'+user.userid)
+
+
     context = {}
     user = AuthUser.objects.get(userid = user_id)
     context['user'] = user 
@@ -271,6 +365,203 @@ def profile_edit(request, user_id):
     context['endrosements'] = endrosements
 
     return render(request, 'profiles/edit.html',context)
+
+
+
+
+# response of: example.com/userid/edit/endrosements
+@login_required(login_url=var.LOGIN_URL)
+def endrosement_add(request, user_id):
+
+    if request.method == 'POST':
+        form = EndrosementForm(request.POST)
+        if form.is_valid():
+            key = form.cleaned_data['key']
+            value = form.cleaned_data['value']
+
+            endrose = Endrosement()
+            endrose.key = key
+            endrose.value = value
+            endrose.user = request.user 
+
+            endrose.save()
+
+        return redirect ('/'+request.user.userid)
+    return invalid(request)
+
+
+
+
+@login_required(login_url=var.LOGIN_URL)
+def endrosement_delete(request, user_id, pk):
+    if request.method == 'GET':
+        return invalid(request)
+    try:
+        endrose = Endrosement.objects.get(pk = pk)
+        if endrose.user == request.user:
+            endrose.delete()
+            return redirect('/'+request.user.userid)
+        else:
+            return invalid(request)
+    except ObjectDoesNotExist as o:
+        return invalid(request)
+
+
+
+
+@login_required(login_url=var.LOGIN_URL)
+def endrosement_edit(request, user_id, pk):
+    if request.method == 'POST':
+        form = EndrosementForm(request.POST)
+        if form.is_valid():
+            key = form.cleaned_data['key']
+            value = form.cleaned_data['value']
+
+            try:
+                endrose = Endrosement.objects.get(pk = pk)
+                endrose.key = key
+                endrose.value = value
+                endrose.save()
+
+                return redirect('/'+request.user.userid)
+            except ObjectDoesNotExist as e:
+                return invalid(request)
+                
+
+    else:
+        try:
+            endrose = Endrosement.objects.get(pk=pk)
+            if endrose.user != request.user:
+                return invalid(request)
+
+            form = EndrosementForm()
+            form.fields['key'].initial = endrose.key
+            form.fields['value'].initial = endrose.value
+
+            context = {
+                'form' : form,
+                'pk' : pk
+            }
+
+            return render(request, 'profiles/edit_endrosement.html', context)
+        except ObjectDoesNotExist as e:
+            return invalid(request)
+
+
+
+# response of: example.com/userid/working/edit
+@login_required(login_url=var.LOGIN_URL)
+def working_add(request, user_id):
+
+    if request.method == 'POST':
+        form = WorkingForm(request.POST)
+        if form.is_valid():
+            company = form.cleaned_data['company']
+            position = form.cleaned_data['position']
+            from_date = form.cleaned_data['from_date']
+            current = form.cleaned_data['current']
+            to_date = form.cleaned_data['to_date']
+            comment = form.cleaned_data['comment']
+
+            work = Working()
+            work.company = company
+            work.position = position
+            work.from_date = from_date
+            work.current = current
+            if not current:
+                work.to_date = to_date
+            else:
+                work.to_date = datetime.today()
+            work.comment = comment
+            work.user = request.user
+
+            work.save()
+
+            return redirect('/'+user_id)
+
+        else:
+            return invalid(request)
+
+
+    form = WorkingForm()
+    context = {
+        'form' : form,
+        'edit' : False
+    }
+    return render(request, 'profiles/edit_working.html',context)
+
+
+
+@login_required(login_url=var.LOGIN_URL)
+def working_edit(request, user_id, pk):
+    
+    if request.method == 'POST':
+        form = WorkingForm(request.POST)
+        if form.is_valid():
+            company = form.cleaned_data['company']
+            position = form.cleaned_data['position']
+            from_date = form.cleaned_data['from_date']
+            current = form.cleaned_data['current']
+            to_date = form.cleaned_data['to_date']
+            comment = form.cleaned_data['comment']
+
+            work = Working.objects.get(pk = pk)
+            work.company = company
+            work.position = position
+            work.from_date = from_date
+            work.current = current
+            if not current:
+                work.to_date = to_date
+            work.comment = comment
+
+            work.save()
+
+            return redirect('/'+user_id)
+
+        else:
+            return invalid(request)
+
+    try:
+        work = Working.objects.get(pk = pk)
+
+        form = WorkingForm()
+        form.fields['company'].initial = work.company
+        form.fields['position'].initial = work.position
+        form.fields['from_date'].initial = work.from_date
+        form.fields['current'].initial = work.current
+        form.fields['to_date'].initial = work.to_date
+        form.fields['comment'].initial = work.comment
+
+        context = {
+            'form' : form,
+            'edit' : True,
+            'pk' : pk
+        }
+
+        return render(request, 'profiles/edit_working.html', context)
+    except ObjectDoesNotExist as e:
+        return invalid(request)
+
+
+
+# response of: example.com/userid/working/delete/pk/
+@login_required(login_url=var.LOGIN_URL)
+def working_delete(request, user_id, pk):
+    if request.method == 'POST':
+        try:
+            work = Working.objects.get(pk = pk)
+            if work.user != request.user:
+                pass
+
+            work.delete()
+            return redirect('/'+user_id)
+
+        except ObjectDoesNotExist as e:
+            return invalid(request)
+
+
+    return invalid(request)
+
 
 
 # response of: example.com/feeds/
@@ -314,6 +605,8 @@ def feeds(request):
         }
     return render(request, 'feeds.html', context)
 
+
+
 @login_required(login_url = var.LOGIN_URL)
 def feed_delete(request, pk):
     try:
@@ -325,10 +618,57 @@ def feed_delete(request, pk):
         return redirect('/feeds')
     except ObjectDoesNotExist as e:
         return HttpResponse("Post not found")
+
+
 # custom error request response
 def error404(request):
     context = {}
     return render(request, 'error404.html', context)
+
+
+@login_required(login_url=var.LOGIN_URL)
+def change_password(request):
+
+    context = {
+        'error' : False,
+        'message' : ''
+    }
+
+    if request.method == 'POST':
+        form = ChangePasswordForm(request.POST)
+        if form.is_valid():
+            current_password = form.cleaned_data['current_password']
+            new_password = form.cleaned_data['new_password']
+            confirm_password = form.cleaned_data['confirm_password']
+
+            if new_password != confirm_password:
+                context['error'] = True
+                context['message'] = 'New and Confirm Password not matched'
+
+            else:
+                user = authenticate(userid = request.user.userid, password = current_password)
+                if user is not None:
+                    # valid user
+                    user.set_password(new_password)
+                    user.save()
+
+                    user = authenticate(userid = user.userid, password = new_password)
+                    auth_login(request, user)
+
+                    return HttpResponse('Passwod Changed Successfully')
+
+                else:
+                    context['error'] = True
+                    context['message'] = 'Passwod not matched with user'
+        else:
+            context['error'] = True
+            context['message'] = 'Invalid data'
+
+    form = ChangePasswordForm()
+    context['form'] = form
+
+    return render(request, 'auth/change_password.html', context)
+
 
 
 def forget_password(request):
@@ -366,6 +706,8 @@ def forget_password(request):
         'invalid' : False
     }    
     return render(request, 'auth/forget_password.html',context)
+
+
 
 def forget_password_varification(request):
 
@@ -410,3 +752,8 @@ def forget_password_varification(request):
     }
     return render(request, 'auth/forget_password_varification.html',context)
 
+
+
+def invalid(request):
+    response = loader.get_template('invalid.html');
+    return HttpResponse(response.render({}, request))

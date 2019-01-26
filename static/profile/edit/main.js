@@ -1,9 +1,12 @@
+
+document.getElementById("id_current").addEventListener("change", enableTo);
+
 function enableTo() {
-    if(document.getElementById('stillWorkingChange').checked) {
-        document.getElementById('endingDateChange').disabled=true;
+	if(document.getElementById('id_current').checked) {
+        document.getElementById('id_to_date').disabled=true;
     }
     else {
-        document.getElementById('endingDateChange').disabled=false;
+        document.getElementById('id_to_date').disabled=false;
     }
 }
 

@@ -69,7 +69,7 @@ body{
     padding: 2px;
     width: 400px;
 }
-#alumniChange, #stillWorkingChange {
+#alumniChange, #id_current {
     height: 20px;
     width: 20px;
 }
@@ -104,6 +104,14 @@ body{
     background-color: #000000bb;
 }
 .idPopUp {
+    display: none;
+    z-index: 10;
+    position: fixed;
+    min-height: 100%;
+    min-width: 100%;
+    background-color: #000000bb;
+}
+.confPopUp {
     display: none;
     z-index: 10;
     position: fixed;
@@ -156,7 +164,11 @@ body{
 }
 
 
-
+.confirm-password {
+    display: flex;
+    margin-right: auto; margin-left: auto;
+    padding: 3px 5px 3px 5px;
+}
 
 
 /*FOR RESPONSIVE NAVBAR*/

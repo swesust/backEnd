@@ -22,11 +22,24 @@ urlpatterns = [
     # example.com/forget-password/varification/
     path('forget-password/varification/', views.forget_password_varification, 
         name ='forget_password_varification'),
+    path('change-password/', views.change_password, name='change_password'),
     # example.com/feeds/delete/10/
     path('feeds/delete/<pk>/', views.feed_delete, name='feed_delete' ),
     
     # example.com/2016831035/edit/
-    path('<user_id>/edit', views.profile_edit, name='profile_edit'),
+    path('<user_id>/edit/', views.profile_edit, name='profile_edit'),
+    # example.com/2016831035/endrosement/add/
+    path('<user_id>/endrosement/add/', views.endrosement_add, name='endrosement_add'), 
+    # example.com/2016831035/endrosement/delete/10/
+    path('<user_id>/endrosement/delete/<pk>/', views.endrosement_delete, name='endrosement_delete'),
+    # example.com/2016831035/endrosement/edit/10/
+    path('<user_id>/endrosement/edit/<pk>/', views.endrosement_edit, name='endrosement_edit'),
+    # example.com/2016831035/working/add
+    path('<user_id>/working/add/', views.working_add, name='working_add'),
+    # example.com/2016831035/working/edit/10/
+    path('<user_id>/working/edit/<pk>', views.working_edit, name='working_edit'),
+    # example.com/2016831035/working/delete/10
+    path('<user_id>/working/delete/<pk>', views.working_delete, name='working_delete'),
     # make sure that this path is always in last position to avoid conflict
     # example.com/2016831035/
     path('<user_id>/', views.profile, name='profile')

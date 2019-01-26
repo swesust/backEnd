@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+
+	<title>{{ request.user.name }} | Endrosement</title>
+	<style type="text/css">
+
+		.form-block {
+			display: flex; justify-content: center;
+			top: 100px;
+			width: 100%;
+			margin-left: auto; margin-right: auto;
+			position: relative;
+		}
+		.django-form select {
+			display: block;
+		    padding: 5px;
+		    margin-bottom: 5px;
+		    border-radius: 10px;
+		    border: 1px solid black;
+		}
+		.django-form textarea {
+			width: 400px;
+			display: block;
+		    padding: 2px; 
+		    border-radius: 5px;
+		    border: 1px solid black; 
+		}
+
+		.django-form button {
+		    background-color: #1EAA3E;
+		    display: block;
+		    margin-left: auto; margin-right: auto;
+		    color: white; cursor: pointer;
+		    width: 150px;
+		    border-radius: 10px;
+		    margin-top: 15px;
+		}
+
+
+		.delete {
+		    display: block;
+		    margin-left: auto; margin-right: auto;
+		    color: white; cursor: pointer;
+		    width: 150px;
+		    border-radius: 10px;
+		    margin-top: 15px;
+		    background-color: red;
+
+		}
+
+	</style>
+{% endblock %}
+
+
+{% block extra_body %}
+	
+	<div class="form-block">
+		<form class="django-form"  method="POST" action="/{{ request.user.userid }}/endrosement/edit/{{ pk }}/">
+			{% csrf_token %}
+			{{ form.key }}
+			{{ form.value }}
+			<button type="submit">Update</button>
+		</form>
+	</div>
+
+	<div class="form-block">
+		<form action="/{{ request.user.userid }}/endrosement/delete/{{ pk }}/" method="POST">
+			{% csrf_token %}
+			<button type="submit" class="delete">Delete</button>
+		</form>
+	</div>
+
+{% endblock %}

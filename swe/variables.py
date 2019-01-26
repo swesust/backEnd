@@ -20,6 +20,9 @@ FOLDER_STUDENT = 'data/students'
 FOLDER_TEACHER = 'data/teachers'
 FOLDER_POST = 'data/posts'
 
+DEFAULT_PROFILE_IMAGE = 'data/image.PNG'
+DEFAULT_COVER_IMAGE = 'data/cover.JPEG'
+
 FILE_CHUNK_SIZE = 2500000
 
 # email text
@@ -27,3 +30,4 @@ EMAIL_SUBJECT_TOKEN = "SWE Society account password reset token"
 EMAIL_SUBJECT_PASSWORD_CHANGE = "SWE Society account password changed"
 EMAIL_TEXT_TOKEN = ""
 EMAIL_TEXT_PASSWORD_RESET = ""
+

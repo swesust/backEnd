@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block extra_head %}
+	<title>Invalid Request</title>
+	<style type="text/css">
+		
+		.header-gap {
+			width: 100%; height: 60px;
+		}
+		.image-container {
+			padding: 10px;
+			max-width: 500px; max-height: 500px;
+			min-width: 300px; min-height: 300px;
+		}
+		img {
+			width: 100%; height: auto;
+		}
+
+		.text {
+			font-size: 30px; font-weight: bold;
+			color: black;
+		}
+
+
+	</style>
+{% endblock %}
+	
+
+{% block extra_body %}
+	<div class="header-gap"></div>
+	<center>
+		<div class="image-container">
+			<img src="{% static 'base/warning.png'%}">
+		</div>
+		<div class="text">
+			Invalid Request
+		</div>	
+	</center>
+{% endblock %}

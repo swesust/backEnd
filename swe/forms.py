@@ -1,6 +1,9 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from .models import (
+	Endrosement, Working
+)
 
 User = get_user_model()
 
@@ -104,3 +107,48 @@ class UserToken(forms.Form):
 		'placeholder' : 'Your Token'}))
 
 
+class ChangePasswordForm(forms.Form):
+	current_password = forms.CharField(widget=forms.PasswordInput(attrs={
+		'placeholder' : 'Current Password', 'minlength' : '6'
+		}))
+
+	new_password = forms.CharField(widget=forms.PasswordInput(attrs={
+		'placeholder' : 'New Password', 'minlength' : '6'
+		}))
+
+	confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={
+		'placeholder' : 'Confirm Password', 'minlength' : '6'
+		}))
+
+
+class EndrosementForm(forms.ModelForm):
+
+	class Meta:
+		model = Endrosement
+		fields = ['key', 'value']
+
+
+class WorkingForm(forms.ModelForm):
+
+	class Meta:
+		model = Working
+		fields = [ 	
+					'company' , 
+					'position' ,
+					'from_date' , 
+					'current', 
+					'to_date', 
+					'comment'
+				]
+
+		widgets = {
+            'from_date': forms.DateInput(attrs = {'type' : 'date'}),
+            'to_date' : forms.DateInput(attrs = {'type' : 'date'}),
+        }
+
+
+	def __init__(self, *args, **kwargs):
+		super(WorkingForm, self).__init__(*args, **kwargs)
+		self.fields['current'].required = False
+		self.fields['to_date'].required = False
+		self.fields['comment'].required = False
