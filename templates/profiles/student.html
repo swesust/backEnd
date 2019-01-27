@@ -109,7 +109,7 @@
                 </td>
               {% endif %}
               <td class="rowTitle">{{ item.key }}</td>
-              <td>{{ item.value }}</td>
+              <td>{{ item.value | linebreaks}}</td>
           </tr>
 
           {% endfor %}
@@ -147,7 +147,7 @@
                     - {{ item.to_date }}
                   {% endif %}
                   <br>
-                  {{ item.comment }}
+                  {{ item.comment | linebreaks}}
                 </td>
               </tr>
             {% endfor %}

@@ -223,41 +223,7 @@ def profile_edit(request, user_id):
         LinkedIn = 'linkedinid'
 
     """
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        phone = request.POST('phone')
-        files = request.FILES
-        profile_img = files.get('profilePic')
-        cover_img = files.get('coverPic')
-
-        user = request.user 
-        if user.is_student:
-            profile = Student.objects.get(user = user)
-        else:
-            profile = Teacher.objects.get(user = user)
-
-        if Image.is_valid_format(profile_img):
-            if profile_img.multiple_chunks(var.FILE_CHUNK_SIZE):
-                profile_img.chunks(var.FILE_CHUNK_SIZE)
-
-            bytes_data = profile_img.read()
-            if request.user.is_student:
-                imgsrc = Image.save(var.FOLDER_STUDENT, bytes_data)
-            else:
-                imgsrc = Image.save(var.FOLDER_TEACHER, bytes_data)
-
-
-        if Image.is_valid_format(cover_img):
-            if cover_img.multiple_chunks(var.FILE_CHUNK_SIZE):
-                cover_img.chunks(var.FILE_CHUNK_SIZE)
-            bytes_data = cover_img.read()
-            if request.user.is_student:
-                cover = Image.save(var.FOLDER_STUDENT, bytes_data)
-            else:
-                cover = Image.save(var.FOLDER_TEACHER, bytes_data)
-
-
+    
 
     # profile edit
 
@@ -284,8 +250,8 @@ def profile_edit(request, user_id):
 
         if profile_img != None:
             if Image.is_valid_format(profile_img.name):
-                if profile_img.multiple_chunks(var.FILE_CHUNK):
-                    profile_img.chunks(var.FILE_CHUNK)
+                if profile_img.multiple_chunks(var.FILE_CHUNK_SIZE):
+                    profile_img.chunks(var.FILE_CHUNK_SIZE)
 
                 bytes_data = profile_img.read()
                 if user.is_student:
@@ -296,8 +262,8 @@ def profile_edit(request, user_id):
 
         if cover_img != None:
             if Image.is_valid_format(cover_img.name):
-                if cover_img.multiple_chunks(var.FILE_CHUNK):
-                    cover_img.chunks(var.FILE_CHUNK)
+                if cover_img.multiple_chunks(var.FILE_CHUNK_SIZE):
+                    cover_img.chunks(var.FILE_CHUNK_SIZE)
 
                 bytes_data = cover_img.read()
                 if user.is_student:
@@ -579,8 +545,8 @@ def feeds(request):
             if Image.is_valid_format(image_file.name):
 
                 # chunk the total stream for bufferring
-                if image_file.multiple_chunks(2500000):
-                    image_file.chunks(2500000)
+                if image_file.multiple_chunks(var.FILE_CHUNK_SIZE):
+                    image_file.chunks(var.FILE_CHUNK_SIZE)
 
                 # read the image file stream
                 bytes_data = image_file.read()
