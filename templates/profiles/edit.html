@@ -53,10 +53,13 @@
 						<label for="phoneChange">Phone</label>
 						<input type="text" name="phone" value="{{ profile.phone }}" id="phoneChange" required>
 					</div>
-					<div class="form-group">
-						<label for="addressChange">Address</label>
-						<input name="address" id="addressChange" value="{{ profile.address }}" required>
-					</div>
+					{% if user.is_student %}
+						<div class="form-group">
+							<label for="addressChange">Address</label>
+							<input name="address" id="addressChange" value="{{ profile.address }}" required>
+						</div>
+					{% endif %}
+
 					<div class="form-group">
 						<label for="alumniChange">Alumni</label>
 						{% if profile.alumni %}

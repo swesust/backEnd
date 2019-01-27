@@ -29,21 +29,13 @@
             | Alumni
           {% endif %}
         </p>
-  </div>
-
-  <div class="profileContainer">
-    <a href="https://github.com/{{ profile.githubid }}" class="profileLink githubLink">
-      <i class="fab fa-github-square"></i>
-    </a>
-    <a href="https://twitter.com/{{ profile.twitterid }}" class="profileLink twitterLink">
-      <i class="fab fa-twitter-square"></i>
-    </a>
-    <a href="https://linkedin.com/in/{{ profile.linkedinid }}" class="profileLink linkedinLink">
-      <i class="fab fa-linkedin"></i>
-    </a>
-    <a href="https://facebook.com/{{ profile.facebookid }}" class="profileLink fbLink">
-      <i class="fab fa-facebook-square"></i>
-    </a>
+        <p class="regno">
+          {% if profile.head %}
+            Dept. Head
+          {% elif profile.leaved %}
+            on leave 
+          {% endif %}
+        </p>
   </div>
 
   <div class="container about-block-gap">
@@ -57,11 +49,13 @@
         <div class="box-header">
           About
         </div>
-        <div>
-         <a href="/{{ user.userid }}/edit">
-          <img src="{% static 'profile/img/edit.png' %}" class="edit-icon">
-        </a>
-        </div>
+        {% if is_self %}
+          <div>
+           <a href="edit">
+            <img src="{% static 'profile/img/edit.png' %}" class="edit-icon">
+          </a>
+          </div>
+        {% endif %}
         <div class="box-container">
           <table>
             <tr>
@@ -73,14 +67,9 @@
               <td>{{ profile.phone }}</td>
             </tr>
             <tr>
-              <td class="rowTitle">Address</td>
-              <td>{{ profile.address }}</td>
+              <td class="rowTitle">Gender: </td>
+              <td>{{ profile.gender }}</td>
             </tr>
-            <tr>
-              <td class="rowTitle">Blood Group</td>
-              <td>{{ profile.bloodgroup }}</td>
-            </tr>
-
           </table>
         </div>
       </div>
@@ -91,21 +80,87 @@
       <div class="box-header">
         Endorsements
       </div>
+      {% if is_self %}
+        <div>
+           <a href="javascript:(void)" onclick="showEndroseCreateDialog()">
+            <img src="{% static 'profile/img/add.png' %}" class="edit-icon">
+          </a>
+        </div>
+      {% endif %}
       <div class="box-container">
-        <table>
-          {% for item in endrosements %}
-            <tr>
-              <td class="rowTitle">{{ item.key }}</td>
-              <td>{{ item.value }}</td>
-          </tr>
+         {% for item in endrosements %}
+          <div class="single-endor">
+            <div class="endor-title">
+              {% if is_self%}
+                <a href="endrosement/edit/{{ item.pk }}"><img  class="row-edit" src="{% static 'profile/img/edit.png' %}"></a>
+              {% endif %}
+              {{ item.key }}
+            </div>
+            <div class="endor-data">
+              {{ item.value | linebreaks}}
+            </div>
+          </div>
           {% endfor %}
-        </table>
       </div>
     </div>
 
-  </div>
+
+    <div class="box">
+        <div class="box-header">
+          Experience and Working
+        </div>
+        {% if is_self %}
+          <div>
+           <a href="working/add">
+            <img src="{% static 'profile/img/add.png' %}" class="edit-icon">
+          </a>
+          </div>
+        {% endif %}
+        <div class="box-container">
+          {% for item in works %}
+          <div class="single-endor">
+            <div class="endor-title">
+              {% if is_self%}
+                <a href="working/edit/{{ item.pk }}"><img  class="row-edit" src="{% static 'profile/img/edit.png' %}"></a>
+              {% endif %}
+              {{ item.company }}
+            </div>
+            <div class="endor-data">
+              <h6>{{ item.position }}</h6>
+              <h6>
+                {{ item.from_date }}
+                {% if item.current %}
+                  - current
+                {% else %}
+                  - {{ item.to_date }}
+                {% endif %}
+              </h6>
+              {{ item.comment | linebreaks}}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
 
 
+
+
+  <!-- pop up window -->
+  {% if is_self %}
+    <div class="pop-window" id="endroseCreateDialog">
+      <div class="pop-window-card">
+        <form class="django-form" method="POST" action="endrosement/add/">
+          {% csrf_token %}
+          <!-- find out the form : `swe.forms.EndrosementForm` -->
+             {{ endrose_form.key }}
+             {{ endrose_form.value }}  
+          
+          <button type="submit">Add</button>
+        </form>
+        <button onclick="hideEndrseCreateDialog()">Cancel</button>
+      </div>
+    </div>
+  {% endif %}
 
   <!-- Linking JSs-->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

@@ -58,11 +58,13 @@
         <div class="box-header">
           About
         </div>
-        <div>
-         <a href="edit">
-          <img src="{% static 'profile/img/edit.png' %}" class="edit-icon">
-        </a>
-        </div>
+        {% if is_self %}
+          <div>
+           <a href="edit">
+            <img src="{% static 'profile/img/edit.png' %}" class="edit-icon">
+          </a>
+          </div>
+        {% endif %}
         <div class="box-container">
           <table>
             <tr>
@@ -81,7 +83,10 @@
               <td class="rowTitle">Blood Group</td>
               <td>{{ profile.bloodgroup }}</td>
             </tr>
-
+            <tr>
+              <td class="rowTitle">Gender</td>
+              <td>{{ profile.gender }}</td>
+            </tr>
           </table>
         </div>
       </div>
@@ -100,27 +105,26 @@
         </div>
       {% endif %}
       <div class="box-container">
-        <table>
-          {% for item in endrosements %}
-            <tr>
-              {% if is_self %}
-                <td>
-                  <a href="endrosement/edit/{{ item.pk }}"><img  class="row-edit" src="{% static 'profile/img/edit.png' %}"></a>
-                </td>
+         {% for item in endrosements %}
+          <div class="single-endor">
+            <div class="endor-title">
+              {% if is_self%}
+                <a href="endrosement/edit/{{ item.pk }}"><img  class="row-edit" src="{% static 'profile/img/edit.png' %}"></a>
               {% endif %}
-              <td class="rowTitle">{{ item.key }}</td>
-              <td>{{ item.value | linebreaks}}</td>
-          </tr>
-
+              {{ item.key }}
+            </div>
+            <div class="endor-data">
+              {{ item.value | linebreaks}}
+            </div>
+          </div>
           {% endfor %}
-        </table>
       </div>
     </div>
 
 
     <div class="box">
         <div class="box-header">
-          Working
+          Experience and Working
         </div>
         {% if is_self %}
           <div>
@@ -130,28 +134,28 @@
           </div>
         {% endif %}
         <div class="box-container">
-          <table>
-            {% for item in works %}
-              <tr>
-                {% if is_self %}
-                  <td>
-                    <a href="working/edit/{{ item.pk }}"><img  class="row-edit" src="{% static 'profile/img/edit.png' %}"></a>
-                  </td>
+          {% for item in works %}
+          <div class="single-endor">
+            <div class="endor-title">
+              {% if is_self%}
+                <a href="working/edit/{{ item.pk }}"><img  class="row-edit" src="{% static 'profile/img/edit.png' %}"></a>
+              {% endif %}
+              {{ item.company }}
+            </div>
+            <div class="endor-data">
+              <h6>{{ item.position }}</h6>
+              <h6>
+                {{ item.from_date }}
+                {% if item.current %}
+                  - current
+                {% else %}
+                  - {{ item.to_date }}
                 {% endif %}
-                <td class="rowTitle">{{ item.position }} : {{ item.company }}</td>
-                <td>
-                  {{ item.from_date }}
-                  {% if item.current %}
-                    - current
-                  {% else %}
-                    - {{ item.to_date }}
-                  {% endif %}
-                  <br>
-                  {{ item.comment | linebreaks}}
-                </td>
-              </tr>
-            {% endfor %}
-          </table>
+              </h6>
+              {{ item.comment | linebreaks}}
+            </div>
+          </div>
+          {% endfor %}
         </div>
       </div>
 

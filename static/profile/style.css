@@ -126,6 +126,20 @@ a:hover {
 .fbLink:hover {
     color: #3b5998 !important;
 }
+.single-endor {
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+.endor-title {
+    font-weight: bold;
+    font-size: 20px;
+}
+.endor-data {
+    margin-left: 30px;
+    margin-top: 5px;
+}
+
+
 
 .clearfix {
     display: block;
