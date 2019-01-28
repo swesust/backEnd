@@ -1,0 +1,59 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #eee !important;
+}
+a:hover {
+    text-decoration: none !important;
+}
+.container {
+    background: #fff;
+    -webkit-box-shadow: 0px 0px 15px 2px rgba(0,0,0,0.4);
+    -moz-box-shadow: 0px 0px 15px 2px rgba(0,0,0,0.4);
+    box-shadow: 0px 0px 15px 2px rgba(0,0,0,0.4);
+}
+.single-post {
+    padding: 100px 50px;
+}
+.single-post-title {
+    font-size: 60px;
+    font-weight: lighter
+}
+.single-post-data {
+    color: #555;
+    font-weight: lighter;
+}
+.single-post-content {
+    margin-top: 50px;
+    font-size: 20px;
+}
+.single-post-thumbnail {
+    
+    width: 95%; max-height: 500px;
+    display: block;
+    margin-top: 10px; margin-bottom: 10px;
+    margin-left: auto; margin-right: auto;
+    border: 3px solid #aaa;
+}
+
+
+
+
+@media only screen and (min-width: 992px) {
+    .alignEnd {
+        position: absolute !important;
+        right: 10px;
+    }
+    .nav-item{
+        margin-left: 8px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .notImportant {
+        display: none;
+    }
+    .loginForm {
+        width: 70%;
+    }
+}

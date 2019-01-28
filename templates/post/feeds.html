@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+	<link rel="stylesheet" type="text/css" href="{% static 'post/style.css' %}">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+{% endblock %}
+
+{% block extra_body %}
+
+
+	<div class="container">
+		<div class="post-section">
+			{% for post in posts %}
+
+			<div class="post-card">
+				{% if post.has_media %}
+					<img src="/{{ post.imgsrc }}" alt="Thumbnail" class="post-thumbnail">
+				{% endif %}
+				<div class="post-others">
+					<a href="{{ post.pk }}/"><h4 class="post-title">{{ post.title }}</h4></a>
+
+					<small class="post-data">
+						<a href="/{{ post.user.userid }}/">{{ post.user.name }}</a> | {{ post.time_date | date }}
+					</small>
+					<hr class="post-data-devider">
+					<p class="post-contents">
+						{{ post.body }}
+					</p>
+					<a href="{{ post.pk }}/" class="seeMoreButton" onclick="showFull();">Full Post.</a>
+				</div>
+			</div>
+
+			{% endfor %}
+		</div>
+
+		<div class="tab-section">
+			<form class="search-form" action="#" method="post">
+				<input type="text" name="search" placeholder="Search" class="searchInput">
+				<button type="submit" name="submitSearch" class="searchButton"><i class="fas fa-search"></i></button>
+			</form>
+		</div>
+	</div>
+
+	<img src="{% static 'post/add.png' %}" class="create-post-icon" alt="Create New Post" onclick="show()">
+
+	<!-- new post dialog -->
+	<div class="pop-window">
+		<dir class="pop-close" onclick="hide()">+</dir>
+		<div class="pop-container">
+			<form method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+				<input type="text" name="title" placeholder="Title">
+				<textarea placeholder="Body" name="body"></textarea>
+				<input type="FILE" name="image" accept=".PNG, .JPG, .JPEG">
+				<button>Create Post</button>
+			</form>
+		</div>
+	</div>
+
+
+
+	<!-- Linking JSs-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+	<script src="{% static 'common/bootstrap/js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'post/script.js' %}"></script>
+
+{% endblock %}

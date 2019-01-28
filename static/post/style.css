@@ -1,132 +1,166 @@
-
-.post-container {
-	width: 60%;
-	min-width: 400px;
-	background-color: white;
-	margin: 2px 0px 10px;
-	box-shadow: 0 3px 3px 0 #111;
-	position: relative;
+.body {
+    margin: 0;
+    padding: 0;
 }
-.header-gap {
-	width: 100%;
-	height: 60px;
+a:hover {
+    text-decoration: none !important;
+}
+.container {
+    margin-top: 100px;
+}
+.headingText {
+    text-align: center;
+}
+.post-section {
+    margin-top: 80px;
+    width: 75%;
+    text-align: justify;
+    display: inline-block;
+    float: left;
+}
+.post-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    -webkit-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.75);
+}
+a .post-title{
+    color: #555;
+    transition: ease .3s;
+    text-decoration: none;
+}
+a .post-title:hover {
+    color: #333;
+    text-decoration: none;
 }
 .post-title {
-	text-align: center;
-	margin: 0px;
-	padding: 10px 25px 10px 5px;
+    margin-bottom: 1px;
 }
-.post-image-block {
-	max-width: 80%;
-	background-size: red;
-	margin: 0 auto;
-}
-.post-image {
-	margin: 0px;
-	width: 100%;
-	height: 20%;
+.post-contents {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 
-.post-body {
-	margin: 0px;
-	background-color: white;
-	color: black;
-	text-align: left;
-	font-size: 17px;
-	line-height: 22px;
-	padding: 10px;
+.tab-section {
+    width: 20%;
+    display: inline-block;
+    position: relative;
+    margin-top: 80px;
+    margin-left: 4%;
+    transition: .3s;
+}
+.tab-section form {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    -webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.75);
+}
+.searchInput {
+    border-radius: 10px 0px 0px 10px;
+    width: 75%;
+    padding: 5px;
+    color: #333;
+}
+.searchButton {
+    margin-left: -4px;
+    border-radius: 0px 10px 10px 0px;
+    width: 24.5%;
+    padding: 5px;
+    color: #333;
+    background: #eee;
+    transition: .3s;
+    cursor: pointer;
+}
+.searchButton:hover {
+    background: #ddd;
+}
+.searchInput {
+    outline: none;
+}
+.post-thumbnail {
+    height: 195px;
+    width: 195px;
+    float: left;
+    margin-right: 20px;
+    object-fit: cover;
+    object-position: center;
+    border: 2px solid #aaa;
+    border-radius: 10px;
 }
 
-.post-user {
-	text-decoration: none;
-	font-size: 20px; color: black;
-	line-height: 25px;
-	text-align: center;
-	color: black;
-	margin: 0 0 5px 10px;
-}
-
-.post-date {
-	line-height: 25px;
-	display: inline;
-}
-
-.edit-icon {
-	position: absolute;
-	top: 5px; right: 5px;
-	width: 30px; height: 30px;
-	cursor: pointer;
-
-}
-@media screen and (max-width: 800px){
-	.post-container {
-		width: 80%;
-	}
-}
-.new-post-create {
-	position: fixed;
-	z-index: 5; bottom: 70px; right: 10px;
-	right: 20px;
-	font-size: 20px;
-	display: inline-block;
-	background-color: rgba(0,0,0,0.5);
-	color: white;
-	padding: 5px 10px 5px 10px;
-	border-radius: 30px;
-	cursor: pointer;
-}
-
-.new-post-create:hover {
-	background-color: #14D181;
+.create-post-icon {
+    position: fixed; width: 40px; height: 40px;
+    bottom: 50px; right: 20px; cursor: pointer; z-index: 5;
 }
 
 .pop-window {
-	display: none;
-	width: 100%; height: 100%;
-	align-items: center;
-	justify-content: center;
-	background-color: rgba(0,0,0,0.6);
-	position: fixed;
-	top: 30px;
+    position: fixed; display: none; top: 0px; background-color: rgba(0,0,0,0.5);
+    justify-content: center; align-items: center; width: 100%; height: 100%;
+    z-index: 10;
 }
 
-.pop-window-container {
-	width: 500px; height: auto;
-	padding: 10px;
-	background-color: white;
-	margin: 0;
+.pop-container {
+    background-color: white; width: 600px; height: 400px;
+    padding-top: 3px; border-radius: 3px;
+    box-shadow: 1px 1px 1px 1px #111;
 }
 
-.pop-window-container input {
-	display: block;
-	width: 480px;
-	margin-top: 10px;
+.pop-container input {
+    width: 90%; margin-left: auto; margin-right: auto;
+    padding: 2px; display: block; margin-top: 5px;
+    margin-bottom: 5px; border-radius: 5px;
+}
+.pop-container textarea {
+    width: 90%; margin-left: auto; margin-right: auto;
+    padding: 2px; display: block; height: 260px;
+    border-radius: 5px; margin-bottom: 4px;
+}
+.pop-container button {
+    font-size: 20px; display: block; margin-left: auto; margin-right: auto;
+    cursor: pointer; padding: 2px 10px 2px 10px; border-radius: 5px;
+}
+.pop-close {
+    font-size: 50px; position: absolute; top: -10px; right: 20px;
+    transform: rotate(45deg); cursor: pointer; color: white;
 }
 
-.pop-window-container textarea {
-	width: 480px; height: 300px;
-	margin-top: 10px;
+
+@media only screen and (min-width: 992px) {
+    .alignEnd {
+        position: absolute !important;
+        right: 10px;
+    }
+    .nav-item{
+        margin-left: 8px;
+    }
 }
 
-.pop-window-container button {
-	margin-top: 10px; 
-	margin-left: auto;
-	margin-right: auto;
-	display: block;
-	cursor: pointer;
-	background-color: #14D181;
-	padding: 5px 10px 5px 10px;
-	border-radius: 2px;
-	font-weight: bold;
-	color: black;
-}
+@media only screen and (max-width: 768px) {
+    .post-section {
+        width: 100%;
+        text-align: justify;
+        display: block;
+    }
+    .tab-section {
+        width: 100%;
+        display: none;
+        position: relative;
+        margin-top: 20px;
+    }
 
-.close-icon {
-	position: absolute;
-	top: 10px; right: 20px;
-	font-size: 50px;
-	font-weight: bold;
-	color: #F2D1D1;
-	transform: rotate(45deg);
-	cursor: pointer;
+    .notImportant {
+        display: none;
+    }
+    .loginForm {
+        width: 70%;
+    }
+
 }

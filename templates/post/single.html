@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+	<link rel="stylesheet" type="text/css" href="{% static 'post/single.css' %}">
+{% endblock %}
+
+{% block extra_body %}
+		<div class="container">
+		<div class="single-post">
+			<div class="single-post-title">
+				{{ post.title }}
+			</div>
+			<div class="single-post-data">
+				<a href="/{{ post.user.userid }}/">{{ post.user.name }}</a>
+				 | {{ post.time_date | date }}
+				 <h6 style="text-align: right;">
+				 	 <a href="/feeds/delete/{{ post.pk }}">
+				 	<img src="{% static 'post/delete.png' %}" width="30px" height="30px">
+				 </a>
+				 </h6>
+			</div>
+			<div class="single-post-content">
+				{% if post.has_media %}
+					<img src="/{{ post.imgsrc }}" alt="Thumbnail" class="single-post-thumbnail">
+				{% endif %}
+				{{ post.body }}
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<!-- Linking JSs-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+	<script src="{% static 'common/bootstrap/js/bootstrap.min.js' %}"></script>
+{% endblock %}

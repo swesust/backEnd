@@ -577,7 +577,20 @@ def feeds(request):
     context = {
         'posts' : posts
         }
-    return render(request, 'feeds.html', context)
+    return render(request, 'post/feeds.html', context)
+
+
+
+def single_post(request, pk):
+    try:
+        post = Post.objects.get(pk = pk)
+        context = {
+            'post' : post
+        }
+
+        return render(request, 'post/single.html', context)
+    except ObjectDoesNotExist as e:
+        return invalid(request)
 
 
 

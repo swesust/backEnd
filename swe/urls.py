@@ -25,7 +25,8 @@ urlpatterns = [
     path('change-password/', views.change_password, name='change_password'),
     # example.com/feeds/delete/10/
     path('feeds/delete/<pk>/', views.feed_delete, name='feed_delete' ),
-    
+    # a full post
+    path('feeds/<pk>/', views.single_post ,name='single_post'),
     # example.com/2016831035/edit/
     path('<user_id>/edit/', views.profile_edit, name='profile_edit'),
     # example.com/2016831035/endrosement/add/
