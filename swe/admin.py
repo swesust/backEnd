@@ -34,9 +34,17 @@ class UserAdmin(BaseUserAdmin):
 	search_fields = ('userid',)
 
 
+class ProfileAdminModel(admin.ModelAdmin):
+	"""
+	extended class of Model admin.
+	This class is stand for added custom search field in admin panel for student profile
+	with student reg id
+	"""
+	search_fields = ('regid',)
+
 admin.site.register(AuthUser, UserAdmin)
 admin.site.register(Batch)
-admin.site.register(Student)
+admin.site.register(Student, ProfileAdminModel)
 admin.site.register(Teacher)
 admin.site.register(Post)
 admin.site.register(Endrosement)

@@ -138,6 +138,7 @@ class WorkingForm(forms.ModelForm):
 					'from_date' , 
 					'current', 
 					'to_date', 
+					'country',
 					'comment'
 				]
 

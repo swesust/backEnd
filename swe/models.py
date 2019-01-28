@@ -6,7 +6,7 @@ from django.contrib.auth.models import (
 	_user_has_module_perms, _user_has_perm, _user_get_all_permissions)
 
 from django.contrib.auth import get_backends
-
+from . import variables as var
 
 class Batch(models.Model):
 	"""
@@ -188,27 +188,13 @@ class Student(models.Model):
 	# If student graduated then True or False
 	alumni = models.BooleanField(default=False)
 	# Student blood group
-	BLOOD_GROUPS = (
-		('A+', 'A+'),
-		('A-', 'A-'),
-		('B+', 'B+'),
-		('B-', 'B-'),
-		('O+', 'O-'),
-		('O-', 'O-'),
-		('AB+', 'AB+'),
-		('AB-', 'AB-')
-		)
-	bloodgroup = models.CharField(max_length=3, choices=BLOOD_GROUPS)
+	bloodgroup = models.CharField(max_length=3, choices=var.BLOOD_GROUPS)
 	# {M:Male} {F:Female} {T:Third Gender}
-	GENDER_CHOICE = (
-		('M', 'Male'),
-		('F', 'Female'),
-		('T', 'Third Gender'))
-	gender = models.CharField(max_length=1, choices=GENDER_CHOICE, default='F')
+	gender = models.CharField(max_length=1, choices=var.GENDER_CHOICE, default='F')
 	# Profile Image location
-	imgsrc = models.CharField(max_length=100,default = 'data/image.PNG')
+	imgsrc = models.CharField(max_length=100,default = var.DEFAULT_PROFILE_IMAGE)
 	# Cover Image location 
-	cover = models.CharField(max_length=100,default = 'data/cover.JPEG')
+	cover = models.CharField(max_length=100,default = var.DEFAULT_COVER_IMAGE)
 	# Github : rafiulgits
 	githubid = models.CharField(max_length=20,default = 'home')
 	# Linkedin : rafiul15
@@ -238,25 +224,16 @@ class Teacher(models.Model):
 	"""
 	user = models.OneToOneField(AuthUser, on_delete=models.CASCADE)
 
-	JOB_POSITIONS = (
-		('Lecturer', 'Lecturer'),
-		('Assistant Professor', 'Assistant Professor'),
-		('Associate Professor', 'Associate Professor'),
-		('Professor', 'Professor'))
 
-	position = models.CharField(max_length=25, choices=JOB_POSITIONS)
+	position = models.CharField(max_length=25, choices=var.JOB_POSITIONS)
 	alumni = models.BooleanField(default=False)
 	phone = models.CharField(max_length=16,default = '880')
 	leaved = models.BooleanField(default=False)
 	head = models.BooleanField(default=False)
 
-	GENDER_CHOICE = (
-		('M', 'Male'),
-		('F', 'Female'),
-		('T', 'Third Gender'))
-	gender = models.CharField(max_length=1, choices=GENDER_CHOICE, default='F')
-	imgsrc = models.CharField(max_length=100,default = 'data/image.PNG')
-	cover = models.CharField(max_length=100,default = 'data/cover.JPEG')
+	gender = models.CharField(max_length=1, choices=var.GENDER_CHOICE, default='F')
+	imgsrc = models.CharField(max_length=100,default = var.DEFAULT_PROFILE_IMAGE)
+	cover = models.CharField(max_length=100,default = var.DEFAULT_COVER_IMAGE)
 	
 	# default: object output
 	def __str__(self):
@@ -287,6 +264,9 @@ class Post(models.Model):
 	has_media = models.BooleanField(default=False)
 	# image location: posts/currentmillisec.type
 	imgsrc = models.CharField(max_length=50, default='none')
+
+	def __str__(self):
+		return self.title
 
 class Endrosement(models.Model):
 	"""
@@ -327,6 +307,7 @@ class Working(models.Model):
 	`from_date` : When job started
 	`current` : Whether the user currently working there
 	`to_date` : If the user already left this job
+	`country` : Workplace country
 	`comment` : Comment about this job
 	`user` : The user
 	"""
@@ -335,5 +316,6 @@ class Working(models.Model):
 	from_date = models.DateField()
 	current = models.BooleanField(default=False)
 	to_date = models.DateField()
+	country = models.CharField(max_length=2, choices=var.COUNTRIES, default='BD')
 	comment =  models.TextField()
 	user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)

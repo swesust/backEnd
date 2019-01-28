@@ -77,7 +77,7 @@
             </tr>
             <tr>
               <td class="rowTitle">Address</td>
-              <td>{{ profile.address }}</td>
+              <td>{{ profile.address }} : {{ profile.country }}</td>
             </tr>
             <tr>
               <td class="rowTitle">Blood Group</td>
@@ -151,6 +151,7 @@
                 {% else %}
                   - {{ item.to_date }}
                 {% endif %}
+                 | {{ item.country }}
               </h6>
               {{ item.comment | linebreaks}}
             </div>

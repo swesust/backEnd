@@ -185,7 +185,7 @@ def profile(request, user_id):
         }
         if user.is_student:
             # fetch all working information of this user
-            works = Working.objects.filter(user=user)
+            works = Working.objects.filter(user=user).order_by('current', 'from_date')[::-1]
             context['works'] = works
             return render(request, 'profiles/student.html', context)
         else:
@@ -275,7 +275,7 @@ def profile_edit(request, user_id):
         user.name = data.get('name')
         user.email = data.get('email')
         profile.phone = data.get('phone')
-
+        
         alumni = data.get('alumni')
 
         if alumni is not None:
@@ -427,6 +427,7 @@ def working_add(request, user_id):
             from_date = form.cleaned_data['from_date']
             current = form.cleaned_data['current']
             to_date = form.cleaned_data['to_date']
+            country = form.cleaned_data['country']
             comment = form.cleaned_data['comment']
 
             work = Working()
@@ -434,6 +435,7 @@ def working_add(request, user_id):
             work.position = position
             work.from_date = from_date
             work.current = current
+            work.country = country
             if not current:
                 work.to_date = to_date
             else:
@@ -469,6 +471,7 @@ def working_edit(request, user_id, pk):
             from_date = form.cleaned_data['from_date']
             current = form.cleaned_data['current']
             to_date = form.cleaned_data['to_date']
+            country = form.cleaned_data['country']
             comment = form.cleaned_data['comment']
 
             work = Working.objects.get(pk = pk)
@@ -476,6 +479,7 @@ def working_edit(request, user_id, pk):
             work.position = position
             work.from_date = from_date
             work.current = current
+            work.country = country
             if not current:
                 work.to_date = to_date
             work.comment = comment
@@ -497,6 +501,7 @@ def working_edit(request, user_id, pk):
         form.fields['current'].initial = work.current
         form.fields['to_date'].initial = work.to_date
         form.fields['comment'].initial = work.comment
+        form.fields['country'].initial = work.country
 
         context = {
             'form' : form,
