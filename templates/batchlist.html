@@ -3,19 +3,92 @@
 
 {% block extra_head %}
 	<title>Batchlist</title>
-	<link rel="stylesheet" type="text/css" href="{% static 'batchlist/style.css' %} ">
+	<style type="text/css">
+		.left-block {
+			width: 400px; 
+			height: 100%; padding-top: 80px;
+			position: fixed;
+		}
+		.right-block {
+			left: 410px; position: absolute;
+			top: 0px; padding-top: 80px;
+			right: 0px; height: 100%;
+			display: flex; justify-content: center;
+		}
+		.search-block {
+			background-color: lightgray;
+			height: 180px;
+			border-radius: 5px;
+			box-shadow: 0px 2px 2px 0px #111;
+			text-align: center;
+		}
+		.search-block input{
+			margin: 15px 0px 8px 0px;
+			width: 370px;
+			font-size: 17px; padding: 2px;
+			border-radius: 5px; 
+		}
+		.search-block select {
+			height: 35px;
+			border-radius: 5px; padding: 2px;
+		}
+		.search-block button {
+			margin-top: 10px; font-size: 20px;
+			cursor: pointer; width: 180px;
+			border-radius: 30px; font-family: monospace;
+			background-color: white; font-weight: bold;
+		}
+		.search-block button:hover {
+			background-color: black; color: white;
+		}
+		.list-block {
+			font-size: 30px; font-weight: bold;
+		}
+		a {
+			text-decoration: none;
+			color: black;
+		}
+		#id_current{
+			width: 20px; height: 20px;
+		}
+		p {
+			margin: 0px;
+		}
+		@media screen and (max-width: 800px){
+			.left-block {
+				position: relative; display: flex;
+				justify-content: center; width: 100%;
+			}
+			.search-block {
+				width: 400px;
+			}
+			.right-block {
+				display: block; position: relative;
+				display: flex;
+				justify-content: center; left: 0px;
+			}
+		}
+	</style>
 {% endblock %}
 
 {% block extra_body %}
-	<div class="page-top-gap">
-	</div>
-	{% for i in queryset %}
-
-	<div class="outter">
-		<div class="inner">
-			<h2 class="batch"><a class="ref" href="{{ i.year }}"> {{ i }} </a></h1>
+	<div class="left-block">
+		<div class="search-block">
+			<form method="POST" action="/search/">
+				{% csrf_token %}
+				{{ form.current }}
+				<p>Current</p>
+				{{ form.country }}
+				<button>Search</button>
+			</form>
 		</div>
 	</div>
 
-	{% endfor %}
+	<div class="right-block">
+		<div class="list-block">
+			{% for i in queryset %}
+				<a href="/batch/{{ i.year }}">{{ i }}</a>
+			{% endfor %}
+		</div>
+	</div>
 {% endblock %}

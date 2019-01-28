@@ -13,7 +13,8 @@ from django.contrib.auth import (
 from django.contrib.auth.decorators import login_required
 from . import variables as var
 from swe.forms import (
-    LoginForm, UserRecognize, UserToken, EndrosementForm, WorkingForm, ChangePasswordForm)
+    LoginForm, UserRecognize, UserToken, EndrosementForm, WorkingForm, 
+    ChangePasswordForm, SearchForm)
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.template import loader
@@ -107,8 +108,10 @@ def batchlist(request):
     and render the template with that dictionary
     """
     queryset = Batch.objects.all()[::-1]
+    form = SearchForm()
     context = {
         'queryset' : queryset,
+        'form' : form
     }
     return render(request, 'batchlist.html', context)
 
@@ -722,6 +725,27 @@ def forget_password_varification(request):
         'invalid' : False
     }
     return render(request, 'auth/forget_password_varification.html',context)
+
+def search(request):
+    if request.method == 'POST':
+        context = {
+            'found' : False
+        }
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            current = form.cleaned_data['current']
+            country = form.cleaned_data['country']
+            # unique query result
+            res = Working.objects.filter(country = country, current=current).distinct('user')
+            if res.exists():
+                context['found'] = True
+                context['res'] = res
+                return render(request, 'search.html', context)
+
+
+        return render(request, 'search.html', context)
+    else:
+        return invalid(request)
 
 
 

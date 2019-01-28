@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+  <title>Search</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'batch/style.css' %}">
+{% endblock %}
+
+{% block extra_body %}
+  <!-- Page Datas -->
+  <div class="page-content">
+
+    {% if found %}
+
+      <div class="page-heading">
+        <h1>Search Result</h1>
+      </div>
+      <div class="faculty-cards container-fluid">
+        <div class="row">
+
+          <!-- This is a sample faculty profile card. Use loop from here to *endloop*. Then remove all other cards. -->
+
+            {% for i in res %}
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12">   <!-- These classes are for responsive view -->
+                <div class="card bg-dark">
+                  <div class="card-body">
+                    <h5 class="class-title">{{ i.user.name }}</h5>  
+                    <p class="card-text">{{ i.user.userid }}</p> <!-- Description of the card -->
+                    <a href="/{{ i.user.userid }}">View Profile</a> <!-- A sample link -->
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          <!-- endloop -->
+        </div>
+      </div>
+    
+    {% else %}
+      <div class="page-heading">
+        <h1>No result found!</h1>
+      </div>
+    {% endif %}
+ 
+
+  </div>
+
+
+
+  <!-- Linking JSs-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="{% static 'batch/script.js' %}"></script>
+
+{% endblock %}

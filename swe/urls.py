@@ -37,9 +37,11 @@ urlpatterns = [
     # example.com/2016831035/working/add
     path('<user_id>/working/add/', views.working_add, name='working_add'),
     # example.com/2016831035/working/edit/10/
-    path('<user_id>/working/edit/<pk>', views.working_edit, name='working_edit'),
+    path('<user_id>/working/edit/<pk>/', views.working_edit, name='working_edit'),
     # example.com/2016831035/working/delete/10
-    path('<user_id>/working/delete/<pk>', views.working_delete, name='working_delete'),
+    path('<user_id>/working/delete/<pk>/', views.working_delete, name='working_delete'),
+    # search
+    path('search/', views.search, name='search'),
     # make sure that this path is always in last position to avoid conflict
     # example.com/2016831035/
     path('<user_id>/', views.profile, name='profile')

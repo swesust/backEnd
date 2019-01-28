@@ -4,6 +4,7 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from .models import (
 	Endrosement, Working
 )
+from . variables import COUNTRIES
 
 User = get_user_model()
 
@@ -153,3 +154,16 @@ class WorkingForm(forms.ModelForm):
 		self.fields['current'].required = False
 		self.fields['to_date'].required = False
 		self.fields['comment'].required = False
+
+
+class SearchForm(forms.ModelForm):
+
+	class Meta:
+		model = Working
+		fields = [ 	 
+					'current', 
+					'country',
+				]
+	def __init__(self, *args, **kwargs):
+		super(SearchForm, self).__init__(*args, **kwargs)
+		self.fields['current'].required = False
