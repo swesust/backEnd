@@ -1,0 +1,64 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #fff !important;
+}
+a:hover {
+    text-decoration: none !important;
+}
+.container {
+    margin-top: 80px;
+}
+.addPostForm {
+    padding: 20px;
+}
+.post-title-input, .post-content-input {
+    min-width: 100%;
+    display: block;
+    transition: .3s;
+    border: 2px solid #666;
+    border-radius: 5px;
+    margin-bottom: 30px;
+    padding: 5px;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.4);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.4);
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.4);
+}
+.post-title-input:focus, .post-content-input:focus, .post-title-input:hover, .post-content-input:hover {
+    outline: none;
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+}
+.post-title-input  {
+    font-size: 20px;
+    font-weight: bold;
+}
+.post-content-input {
+    font-size: 18px;
+    height: 350px;
+}
+.postButton {
+    display: block !important;
+}
+
+
+
+@media only screen and (min-width: 992px) {
+    .alignEnd {
+        position: absolute !important;
+        right: 10px;
+    }
+    .nav-item{
+        margin-left: 8px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .notImportant {
+        display: none;
+    }
+    .loginForm {
+        width: 70%;
+    }
+}

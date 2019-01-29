@@ -18,7 +18,7 @@
 					<img src="/{{ post.imgsrc }}" alt="Thumbnail" class="post-thumbnail">
 				{% endif %}
 				<div class="post-others">
-					<a href="{{ post.pk }}/"><h4 class="post-title">{{ post.title }}</h4></a>
+					<a href="post/{{ post.pk }}/"><h4 class="post-title">{{ post.title }}</h4></a>
 
 					<small class="post-data">
 						<a href="/{{ post.user.userid }}/">{{ post.user.name }}</a> | {{ post.time_date | date }}
@@ -27,7 +27,7 @@
 					<p class="post-contents">
 						{{ post.body }}
 					</p>
-					<a href="{{ post.pk }}/" class="seeMoreButton" onclick="showFull();">Full Post.</a>
+					<a href="post/{{ post.pk }}/" class="seeMoreButton" onclick="showFull();">See As Single Post</a>
 				</div>
 			</div>
 
@@ -42,21 +42,7 @@
 		</div>
 	</div>
 
-	<img src="{% static 'post/add.png' %}" class="create-post-icon" alt="Create New Post" onclick="show()">
-
-	<!-- new post dialog -->
-	<div class="pop-window">
-		<dir class="pop-close" onclick="hide()">+</dir>
-		<div class="pop-container">
-			<form method="POST" enctype="multipart/form-data">
-				{% csrf_token %}
-				<input type="text" name="title" placeholder="Title">
-				<textarea placeholder="Body" name="body"></textarea>
-				<input type="FILE" name="image" accept=".PNG, .JPG, .JPEG">
-				<button>Create Post</button>
-			</form>
-		</div>
-	</div>
+	<a href="/feeds/post/create"><img src="{% static 'post/add.png' %}" class="create-post-icon" alt="Create New Post"></a>
 
 
 

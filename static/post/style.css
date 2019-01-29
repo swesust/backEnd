@@ -44,6 +44,7 @@ a .post-title:hover {
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+    min-height: 90px;
 }
 
 .tab-section {

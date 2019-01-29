@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+	
+	<link rel="stylesheet" type="text/css" href="{% static 'post/add.css' %} ">
+	<!-- Linking Bootstrap CSS-->
+	<link rel="stylesheet" href="{% static 'common/bootstrap/css/bootstrap.min.css' %}">
+	<!-- Linking Font Awesome Icons-->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+
+{% endblock %}
+
+
+{% block extra_body %}
+
+	{% if edit %}
+	<!-- Page Container -->
+	<div class="container">
+		<form class="addPostForm" action="/feeds/post/edit/{{ post.pk }}/" method="POST" enctype="multipart/form-data">
+			{% csrf_token %}
+			<input type="text" name="title" placeholder="Post Title" class="post-title-input" value="{{ post.title }}"
+			required>
+			<textarea name="body" class="post-content-input" placeholder="Write Your Post Here!" required>{{ post.body }}</textarea>
+			<label for="post-thumbnail" class="btn btn-info up-thumb">Upload Thumbnail</label>
+			<input type="file" style="display: none" name="image" id="post-thumbnail" value="Upload Thumbnail" accept=".PNG, .JPG, .JPEG">
+			<button type="submit" name="upload-post" class="btn btn-success postButton">Post</button>
+		</form>
+	</div>
+	{% else %}
+	<div class="container">
+		<form class="addPostForm" action="/feeds/post/create/" method="POST" enctype="multipart/form-data">
+			{% csrf_token %}
+			<input type="text" name="title" placeholder="Post Title" class="post-title-input" required>
+			<textarea name="body" class="post-content-input" placeholder="Write Your Post Here!" required></textarea>
+			<label for="post-thumbnail" class="btn btn-info up-thumb">Upload Thumbnail</label>
+			<input type="file" style="display: none" name="image" id="post-thumbnail" value="Upload Thumbnail" accept=".PNG, .JPG, .JPEG">
+			<button type="submit" name="upload-post" class="btn btn-success postButton">Post</button>
+		</form>
+	</div>
+	{% endif %}
+
+
+	<!-- Linking JSs-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+	<script src="{% static 'common/bootstrap/js/bootstrap.min.js' %}"></script>
+	
+{% endblock %}

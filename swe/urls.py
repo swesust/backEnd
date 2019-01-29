@@ -23,10 +23,14 @@ urlpatterns = [
     path('forget-password/varification/', views.forget_password_varification, 
         name ='forget_password_varification'),
     path('change-password/', views.change_password, name='change_password'),
-    # example.com/feeds/delete/10/
-    path('feeds/delete/<pk>/', views.feed_delete, name='feed_delete' ),
+    # example.com/feeds/post/create
+    path('feeds/post/create/', views.create_post, name='post_create'),
+    # example.com/feeds/post/edit/10/
+    path('feeds/post/edit/<pk>/', views.edit_post, name='edit_post'),
+    # example.com/feeds/post/delete/10/
+    path('feeds/post/delete/<pk>/', views.feed_delete, name='post_delete' ),
     # a full post
-    path('feeds/<pk>/', views.single_post ,name='single_post'),
+    path('feeds/post/<pk>/', views.single_post ,name='single_post'),
     # example.com/2016831035/edit/
     path('<user_id>/edit/', views.profile_edit, name='profile_edit'),
     # example.com/2016831035/endrosement/add/

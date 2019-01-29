@@ -19,6 +19,7 @@ from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.template import loader
 from django.utils.timezone import datetime
+from django.contrib import messages
 
 
 # Create your views here.
@@ -67,29 +68,19 @@ def login(request):
                 return redirect('/')
 
             else:
-                context = {
-                    'form' : form,
-                    'invalid' : True
-                }
-                return render(request, var.LOGIN_TEMPLATE, context)
+                messages.error(request, "ID and Password didn't matched")
 
         else:
-            context = {
-                'form' : form,
-                'invalid' : True
-            }
-            return render(request, var.LOGIN_TEMPLATE, context)            
-
+            messages.warning(request, 'Data is not valid')  
     else:
         if request.user.is_authenticated:
             return redirect('/')
-        else:
-            form = LoginForm()
-            context = {
-                'form' : form,
-                'invalid' : False
-            }
-            return render(request, var.LOGIN_TEMPLATE, context)
+
+    form = LoginForm()
+    context = {
+        'form' : form,
+    }
+    return render(request, var.LOGIN_TEMPLATE, context)
 
 # response of: example.com/logout/			
 @login_required(login_url=var.LOGIN_URL)
@@ -541,38 +532,6 @@ def working_delete(request, user_id, pk):
 # response of: example.com/feeds/
 def feeds(request):
 
-    if request.method == 'POST':
-        title = request.POST.get('title')
-        body = request.POST.get('body')
-        file_data = request.FILES
-        image_file = file_data.get('image')
-
-        post = Post()
-
-        if image_file != None:
-            if Image.is_valid_format(image_file.name):
-
-                # chunk the total stream for bufferring
-                if image_file.multiple_chunks(var.FILE_CHUNK_SIZE):
-                    image_file.chunks(var.FILE_CHUNK_SIZE)
-
-                # read the image file stream
-                bytes_data = image_file.read()
-                imgsrc = Image.save(var.FOLDER_POST, bytes_data)
-                post.imgsrc = imgsrc
-                post.has_media = True
-            else:
-                post.has_media = False
-        else:
-            post.has_media = False
-
-        post.title = title
-        post.body = body
-        post.user = request.user
-        
-
-        post.save()
-
     posts = Post.objects.order_by('time_date')[::-1]
     context = {
         'posts' : posts
@@ -595,6 +554,99 @@ def single_post(request, pk):
 
 
 @login_required(login_url = var.LOGIN_URL)
+def create_post(request):
+
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        body = request.POST.get('body')
+        file_data = request.FILES
+        image_file = file_data.get('image')
+
+        post = Post()
+
+        if image_file != None:
+            if Image.is_valid_format(image_file.name):
+                # chunk the total stream for bufferring
+                if image_file.multiple_chunks(var.FILE_CHUNK_SIZE):
+                    image_file.chunks(var.FILE_CHUNK_SIZE)
+
+                # read the image file stream
+                bytes_data = image_file.read()
+                imgsrc = Image.save(var.FOLDER_POST, bytes_data)
+                post.imgsrc = imgsrc
+                post.has_media = True
+            else:
+                post.has_media = False
+        else:
+            post.has_media = False
+
+        post.title = title
+        post.body = body
+        post.user = request.user
+        
+
+        post.save()
+        return redirect('/feeds/')
+
+    context = {
+        'edit' : False
+    }
+    return render(request, 'post/edit.html', context)
+    
+
+
+@login_required(login_url = var.LOGIN_URL)
+def edit_post(request, pk):
+
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        body = request.POST.get('body')
+        file_data = request.FILES
+        image_file = file_data.get('image')
+
+        post = Post.objects.get(pk = pk)
+
+        if image_file != None:
+            if Image.is_valid_format(image_file.name):
+
+                # chunk the total stream for bufferring
+                if image_file.multiple_chunks(var.FILE_CHUNK_SIZE):
+                    image_file.chunks(var.FILE_CHUNK_SIZE)
+
+                # read the image file stream
+                bytes_data = image_file.read()
+                imgsrc = Image.save(var.FOLDER_POST, bytes_data)
+                post.imgsrc = imgsrc
+                post.has_media = True
+
+        post.title = title
+        post.body = body
+        post.time_date = now()
+        post.user = request.user 
+        post.save()
+
+        return redirect('/feeds/')
+
+    try:
+        post = Post.objects.get(pk = pk)
+        if post.user is not request.user:
+            pass
+
+
+        context = {
+            'edit' : True,
+            'post' : post
+        }
+
+        return render(request, 'post/edit.html', context)
+
+    except ObjectDoesNotExist as e:
+        pass
+
+    return invalid(request)
+
+
+@login_required(login_url = var.LOGIN_URL)
 def feed_delete(request, pk):
     try:
         post = Post.objects.get(pk = pk)
@@ -602,7 +654,7 @@ def feed_delete(request, pk):
             Image.delete(post.imgsrc)
         post.delete()
         # redirect to current page
-        return redirect('/feeds')
+        return redirect('/feeds/')
     except ObjectDoesNotExist as e:
         return HttpResponse("Post not found")
 

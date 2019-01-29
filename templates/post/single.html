@@ -15,8 +15,13 @@
 				<a href="/{{ post.user.userid }}/">{{ post.user.name }}</a>
 				 | {{ post.time_date | date }}
 				 <h6 style="text-align: right;">
-				 	 <a href="/feeds/delete/{{ post.pk }}">
+				 	 <a href="/feeds/post/delete/{{ post.pk }}">
 				 	<img src="{% static 'post/delete.png' %}" width="30px" height="30px">
+				 </a>
+				 </h6>
+ 				 <h6 style="text-align: right;">
+				 	 <a href="/feeds/post/edit/{{ post.pk }}">
+				 	<img src="{% static 'post/edit.png' %}" width="30px" height="30px">
 				 </a>
 				 </h6>
 			</div>

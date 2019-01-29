@@ -30,7 +30,11 @@ a:hover{
 }
 .card-img-top{
     width: 100%;
-    margin-top: 15px;
+    width: 180px;
+    margin-top: 15px;       height: 200px;
+    margin-top: 5px;
+    object-fit: cover;
+    object-position: center;
 }
 
 
