@@ -247,6 +247,9 @@ def profile_edit(request, user_id):
                 if profile_img.multiple_chunks(var.FILE_CHUNK_SIZE):
                     profile_img.chunks(var.FILE_CHUNK_SIZE)
 
+                # remove the previous one
+                Image.delete(profile.imgsrc)
+
                 bytes_data = profile_img.read()
                 if user.is_student:
                     profile.imgsrc = Image.save(var.FOLDER_STUDENT, bytes_data)
@@ -258,6 +261,9 @@ def profile_edit(request, user_id):
             if Image.is_valid_format(cover_img.name):
                 if cover_img.multiple_chunks(var.FILE_CHUNK_SIZE):
                     cover_img.chunks(var.FILE_CHUNK_SIZE)
+
+                # remove the previous one
+                Image.delete(profile.cover)
 
                 bytes_data = cover_img.read()
                 if user.is_student:
@@ -613,6 +619,9 @@ def edit_post(request, pk):
                 if image_file.multiple_chunks(var.FILE_CHUNK_SIZE):
                     image_file.chunks(var.FILE_CHUNK_SIZE)
 
+                if post.has_media:
+                    Image.delete(post.imgsrc)
+
                 # read the image file stream
                 bytes_data = image_file.read()
                 imgsrc = Image.save(var.FOLDER_POST, bytes_data)
@@ -652,6 +661,7 @@ def feed_delete(request, pk):
         post = Post.objects.get(pk = pk)
         if post.has_media:
             Image.delete(post.imgsrc)
+            
         post.delete()
         # redirect to current page
         return redirect('/feeds/')
