@@ -91,7 +91,6 @@ class Image():
 		return False
 
 
-from json import load as jsonload, dump as jsonwrite
 
 from hashlib import md5
 class Token():
@@ -145,3 +144,9 @@ class Token():
 			
 		except Exception as e:
 			return False
+
+
+
+from uuid import uuid4
+def new_password_request():
+	return uuid4().hex

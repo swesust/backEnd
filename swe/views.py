@@ -720,8 +720,8 @@ def forget_password(request):
                 user = AuthUser.objects.get(userid = userid)
                 token = helper.Token.get_token(user.userid, user.password)
                 # mail this
-                send_mail('Password Reset Token',
-                    'Your token: '+token,
+                send_mail(var.EMAIL_SUBJECT_TOKEN,
+                    'Hello '+user.name+' '+var.EMAIL_TEXT_TOKEN+token,
                     var.EMAIL_HOST_USER,
                     [user.email],
                     fail_silently=False)
@@ -762,13 +762,14 @@ def forget_password_varification(request):
                     user_id = helper.Token.get_userid(token)
                     user = AuthUser.objects.get(userid = user_id)
 
-                    send_mail('New Password',
-                        'pass12345',
+                    new_password = helper.new_password_request()
+                    send_mail(var.EMAIL_SUBJECT_PASSWORD_RESET,
+                         'Hello '+user.name+' '+var.EMAIL_TEXT_PASSWORD_RESET+new_password,
                         var.EMAIL_HOST_USER,
                         [user.email],
                         fail_silently=False)
 
-                    user.set_password('pass12345')
+                    user.set_password(new_password)
                     user.save()
                     response = loader.get_template('auth/password_reset_done.html')
                     return HttpResponse(response.render({}, request))

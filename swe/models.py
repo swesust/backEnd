@@ -91,6 +91,9 @@ class AuthUser(AbstractBaseUser,PermissionsMixin):
 		`userid`: User unique id for user authentication. 
 				  Students - Reg ID
 				  Teachers - User Name
+				  Max length of user ID is 10 as for student ID
+				  Its better to follow student ID length for avoid 
+				  unnecessary memory load
 
 		`name` : User Display name
 
@@ -119,7 +122,7 @@ class AuthUser(AbstractBaseUser,PermissionsMixin):
 
 
 	"""
-	userid = models.CharField(max_length=120, unique=True)
+	userid = models.CharField(max_length=10, unique=True)
 	is_active = models.BooleanField(default=True)
 	is_student = models.BooleanField(default=True)
 
