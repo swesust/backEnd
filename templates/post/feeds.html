@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load tz %}
 
 {% block extra_head %}
 	<link rel="stylesheet" type="text/css" href="{% static 'post/style.css' %}">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+	<title>SWE Feeds</title>
 {% endblock %}
 
 {% block extra_body %}
@@ -21,7 +23,7 @@
 					<a href="post/{{ post.pk }}/"><h4 class="post-title">{{ post.title }}</h4></a>
 
 					<small class="post-data">
-						<a href="/{{ post.user.userid }}/">{{ post.user.name }}</a> | {{ post.time_date | date }}
+						<a href="/{{ post.user.userid }}/">{{ post.user.name }}</a> | {{ post.time_date | localtime }}
 					</small>
 					<hr class="post-data-devider">
 					<p class="post-contents">

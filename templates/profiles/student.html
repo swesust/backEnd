@@ -24,7 +24,7 @@
     <div class="name">
         <p class="display-name">{{ user.name }}</p>
         <p class="regno">
-          {{ user.userid }}
+          @{{ user.userid }}
           {% if profile.alumni %}
             | Alumni
           {% endif %}
@@ -158,7 +158,25 @@
           </div>
           {% endfor %}
         </div>
+    </div>
+
+
+    <div class="box">
+      <div class="box-header">
+        Feeds by {{ user.name }}
       </div>
+      <div class="box-container">
+        
+        {% for post in posts %}
+        <div class="single-endor">
+          <div class="endor-title">
+            <a href="/feeds/post/{{ post.pk }}/" class="batchName endor-title">{{ post.title }}</a>
+          </div>
+        </div>
+        {% endfor %}
+
+      </div>
+    </div>
 
 
 

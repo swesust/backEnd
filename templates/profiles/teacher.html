@@ -24,19 +24,35 @@
     <div class="name">
         <p class="display-name">{{ user.name }}</p>
         <p class="regno">
-          {{ user.userid }}
+          @{{ user.userid }}
           {% if profile.alumni %}
             | Alumni
           {% endif %}
         </p>
+        <p class="regno">Faculty Member</p>
         <p class="regno">
-          {% if profile.head %}
-            Dept. Head
-          {% elif profile.leaved %}
+          {% if profile.leaved %}
             on leave 
           {% endif %}
         </p>
   </div>
+
+
+  <div class="profileContainer">
+    <a href="https://github.com/{{ profile.githubid }}" class="profileLink githubLink">
+      <i class="fab fa-github-square"></i>
+    </a>
+    <a href="https://twitter.com/{{ profile.twitterid }}" class="profileLink twitterLink">
+      <i class="fab fa-twitter-square"></i>
+    </a>
+    <a href="https://linkedin.com/in/{{ profile.linkedinid }}" class="profileLink linkedinLink">
+      <i class="fab fa-linkedin"></i>
+    </a>
+    <a href="https://facebook.com/{{ profile.facebookid }}" class="profileLink fbLink">
+      <i class="fab fa-facebook-square"></i>
+    </a>
+  </div>
+
 
   <div class="container about-block-gap">
 

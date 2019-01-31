@@ -53,14 +53,15 @@ GENDER_CHOICE = (
 	('T', 'Third Gender')
 )
 
-
-JOB_POSITIONS = (
-	('Lecturer', 'Lecturer'),
-	('Assistant Professor', 'Assistant Professor'),
-	('Associate Professor', 'Associate Professor'),
-	('Professor', 'Professor')
+ENDROSEMENTS_KEYS = (
+	('Teaching', 'Teaching'),
+	('Research Interest', 'Research Interest'),
+	('Education', 'Education'),
+	('Publications', 'Publications'),
+	('Award & Recognizations', 'Award & Recognizations'),
+	('Programming Language', 'Programming Language'),
+	('Technology', 'Technology')
 )
-
 
 COUNTRIES = (
 	('AF', 'Afghanistan'), 

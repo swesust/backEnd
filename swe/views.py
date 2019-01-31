@@ -18,7 +18,7 @@ from swe.forms import (
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.template import loader
-from django.utils.timezone import datetime
+from django.utils.timezone import datetime,localtime, is_aware,now
 from django.contrib import messages
 
 
@@ -167,6 +167,7 @@ def profile(request, user_id):
 
         # fetch all endrosements of this user
         endrosements = Endrosement.objects.filter(user=user)
+        posts = Post.objects.filter(user = user)
 
         endrose_form = EndrosementForm()
         context = {
@@ -175,7 +176,8 @@ def profile(request, user_id):
             'is_auth' : is_auth,
             'is_self' : is_self,
             'endrosements' : endrosements,
-            'endrose_form' : endrose_form
+            'endrose_form' : endrose_form,
+            'posts' : posts
         }
         if user.is_student:
             # fetch all working information of this user
@@ -719,7 +721,6 @@ def change_password(request):
     return render(request, 'auth/change_password.html', context)
 
 
-
 def forget_password(request):
     if request.method == 'POST':
         form = UserRecognize(request.POST)
@@ -755,7 +756,6 @@ def forget_password(request):
         'invalid' : False
     }    
     return render(request, 'auth/forget_password.html',context)
-
 
 
 def forget_password_varification(request):
@@ -802,6 +802,7 @@ def forget_password_varification(request):
     }
     return render(request, 'auth/forget_password_varification.html',context)
 
+
 def search(request):
     if request.method == 'POST':
         context = {
@@ -822,7 +823,6 @@ def search(request):
         return render(request, 'search.html', context)
     else:
         return invalid(request)
-
 
 
 def invalid(request):

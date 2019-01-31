@@ -215,28 +215,34 @@ class Teacher(models.Model):
 	"""
 	Teacher profile model to store a particular teacher information.
 	Information:
-		Position: Job position
 		Alumni: True | False
 		Phone: +000000
 		Leaved: Indicate that the teacher is continuing or not
-		Head: Indicate the dept. head 
 		Gender: M(Male) | F(Female) | T(Third Gender)
 		Profile Image: Storage location (data/teachers/userid/image.JPG)
 		Cover Image: Storage location (data/teachers/userid/cover.jpg
-
+	 	Github Profile : rafiulgits (https://github.com/rafiulgits)
+		Linkedin Profile : rafiul15 (https://linkedin.com/in/rafiul15)
+		Twitter Profile : rafiultweets (https://twitter.com/rafiultweets)
+		Facebook Profile : ****** (https://facebook.com/*****)
 	"""
 	user = models.OneToOneField(AuthUser, on_delete=models.CASCADE)
 
-
-	position = models.CharField(max_length=25, choices=var.JOB_POSITIONS)
 	alumni = models.BooleanField(default=False)
 	phone = models.CharField(max_length=16,default = '880')
 	leaved = models.BooleanField(default=False)
-	head = models.BooleanField(default=False)
 
 	gender = models.CharField(max_length=1, choices=var.GENDER_CHOICE, default='F')
 	imgsrc = models.CharField(max_length=100,default = var.DEFAULT_PROFILE_IMAGE)
 	cover = models.CharField(max_length=100,default = var.DEFAULT_COVER_IMAGE)
+	# Github : rafiulgits
+	githubid = models.CharField(max_length=20,default = 'home')
+	# Linkedin : rafiul15
+	linkedinid = models.CharField(max_length=30,default = 'home')
+	# Facebook : ******
+	facebookid = models.CharField(max_length=30, default='home')
+	# twitter : rafiultweets
+	twitterid = models.CharField(max_length=20, default='home')
 	
 	# default: object output
 	def __str__(self):
@@ -287,16 +293,8 @@ class Endrosement(models.Model):
 
 	key choices are predefined
 	"""
-	ENDROSEMENTS_KEYS = (
-		('Teaching', 'Teaching'),
-		('Research Interest', 'Research Interest'),
-		('Education', 'Education'),
-		('Publications', 'Publications'),
-		('Award & Recognizations', 'Award & Recognizations'),
-		('Programming Language', 'Programming Language'),
-		('Technology', 'Technology')
-	)
-	key = models.CharField(max_length=40, choices = ENDROSEMENTS_KEYS)
+
+	key = models.CharField(max_length=40, choices = var.ENDROSEMENTS_KEYS)
 	value = models.TextField()
 	user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
 

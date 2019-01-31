@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load tz %}
 
 {% block extra_head %}
 	<link rel="stylesheet" type="text/css" href="{% static 'post/single.css' %}">
+	<title>{{ post.title }} : SWE Feeds</title>
 {% endblock %}
 
 {% block extra_body %}
@@ -13,17 +15,21 @@
 			</div>
 			<div class="single-post-data">
 				<a href="/{{ post.user.userid }}/">{{ post.user.name }}</a>
-				 | {{ post.time_date | date }}
-				 <h6 style="text-align: right;">
-				 	 <a href="/feeds/post/delete/{{ post.pk }}">
-				 	<img src="{% static 'post/delete.png' %}" width="30px" height="30px">
-				 </a>
-				 </h6>
- 				 <h6 style="text-align: right;">
-				 	 <a href="/feeds/post/edit/{{ post.pk }}">
-				 	<img src="{% static 'post/edit.png' %}" width="30px" height="30px">
-				 </a>
-				 </h6>
+				 | {{ post.time_date | localtime }}
+
+				 {% if request.user == post.user %}
+					 <h6 style="text-align: right; float: right;">
+					 	 <a href="/feeds/post/delete/{{ post.pk }}">
+					 	<img src="{% static 'post/delete.png' %}" width="30px" height="30px">
+					 </a>
+					 </h6>
+	 				 <h6 style="text-align: right; float: right;">
+					 	 <a href="/feeds/post/edit/{{ post.pk }}">
+					 	<img src="{% static 'post/edit.png' %}" width="30px" height="30px">
+					 </a>
+					 </h6>
+				 {% endif %}
+
 			</div>
 			<div class="single-post-content">
 				{% if post.has_media %}
