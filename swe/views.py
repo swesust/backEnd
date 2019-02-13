@@ -1,26 +1,29 @@
-from django.shortcuts import render
-from swe.models import *
-from . import helper
-from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import redirect
-from django.core.files.uploadedfile import UploadedFile, TemporaryUploadedFile
-from PIL import Image as ImageProcess
-from io import BytesIO
-from swe.helper import Image
-from django.core.files.storage import FileSystemStorage as FSS
-from django.contrib.auth import (
-	authenticate, logout as auth_logout, login as auth_login)
-from django.contrib.auth.decorators import login_required
+
 from . import variables as var
+from . import helper
+
+from swe.models import *
+from swe.helper import Image
 from swe.forms import (
     LoginForm, UserRecognize, UserToken, EndrosementForm, WorkingForm, 
     ChangePasswordForm, SearchForm)
+
+from django.shortcuts import render, redirect
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.files.uploadedfile import UploadedFile, TemporaryUploadedFile
+from django.core.files.storage import FileSystemStorage as FSS
+from django.contrib.auth import (
+    authenticate, logout as auth_logout, login as auth_login)
+from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.template import loader
 from django.utils.timezone import datetime,localtime, is_aware,now
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage
 
+from PIL import Image as ImageProcess
+from io import BytesIO
 
 # Create your views here.
 
@@ -188,7 +191,7 @@ def profile(request, user_id):
             return render(request, 'profiles/teacher.html', context)
 
     except ObjectDoesNotExist as e:
-        return HttpResponse('User Profile Not Found') 
+        return invalid(request)
 
 
 # response of: example.com/userid/edit
@@ -539,8 +542,19 @@ def working_delete(request, user_id, pk):
 
 # response of: example.com/feeds/
 def feeds(request):
+    obj = Post.objects.order_by('time_date')[::-1]
 
-    posts = Post.objects.order_by('time_date')[::-1]
+    # max 10 page per page
+    pages = Paginator(obj, 10)
+
+    page = request.GET.get('page', 1)
+
+    # try to render the page if exist
+    try:
+        posts = pages.get_page(page)
+    except EmptyPage as e:
+        return invalid(request)
+
     context = {
         'posts' : posts
         }
