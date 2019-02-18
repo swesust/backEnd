@@ -102,37 +102,6 @@ a .post-title:hover {
     bottom: 50px; right: 20px; cursor: pointer; z-index: 5;
 }
 
-.pop-window {
-    position: fixed; display: none; top: 0px; background-color: rgba(0,0,0,0.5);
-    justify-content: center; align-items: center; width: 100%; height: 100%;
-    z-index: 10;
-}
-
-.pop-container {
-    background-color: white; width: 600px; height: 400px;
-    padding-top: 3px; border-radius: 3px;
-    box-shadow: 1px 1px 1px 1px #111;
-}
-
-.pop-container input {
-    width: 90%; margin-left: auto; margin-right: auto;
-    padding: 2px; display: block; margin-top: 5px;
-    margin-bottom: 5px; border-radius: 5px;
-}
-.pop-container textarea {
-    width: 90%; margin-left: auto; margin-right: auto;
-    padding: 2px; display: block; height: 260px;
-    border-radius: 5px; margin-bottom: 4px;
-}
-.pop-container button {
-    font-size: 20px; display: block; margin-left: auto; margin-right: auto;
-    cursor: pointer; padding: 2px 10px 2px 10px; border-radius: 5px;
-}
-.pop-close {
-    font-size: 50px; position: absolute; top: -10px; right: 20px;
-    transform: rotate(45deg); cursor: pointer; color: white;
-}
-
 
 @media only screen and (min-width: 992px) {
     .alignEnd {
