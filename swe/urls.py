@@ -1,53 +1,53 @@
-from . import views
-from django.urls import path, include
-
 from django.contrib.auth import views as resetviews
+from django.urls import path, include
+from .views import *
+
 urlpatterns = [
     # example.com/
-    path('', views.index, name='index'),
+    path('', view.index, name='index'),
     # example.com/login/
-    path('login/', views.login, name='login'),
+    path('login/', auth.login, name='login'),
     # example.com/logout/
-    path('logout/', views.logout, name='logout'),
+    path('logout/', auth.logout, name='logout'),
     # example.com/batch/
-    path('batch/', views.batchlist, name='batchlist'),
+    path('batch/', view.batchlist, name='batchlist'),
     # example.com/faculty/
-   	path('faculty/', views.faculty, name='faculty'),
+   	path('faculty/', view.faculty, name='faculty'),
     # example.com/feeds/
-   	path('feeds/', views.feeds, name='feeds'),
+   	path('feeds/', feed.all, name='feeds'),
     # example.com/batch/2016/
-    path('batch/<batch_id>/', views.batch, name='batch'),
+    path('batch/<batch_id>/', view.batch, name='batch'),
     # example.com/forget-password/
-    path('forget-password/', views.forget_password, name='forget_password'),
+    path('forget-password/', auth.forget_password, name='forget_password'),
     # example.com/forget-password/varification/
-    path('forget-password/varification/', views.forget_password_varification, 
+    path('forget-password/varification/', auth.forget_password_varification, 
         name ='forget_password_varification'),
-    path('change-password/', views.change_password, name='change_password'),
+    path('change-password/', auth.change_password, name='change_password'),
     # example.com/feeds/post/create
-    path('feeds/post/create/', views.create_post, name='post_create'),
+    path('feeds/post/create/', feed.create, name='post_create'),
     # example.com/feeds/post/edit/10/
-    path('feeds/post/edit/<pk>/', views.edit_post, name='edit_post'),
+    path('feeds/post/edit/<pk>/', feed.edit, name='edit_post'),
     # example.com/feeds/post/delete/10/
-    path('feeds/post/delete/<pk>/', views.feed_delete, name='post_delete' ),
+    path('feeds/post/delete/<pk>/', feed.delete, name='post_delete' ),
     # a full post
-    path('feeds/post/<pk>/', views.single_post ,name='single_post'),
+    path('feeds/post/<pk>/', feed.single ,name='single_post'),
     # example.com/2016831035/edit/
-    path('<user_id>/edit/', views.profile_edit, name='profile_edit'),
+    path('<user_id>/edit/', user.edit, name='profile_edit'),
     # example.com/2016831035/endrosement/add/
-    path('<user_id>/endrosement/add/', views.endrosement_add, name='endrosement_add'), 
+    path('<user_id>/endrosement/add/', endrosement.add, name='endrosement_add'), 
     # example.com/2016831035/endrosement/delete/10/
-    path('<user_id>/endrosement/delete/<pk>/', views.endrosement_delete, name='endrosement_delete'),
+    path('<user_id>/endrosement/delete/<pk>/', endrosement.delete, name='endrosement_delete'),
     # example.com/2016831035/endrosement/edit/10/
-    path('<user_id>/endrosement/edit/<pk>/', views.endrosement_edit, name='endrosement_edit'),
+    path('<user_id>/endrosement/edit/<pk>/', endrosement.edit, name='endrosement_edit'),
     # example.com/2016831035/working/add
-    path('<user_id>/working/add/', views.working_add, name='working_add'),
+    path('<user_id>/working/add/', working.add, name='working_add'),
     # example.com/2016831035/working/edit/10/
-    path('<user_id>/working/edit/<pk>/', views.working_edit, name='working_edit'),
+    path('<user_id>/working/edit/<pk>/', working.edit, name='working_edit'),
     # example.com/2016831035/working/delete/10
-    path('<user_id>/working/delete/<pk>/', views.working_delete, name='working_delete'),
+    path('<user_id>/working/delete/<pk>/', working.delete, name='working_delete'),
     # search
-    path('search/', views.search, name='search'),
+    path('search/', view.search, name='search'),
     # make sure that this path is always in last position to avoid conflict
     # example.com/2016831035/
-    path('<user_id>/', views.profile, name='profile')
+    path('<user_id>/', user.profile, name='profile')
 ]

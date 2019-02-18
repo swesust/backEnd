@@ -57,7 +57,7 @@
 			</form>
 
 			{% if edit %}
-				<form method="POST" action="/{{ request.user.userid }}/working/delete/{{ pk }}">
+				<form method="POST" action="/{{ request.user.userid }}/working/delete/{{ pk }}/">
 					{% csrf_token %}
 					<div class="submit-buttons">
 						<button type="submit" name="reset" class="btn sub-btn btn-danger">Delete</button>
