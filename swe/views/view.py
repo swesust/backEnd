@@ -1,3 +1,5 @@
+from django.contrib.postgres import search
+from django.contrib.postgres.search import SearchVector
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import HttpResponse,render
 from django.template import loader
@@ -68,8 +70,14 @@ def search(request):
         if form.is_valid():
             current = form.cleaned_data['current']
             country = form.cleaned_data['country']
-            # unique query result
-            res = Working.objects.filter(country = country, current=current).distinct('user')
+            company = form.cleaned_data['company']
+
+            # unique query result using distinct
+            if len(company) is 0:
+                res = Working.objects.filter(country=country, current=current).distinct('user')
+            else:
+                res = Working.objects.filter(country=country, current=current, 
+                    company__iexact=company).distinct('user')
             if res.exists():
                 context['found'] = True
                 context['res'] = res

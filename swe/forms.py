@@ -163,7 +163,22 @@ class SearchForm(forms.ModelForm):
 		fields = [ 	 
 					'current', 
 					'country',
+					'company',
 				]
+
+		widgets = {
+            'company' : forms.TextInput(attrs = {
+            	'placeholder' : 'Company',
+            	'class' : 'form-control mb-2'}),
+
+            'country' : forms.Select(attrs= {
+            		'class' : 'custom-select mb-2'}),
+
+            'current' : forms.CheckboxInput(attrs = {
+            	'class' : 'custom-control-input mb-2'})
+        }
+
 	def __init__(self, *args, **kwargs):
 		super(SearchForm, self).__init__(*args, **kwargs)
 		self.fields['current'].required = False
+		self.fields['company'].required = False

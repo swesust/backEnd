@@ -5,10 +5,18 @@
 {% block extra_head %}
 	<link rel="stylesheet" type="text/css" href="{% static 'post/single.css' %}">
 	<title>{{ post.title }} : SWE Feeds</title>
+	<script type="text/javascript">
+		function show(){
+			document.getElementById('pop-window-id').style.display='flex';
+		}
+		function hide(){
+			document.getElementById('pop-window-id').style.display='none';
+		}
+	</script>
 {% endblock %}
 
 {% block extra_body %}
-		<div class="container">
+	<div class="container">
 		<div class="single-post">
 			<div class="single-post-title">
 				{{ post.title }}
@@ -19,9 +27,8 @@
 
 				 {% if request.user == post.user %}
 					 <h6 style="text-align: right; float: right;">
-					 	 <a href="/feeds/post/delete/{{ post.pk }}">
-					 	<img src="{% static 'post/delete.png' %}" width="30px" height="30px">
-					 </a>
+					 	<img src="{% static 'post/delete.png' %}" width="30px" height="30px" style="cursor: pointer;"
+					 	onclick="show()">
 					 </h6>
 	 				 <h6 style="text-align: right; float: right;">
 					 	 <a href="/feeds/post/edit/{{ post.pk }}">
@@ -40,9 +47,17 @@
 		</div>
 	</div>
 
-
-
-
+	{% if request.user == post.user %}
+	<div class="pop-window" id="pop-window-id">
+		<div class="pop-box">
+			<form action="/feeds/post/delete/{{post.id}}/" method="POST">
+				{% csrf_token %}
+				<button class="btn btn-block btn-danger mb-2" type="submit">Confirm</button>
+			</form>
+			<button class="btn btn-primary btn-block mb-2" onclick="hide()">Cancel</button>
+		</div>
+	</div>
+	{% endif %}
 	<!-- Linking JSs-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>

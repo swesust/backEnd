@@ -1,7 +1,9 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.postgres import search
+from django.contrib.postgres.search import SearchVector
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import EmptyPage, Paginator
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,HttpResponse
 from django.utils.timezone import now
 
 from swe.helper import Image
@@ -12,6 +14,7 @@ from .view import invalid
 
 # response of: example.com/feeds/
 def all(request):
+
     obj = Post.objects.order_by('time_date')[::-1]
 
     # max 10 page per page
@@ -26,7 +29,8 @@ def all(request):
         return invalid(request)
 
     context = {
-        'posts' : posts
+        'posts' : posts,
+        'search' : False
         }
     return render(request, 'post/feeds.html', context)
 
@@ -41,6 +45,39 @@ def single(request, pk):
         return render(request, 'post/single.html', context)
     except ObjectDoesNotExist as e:
         return invalid(request)
+
+
+def search(request):
+
+    if(request.method == 'GET'):
+        query = request.GET.get('query',None)
+        page = request.GET.get('page', 1)
+
+    else:
+        query = request.POST.get('query', None)
+        page = request.POST.get('page', 1)
+
+    if query is None:
+        return invalid(request)
+
+    result = Post.objects.annotate(search=SearchVector(
+        'body', 'title')).filter(search=query)
+
+    pages = Paginator(result, 1)
+
+    try:
+        page = int(page)
+        posts = pages.page(page)
+        context = {
+            'posts' : posts,
+            'search' : True,
+            'query' : query
+        }
+        print(request.path)
+        return render(request, 'post/feeds.html', context)
+    except EmptyPage as e:
+        return HttpResponse('Search Page Not Found')
+
 
 
 @login_required(login_url = var.LOGIN_URL)
@@ -149,3 +186,4 @@ def delete(request, pk):
         return redirect('/feeds/')
     except ObjectDoesNotExist as e:
         return invalid(request)
+

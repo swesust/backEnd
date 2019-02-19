@@ -12,15 +12,17 @@
 
 
 	<div class="container">
+		{% if search %}
+			<h4>Search result for '{{ query }}'</h4>
+		{% endif %}
 		<div class="post-section">
 			{% for post in posts %}
-
 			<div class="post-card">
 				{% if post.has_media %}
 					<img src="/{{ post.imgsrc }}" alt="Thumbnail" class="post-thumbnail">
 				{% endif %}
 				<div class="post-others">
-					<a href="post/{{ post.pk }}/"><h4 class="post-title">{{ post.title }}</h4></a>
+					<a href="/feeds/post/{{ post.pk }}/"><h4 class="post-title">{{ post.title }}</h4></a>
 
 					<small class="post-data">
 						<a href="/{{ post.user.userid }}/">{{ post.user.name }}</a> | {{ post.time_date | localtime }}
@@ -29,11 +31,23 @@
 					<p class="post-contents">
 						{{ post.body }}
 					</p>
-					<a href="post/{{ post.pk }}/" class="seeMoreButton" onclick="showFull();">See As Single Post</a>
+					<a href="/feeds/post/{{ post.pk }}/" class="seeMoreButton" onclick="showFull();">See As Single Post</a>
 				</div>
 			</div>
 
 			{% endfor %}
+			{% if search %}
+			<ul class="pagination justify-content-center">
+				<li class="page-item"><a href="/feeds/search/?query={{query}}&page=1" class="page-link">First</a></li>
+				{% if posts.has_previous %}
+					<li class="page-item"><a href="/feeds/search/?query={{query}}&page={{posts.previous_page_number}}" class="page-link">Prev</a></li>
+				{% endif %}
+				{% if posts.has_next %}
+					<li class="page-item"><a href="/feeds/search/?query={{query}}&page={{posts.next_page_number}}" class="page-link">Next</a></li>
+				{% endif %}
+				<li class="page-item"><a href="/feeds/search/?query={{query}}&page={{posts.paginator.num_pages}}" class="page-link">Last</a></li>
+			</ul>
+			{% else %}
 			<ul class="pagination justify-content-center">
 				<li class="page-item"><a href="?page=1" class="page-link">First</a></li>
 				{% if posts.has_previous %}
@@ -44,11 +58,17 @@
 				{% endif %}
 				<li class="page-item"><a href="?page={{posts.paginator.num_pages}}" class="page-link">Last</a></li>
 			</ul>
+			{% endif %}
 		</div>
 
 		<div class="tab-section">
-			<form class="search-form" action="#" method="post">
-				<input type="text" name="search" placeholder="Search" class="searchInput">
+			<form class="search-form" action="/feeds/search/" method="post">
+				{% csrf_token %}
+				{% if search %}
+					<input type="text" name="query" placeholder="Search" class="searchInput" required value="{{query}}">
+				{% else %}
+					<input type="text" name="query" placeholder="Search" class="searchInput" required>
+				{% endif %}
 				<button type="submit" name="submitSearch" class="searchButton"><i class="fas fa-search"></i></button>
 			</form>
 		</div>

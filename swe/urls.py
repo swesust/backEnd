@@ -15,6 +15,8 @@ urlpatterns = [
    	path('faculty/', view.faculty, name='faculty'),
     # example.com/feeds/
    	path('feeds/', feed.all, name='feeds'),
+    # example.com/feeds/search/?search='hello world'
+    path('feeds/search/', feed.search, name='post_search'),
     # example.com/batch/2016/
     path('batch/<batch_id>/', view.batch, name='batch'),
     # example.com/forget-password/
@@ -26,11 +28,11 @@ urlpatterns = [
     # example.com/feeds/post/create
     path('feeds/post/create/', feed.create, name='post_create'),
     # example.com/feeds/post/edit/10/
-    path('feeds/post/edit/<pk>/', feed.edit, name='edit_post'),
+    path('feeds/post/edit/<pk>/', feed.edit, name='post_edit'),
     # example.com/feeds/post/delete/10/
     path('feeds/post/delete/<pk>/', feed.delete, name='post_delete' ),
     # a full post
-    path('feeds/post/<pk>/', feed.single ,name='single_post'),
+    path('feeds/post/<pk>/', feed.single ,name='post_single'),
     # example.com/2016831035/edit/
     path('<user_id>/edit/', user.edit, name='profile_edit'),
     # example.com/2016831035/endrosement/add/
