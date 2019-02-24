@@ -1,13 +1,19 @@
 [[source]]
+name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
-name = "pypi"
-
-[packages]
-django = "*"
 
 [dev-packages]
-"autopep8" = "*"
+
+[packages]
+whitenoise = "==4.1.2"
+gunicorn = "==19.9.0"
+django-heroku = "==0.3.1"
+psycopg2 = "==2.7.6.1"
+dj-database-url = "==0.5.0"
+dj-static = "==0.0.6"
+Django = "==2.1.5"
+Pillow = "==5.0.0"
 
 [requires]
-python_version = "3.7"
+python_version = "3.6"

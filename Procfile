@@ -1,1 +1,1 @@
-web:  gunicorn SWE_Website.wsgi --log-file -
+web: gunicorn bootcamp.wsgi --log-file -
