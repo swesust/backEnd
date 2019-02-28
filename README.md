@@ -1,8 +1,6 @@
 # :skull: backEnd (SWE Society Website)
 ### developing on django (2.0 or up)
-
-
-=========================================
+***
 ### database : postgresql (10.0)
  * #### Name: *****
  * #### Password: *****
@@ -11,8 +9,10 @@
  * #### Port: *****
 
 #### Server: *******
- 
-
+### For Production  
+`import dj_database_url
+ DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+ `
 ***
 
 ## Workflow:
