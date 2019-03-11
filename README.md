@@ -1,19 +1,35 @@
 # :skull: backEnd (SWE Society Website)
 ### developing on django (2.0 or up)
 ***
-### database : postgresql (10.0)
- * #### Name: *****
- * #### Password: *****
- * #### Database: *****
- * #### Host: ******
- * #### Port: *****
 
-#### Server: *******
-### For Production  
-```python 
- import dj_database_url
- DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
- ```
+## Dependency:
+ * ### Django 2.15 or up
+ * ### Python 3.6.0 or up
+ * ### Database: `PostgreSQL` 10.0 or up
+   * #### User: swe
+   * #### Password: pass1234
+   * #### Name: swedb
+***
+## Deployment:
+ * Install the packages
+   `pip3 install -r requirements.txt`
+   
+ * Migrattion the project with database
+   * `python3 manage.py makemigrations`
+ 
+   * `python3 manage.py migrate`
+   
+ * Create Admin User
+   * `python3 manage.py createsuperuser`
+   * >> UserId: 2016831035
+   * >> Name: Rafiul Islam
+   * >> Is Student: True
+   * >> Password: #######
+   * >> Confirm Password: #######
+	
+	
+* Run the Server
+  * `python3 manage.py runserver 0.0.0.0:8000`
 ***
 
 ## Workflow:
