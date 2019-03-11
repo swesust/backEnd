@@ -23,10 +23,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = 'oh0im9)jv6z+bga^ky#!a@28_5#a(3qh7i#ym@3!d$u97ckn2@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False,cast=bool)
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -48,7 +48,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -82,9 +81,14 @@ WSGI_APPLICATION = 'SWE_Website.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL')
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'swedb',
+        'USER': 'swe',
+        'PASSWORD':'pass1234',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 }
 
 
@@ -142,5 +146,5 @@ EMAIL_PORT = variables.EMAIL_PORT
 EMAIL_USE_TLS = variables.EMAIL_USE_TLS
 
 
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
 django_heroku.settings(locals())
