@@ -19,7 +19,7 @@
 			{% for post in posts %}
 			<div class="post-card">
 				{% if post.has_media %}
-					<img src="/{{ post.imgsrc }}" alt="Thumbnail" class="post-thumbnail">
+					<img src="{{ post.imgsrc }}" alt="Thumbnail" class="post-thumbnail">
 				{% endif %}
 				<div class="post-others">
 					<a href="/feeds/post/{{ post.pk }}/"><h4 class="post-title">{{ post.title }}</h4></a>

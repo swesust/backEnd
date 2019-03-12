@@ -44,7 +44,7 @@ class Image():
 		img.save(f.location+'/'+filename, format=ext, quality=90)
 
 		# return the storage location
-		return loc+'/'+filename
+		return '/'+loc+'/'+filename
 
 
 	def delete(loc):

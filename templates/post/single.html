@@ -40,7 +40,7 @@
 			</div>
 			<div class="single-post-content">
 				{% if post.has_media %}
-					<img src="/{{ post.imgsrc }}" alt="Thumbnail" class="single-post-thumbnail">
+					<img src="{{ post.imgsrc }}" alt="Thumbnail" class="single-post-thumbnail">
 				{% endif %}
 				{{ post.body }}
 			</div>

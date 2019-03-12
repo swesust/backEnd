@@ -23,6 +23,7 @@
    * `python3 manage.py createsuperuser`
    * >> UserId: 2016831035
    * >> Name: Rafiul Islam
+   * >> Email: user@mail.com
    * >> Is Student: True
    * >> Password: #######
    * >> Confirm Password: #######
