@@ -15,16 +15,16 @@
    `pip3 install -r requirements.txt`
    
  * Migrattion the project with database
-   * `python3 manage.py makemigrations`
+   * `python3 manage.py makemigrations swe`
  
    * `python3 manage.py migrate`
    
  * Create Admin User
    * `python3 manage.py createsuperuser`
-   * >> UserId: 2016831035
-   * >> Name: Rafiul Islam
+   * >> UserId: admin
+   * >> Name: admin
    * >> Email: user@mail.com
-   * >> Is Student: True
+   * >> Is Student: False
    * >> Password: #######
    * >> Confirm Password: #######
 	

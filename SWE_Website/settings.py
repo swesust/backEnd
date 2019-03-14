@@ -28,7 +28,7 @@ SECRET_KEY = 'oh0im9)jv6z+bga^ky#!a@28_5#a(3qh7i#ym@3!d$u97ckn2@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # User Auth Model
 AUTH_USER_MODEL = 'swe.AuthUser'
@@ -83,10 +83,10 @@ WSGI_APPLICATION = 'SWE_Website.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'swedb',
-        'USER': 'swe',
-        'PASSWORD':'pass1234',
-        'HOST': 'localhost',
+        'NAME': 'd3o50sg3mjitgu',
+        'USER': 'lzfkxwpruogpss',
+        'PASSWORD':'8c3a0ca9a62acb6f2c42b7d2407f3f01c941806f3552a2e84498712f28c8c5f3',
+        'HOST': 'ec2-54-221-243-211.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
