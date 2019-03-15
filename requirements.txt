@@ -6,4 +6,3 @@ django-heroku==0.3.1
 psycopg2==2.7.6.1
 dj-database-url==0.5.0
 dj-static==0.0.6
-environs==4.1.0
