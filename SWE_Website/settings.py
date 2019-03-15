@@ -14,6 +14,10 @@ import os
 from os.path import pardir
 import django_heroku
 
+from environs import Env
+
+env = Env()
+env.read_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,10 +27,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'oh0im9)jv6z+bga^ky#!a@28_5#a(3qh7i#ym@3!d$u97ckn2@'
+SECRET_KEY = env.str('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG")
 
 ALLOWED_HOSTS = ['*']
 
@@ -83,11 +87,11 @@ WSGI_APPLICATION = 'SWE_Website.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd3o50sg3mjitgu',
-        'USER': 'lzfkxwpruogpss',
-        'PASSWORD':'8c3a0ca9a62acb6f2c42b7d2407f3f01c941806f3552a2e84498712f28c8c5f3',
-        'HOST': 'ec2-54-221-243-211.compute-1.amazonaws.com',
-        'PORT': '5432',
+        'NAME': env.str('DB_NAME'),
+        'USER': env.str('DB_USER'),
+        'PASSWORD': env.str('DB_PASSWORD'),
+        'HOST': env.str('DB_HOST'),
+        'PORT': env.str('DB_PORT'),
     }
 }
 
@@ -138,13 +142,13 @@ MEDIA_URL = '/data/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'data')
 
 # email service configuration
-from swe import variables
-EMAIL_HOST = variables.EMAIL_HOST
-EMAIL_HOST_USER = variables.EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = variables.EMAIL_HOST_PASSWORD
-EMAIL_PORT = variables.EMAIL_PORT
-EMAIL_USE_TLS = variables.EMAIL_USE_TLS
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+EMAIL_HOST = env.str('EMAIL_HOST')
+EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = env.int('EMAIL_PORT')
+EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS')
 
 
 django_heroku.settings(locals())
