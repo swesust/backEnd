@@ -2,6 +2,7 @@ from django.contrib.auth import views as resetviews
 from django.urls import path, include
 from .views import *
 
+
 urlpatterns = [
     # example.com/
     path('', view.index, name='index'),
@@ -19,11 +20,20 @@ urlpatterns = [
     path('feeds/search/', feed.search, name='post_search'),
     # example.com/batch/2016/
     path('batch/<batch_id>/', view.batch, name='batch'),
-    # example.com/forget-password/
-    path('forget-password/', auth.forget_password, name='forget_password'),
-    # example.com/forget-password/varification/
-    path('forget-password/varification/', auth.forget_password_varification, 
-        name ='forget_password_varification'),
+    
+    path('account/password-reset/', resetviews.PasswordResetView.as_view(),
+        name='password_reset'),
+
+    path('account/password-reset/done/', resetviews.PasswordResetDoneView.as_view(), name='password_reset_done'),
+
+    path('account/password-reset-confirm/<uidb64>/<token>/', resetviews.PasswordResetConfirmView.as_view(), 
+        name='password_reset_confirm'),
+
+    path('account/password-reset-complete/', resetviews.PasswordResetCompleteView.as_view(), 
+        name='password_reset_complete'),
+
+
+
     path('change-password/', auth.change_password, name='change_password'),
     # example.com/feeds/post/create
     path('feeds/post/create/', feed.create, name='post_create'),

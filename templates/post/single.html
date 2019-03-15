@@ -42,7 +42,7 @@
 				{% if post.has_media %}
 					<img src="{{ post.imgsrc }}" alt="Thumbnail" class="single-post-thumbnail">
 				{% endif %}
-				{{ post.body }}
+				{{ post.body | linebreaks }}
 			</div>
 		</div>
 	</div>
