@@ -32,9 +32,10 @@ urlpatterns = [
     path('account/password-reset-complete/', resetviews.PasswordResetCompleteView.as_view(), 
         name='password_reset_complete'),
 
+    path('account/change-password/', auth.change_password, name='change_password'),
 
-
-    path('change-password/', auth.change_password, name='change_password'),
+    path('account/login/', auth.login, name='login'),
+    
     # example.com/feeds/post/create
     path('feeds/post/create/', feed.create, name='post_create'),
     # example.com/feeds/post/edit/10/
